@@ -1,6 +1,7 @@
 package ext.library.config.properties;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson2.JSONWriter;
 import ext.library.constant.FieldNamingStrategyEnum;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,24 +16,18 @@ public class FastJsonHttpMessageConverterProperties {
     /**
      * Prefix of {@link FastJsonHttpMessageConverterProperties}.
      */
-    public static final String PREFIX = WebProperties.PREFIX + ".http-message-converter.fastjson";
+    static final String PREFIX = WebProperties.PREFIX + ".http-message-converter.fastjson";
 
     /**
      * 启用 FastJson 优先于默认的 Jackson 做 json 解析
      * <p>默认：false
      */
-    private boolean enabled = false;
-
-    /**
-     * 启用属性声明顺序进行序列化排序
-     * <p>FastJson 序列化时默认根据字母（ASCII）排序而非成员变量声明顺序，详情见：<a href="https://github.com/alibaba/fastjson/issues/3115">#3115</a></p>
-     */
-    private boolean enablePropertyDefineOrderSerializer = true;
+    boolean enabled = false;
 
     /**
      * 字段命名策略
      */
-    private FieldNamingStrategyEnum fieldNamingStrategy;
+    FieldNamingStrategyEnum fieldNamingStrategy;
 
     /**
      * 自定义序列化特性
@@ -48,7 +43,7 @@ public class FastJsonHttpMessageConverterProperties {
      * SerializerFeature.WriteNullBooleanAsFalse // Null Boolean 输出为 false
      * </pre>
      */
-    private SerializerFeature[] serializerFeatures = {SerializerFeature.PrettyFormat, // 格式化 Json 文本
+    SerializerFeature[] serializerFeatures1 = {SerializerFeature.PrettyFormat, // 格式化 Json 文本
             SerializerFeature.BrowserCompatible, // 浏览器兼容（IE）
             SerializerFeature.IgnoreErrorGetter, // 忽略错误的字段 Get 方法
             SerializerFeature.WriteDateUseDateFormat, // 对时间类型进行格式化（默认：yyyy-MM-dd HH:mm:ss）
@@ -56,28 +51,32 @@ public class FastJsonHttpMessageConverterProperties {
             SerializerFeature.WriteNullListAsEmpty, // Null List 输出为 []
             SerializerFeature.WriteNullStringAsEmpty, // Null String 输出为空字符串
             SerializerFeature.WriteNullBooleanAsFalse // Null Boolean 输出为 false
-//			SerializerFeature.WriteNullNumberAsZero // Null Number 输出为 0
+            //			SerializerFeature.WriteNullNumberAsZero // Null Number 输出为 0
     };
-    
+
+    JSONWriter.Feature[] serializerFeatures = {JSONWriter.Feature.WriteNulls // 序列化输出空值字段
+            , JSONWriter.Feature.BrowserCompatible // 在大范围超过 JavaScript 支持的整数，输出为字符串格式
+            , JSONWriter.Feature.WriteEnumUsingToString // 序列化 enum 使用 toString 方法
+            , JSONWriter.Feature.IgnoreErrorGetter // 忽略 setter 方法的错误
+            , JSONWriter.Feature.WriteBigDecimalAsPlain // 序列化 BigDecimal 使用 toPlainString，避免科学计数法
+            , JSONWriter.Feature.MapSortField // 对 Map 中的 KeyValue 按照 Key 做排序后再输出。在有些验签的场景需要使用这个 Feature
+            , JSONWriter.Feature.WriteNonStringKeyAsString // 将 Map 中的非 String 类型的 Key 当做 String 类型输出
+            , JSONWriter.Feature.WriteNullStringAsEmpty // 将 String 类型字段的空值序列化输出为空字符串""
+            , JSONWriter.Feature.WriteNullListAsEmpty // 将 List 类型字段的空值序列化输出为空数组"[]"
+            , JSONWriter.Feature.LargeObject // 这个是一个保护措施，是为了防止序列化有循环引用对象消耗过大资源的保护措施
+            , JSONWriter.Feature.WriteMapNullValue};
+
 
     /**
      * 输出 Null 值为空字符串
-     * <p>排除 {@link #getSerializerFeatures()} 中可配置的 Null 处理（基本数据类型、List、Boolean）
-     * <p>排除 {@link #isWriteNullMapAsEmpty()} (Map)
      * <p>默认：false
      */
-    private boolean writeNullAsStringEmpty = false;
+    boolean writeNullAsStringEmpty = false;
 
     /**
      * 输出 Null Map 为 {}
      * <p>默认：true
      */
-    private boolean writeNullMapAsEmpty = true;
-
-    /**
-     * 输出 Null Array 为 []
-     * <p>默认：true
-     */
-    private boolean writeNullArrayAsEmpty = true;
+    boolean writeNullMapAsEmpty = true;
 
 }

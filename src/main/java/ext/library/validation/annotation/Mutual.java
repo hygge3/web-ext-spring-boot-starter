@@ -1,7 +1,7 @@
 package ext.library.validation.annotation;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -12,36 +12,33 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 验证相互关系，多个字段必须有一个有值
- *
- * @author	ylyue
- * @since	2019年5月8日
  */
 @Documented
 @Retention(RUNTIME)
 @Target({TYPE})
-@Constraint(validatedBy = { MutualValidator.class })
+@Constraint(validatedBy = {MutualValidator.class})
 @Repeatable(Mutual.List.class)
 public @interface Mutual {
 
-	/**
-	 * 相互关系，多个字段必须有一个有值
-	 */
-	String[] value() default {};
+    /**
+     * 相互关系，多个字段必须有一个有值
+     */
+    String[] value() default {};
 
-	String message() default "{ai.yue.library.base.validation.annotation.Mutual.message}";
+    String message() default "{ext.library.base.validation.annotation.Mutual.message}";
 
-	Class<?>[] groups() default {};
-	
-	Class<? extends Payload>[] payload() default {};
+    Class<?>[] groups() default {};
 
-	/**
-	 * Defines several {@code @Mutual} annotations on the same element.
-	 */
-	@Target({TYPE})
-	@Retention(RUNTIME)
-	@Documented
-	public @interface List {
-		Mutual[] value();
-	}
+    Class<? extends Payload>[] payload() default {};
+
+    /**
+     * Defines several {@code @Mutual} annotations on the same element.
+     */
+    @Target({TYPE})
+    @Retention(RUNTIME)
+    @Documented
+    @interface List {
+        Mutual[] value();
+    }
 
 }

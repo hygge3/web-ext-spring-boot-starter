@@ -1,7 +1,4 @@
 /**
- * 定义yue默认所提供的字段校验注解
- * 
- * @author	ylyue
- * @since	2019年10月18日
+ * 定义 ext 默认所提供的字段校验注解
  */
 package ext.library.validation.annotation;

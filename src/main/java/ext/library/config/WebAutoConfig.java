@@ -8,7 +8,7 @@ import ext.library.config.properties.JacksonHttpMessageConverterProperties;
 import ext.library.config.properties.WebProperties;
 import ext.library.config.thread.pool.AsyncProperties;
 import ext.library.config.thread.pool.ContextDecorator;
-import ext.library.webenv.WebMvcEnv;
+import ext.library.webenv.WebEnv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -32,7 +32,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import({WebMvcConfig.class, WebMvcRegistrationsConfig.class, CustomArgumentResolversConfig.class, WebMvcEnv.class})
+@Import({WebMvcConfig.class, WebMvcRegistrationsConfig.class, CustomArgumentResolversConfig.class, WebEnv.class})
 @EnableConfigurationProperties({WebProperties.class, JacksonHttpMessageConverterProperties.class, FastJsonHttpMessageConverterProperties.class})
 public class WebAutoConfig {
 

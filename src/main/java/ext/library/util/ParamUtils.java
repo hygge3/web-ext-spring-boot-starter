@@ -1,7 +1,7 @@
 package ext.library.util;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
 import ext.library.exception.ParamException;
 import ext.library.exception.ParamVoidException;
@@ -93,7 +93,7 @@ public class ParamUtils {
      * @param paramJson 需要向强类型转换的参数
      * @param keys      可多个 JSONObject 值的 key
      */
-    public static void paramFormatJSONObject(JSONObject paramJson, String... keys) {
+    public static void paramFormatJsonObject(JSONObject paramJson, String... keys) {
         for (String key : keys) {
             paramJson.replace(key, paramJson.getJSONObject(key));
         }
@@ -105,7 +105,7 @@ public class ParamUtils {
      * @param paramJson 需要向强类型转换的参数
      * @param keys      可多个 JSONArray 值的 key
      */
-    public static void paramFormatJSONArray(JSONObject paramJson, String... keys) {
+    public static void paramFormatJsonArray(JSONObject paramJson, String... keys) {
         for (String key : keys) {
             paramJson.replace(key, paramJson.getJSONArray(key));
         }
@@ -144,11 +144,11 @@ public class ParamUtils {
         }
 
         if (!StringUtils.isEmptys(jsonObjectKeys)) {
-            paramFormatJSONObject(paramJson, jsonObjectKeys);
+            paramFormatJsonObject(paramJson, jsonObjectKeys);
         }
 
         if (!StringUtils.isEmptys(jsonArrayKeys)) {
-            paramFormatJSONArray(paramJson, jsonArrayKeys);
+            paramFormatJsonArray(paramJson, jsonArrayKeys);
         }
     }
 

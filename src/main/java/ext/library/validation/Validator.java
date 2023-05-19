@@ -1,6 +1,5 @@
 package ext.library.validation;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.NumberUtil;
@@ -9,20 +8,15 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import ext.library.exception.ResultException;
-import ext.library.util.DateUtils;
 import ext.library.util.I18nUtils;
 import ext.library.util.SpringUtils;
-import ext.library.view.R;
+import ext.library.util.StringUtils;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.annotation.Resource;
 import jakarta.validation.ConstraintViolation;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -34,35 +28,30 @@ import java.util.Set;
 public class Validator {
 
     // 提示
-    private static final String NOT_NULL_HINT_MSG = "参数 {} 必须不为 null";
-    private static final String NOT_EMPTY_HINT_MSG = "参数 {} 必须不为 empty(null 或 \"\")";
-    private static final String ASSERT_TRUE_HINT_MSG = "参数 {} 必须为 true";
-    private static final String ASSERT_FALSE_HINT_MSG = "参数 {} 必须为 false";
-    private static final String DIGITS_HINT_MSG = "参数 {} 必须是一个数字，其值必须在 {} - {} 之间（包含）";
-    private static final String MAX_HINT_MSG = "参数 {} 不能超过最大值：{}";
-    private static final String MIN_HINT_MSG = "参数 {} 不能低于最小值：{}";
-    private static final String LENGTH_HINT_MSG = "参数 {} 长度必须在 {} - {} 之间（包含）";
-    private static final String CHINESE_HINT_MSG = "参数 {} 中文校验不通过";
-    private static final String ENGLISH_HINT_MSG = "参数 {} 英文校验不通过";
-    private static final String BIRTHDAY_HINT_MSG = "参数 {} 生日校验不通过";
-    private static final String CELLPHONE_HINT_MSG = "参数 {} 不是一个合法的手机号码";
-    private static final String EMAIL_HINT_MSG = "参数 {} 不是一个合法的邮箱格式";
-    private static final String ID_CARD_HINT_MSG = "参数 {} 不是一个合法的身份证号码";
-    private static final String PLATE_NUMBER_HINT_MSG = "参数 {} 不是一个合法的中国车牌号码";
-    private static final String UUID_HINT_MSG = "参数 {} 不是一个合法的 UUID";
-    private static final String URL_HINT_MSG = "参数 {} 不是一个合法的 URL";
-    private static final String IPV4_HINT_MSG = "参数 {} 不是一个合法的 IPV4 地址";
-    private static final String IPV6_HINT_MSG = "参数 {} 不是一个合法的 IPV6 地址";
-    private static final String MAC_ADDRESS_HINT_MSG = "参数 {} 不是一个合法的 MAC 地址";
-    private static final String CAR_DRIVING_LICENCE_HINT_MSG = "参数 {} 不是一个合法的驾驶证（仅限：中国驾驶证档案编号）";
-    private static final String CAR_VIN_HINT_MSG = "参数 {} 不是一个合法的车架号";
-    private static final String CREDIT_CODE_HINT_MSG = "参数 {} 不是一个合法的统一社会信用代码";
-    private static final String ZIP_CODE_HINT_MSG = "参数 {} 不是一个合法的邮政编码（中国）";
-    private static final String REGEX_HINT_MSG = "参数 {} 不满足正则表达式：{}";
-    private static final String USERNAME_HINT_MSG = "参数 {} 不是一个合法的用户名";
-    private Object param;
-    @Autowired
-    private javax.validation.Validator validator;
+    static final String NOT_NULL_HINT_MSG = "参数 {} 必须不为 null";
+    static final String NOT_EMPTY_HINT_MSG = "参数 {} 必须不为 empty(null 或 \"\")";
+    static final String ASSERT_TRUE_HINT_MSG = "参数 {} 必须为 true";
+    static final String ASSERT_FALSE_HINT_MSG = "参数 {} 必须为 false";
+    static final String DIGITS_HINT_MSG = "参数 {} 必须是一个数字，其值必须在 {} - {} 之间（包含）";
+    static final String MAX_HINT_MSG = "参数 {} 不能超过最大值：{}";
+    static final String MIN_HINT_MSG = "参数 {} 不能低于最小值：{}";
+    static final String LENGTH_HINT_MSG = "参数 {} 长度必须在 {} - {} 之间（包含）";
+    static final String CHINESE_HINT_MSG = "参数 {} 中文校验不通过";
+    static final String ENGLISH_HINT_MSG = "参数 {} 英文校验不通过";
+    static final String CELLPHONE_HINT_MSG = "参数 {} 不是一个合法的手机号码";
+    static final String EMAIL_HINT_MSG = "参数 {} 不是一个合法的邮箱格式";
+    static final String ID_CARD_HINT_MSG = "参数 {} 不是一个合法的身份证号码";
+    static final String UUID_HINT_MSG = "参数 {} 不是一个合法的 UUID";
+    static final String URL_HINT_MSG = "参数 {} 不是一个合法的 URL";
+    static final String IPV4_HINT_MSG = "参数 {} 不是一个合法的 IPV4 地址";
+    static final String IPV6_HINT_MSG = "参数 {} 不是一个合法的 IPV6 地址";
+    static final String MAC_ADDRESS_HINT_MSG = "参数 {} 不是一个合法的 MAC 地址";
+    static final String ZIP_CODE_HINT_MSG = "参数 {} 不是一个合法的邮政编码（中国）";
+    static final String REGEX_HINT_MSG = "参数 {} 不满足正则表达式：{}";
+    static final String USERNAME_HINT_MSG = "参数 {} 不是一个合法的用户名";
+    Object param;
+    @Resource
+    jakarta.validation.Validator validator;
 
     /**
      * 获得参数校验器并设置校验对象
@@ -216,35 +205,6 @@ public class Validator {
     }
 
     /**
-     * 生日校验
-     */
-    public Validator birthday() {
-        return birthday("birthday");
-    }
-
-    /**
-     * 生日校验
-     *
-     * @param paramName 参数名
-     * @return Validator
-     */
-    public Validator birthday(String paramName) {
-        String date = null;
-        if (param instanceof String) {
-            date = (String) param;
-        } else if (param instanceof Date) {
-            date = DateUtil.formatDate((Date) param);
-        } else if (param instanceof LocalDate || param instanceof LocalDateTime) {
-            date = DateUtils.DATE_FORMATTER.format((LocalDate) param);
-        } else {
-            throw new ResultException(R.paramValueInvalid(StrUtil.format("参数 {} 未知类型，不支持生日校验", paramName)));
-        }
-
-        cn.hutool.core.lang.Validator.validateBirthday(date, StrUtil.format(BIRTHDAY_HINT_MSG, paramName));
-        return this;
-    }
-
-    /**
      * 手机号校验
      */
     public Validator cellphone() {
@@ -300,24 +260,6 @@ public class Validator {
     }
 
     /**
-     * 中国车牌号校验
-     */
-    public Validator plateNumber() {
-        return plateNumber("plateNumber");
-    }
-
-    /**
-     * 中国车牌号校验
-     *
-     * @param paramName 参数名
-     * @return Validator
-     */
-    public Validator plateNumber(String paramName) {
-        cn.hutool.core.lang.Validator.validatePlateNumber((CharSequence) param, StrUtil.format(PLATE_NUMBER_HINT_MSG, paramName));
-        return this;
-    }
-
-    /**
      * UUID 校验
      *
      * @param paramName 参数名
@@ -369,49 +311,6 @@ public class Validator {
      */
     public Validator macAddress(String paramName) {
         cn.hutool.core.lang.Validator.validateMac((CharSequence) param, StrUtil.format(MAC_ADDRESS_HINT_MSG, paramName));
-        return this;
-    }
-
-    /**
-     * 验证是否为驾驶证 别名：驾驶证档案编号、行驶证编号
-     *
-     * @param paramName 参数名
-     * @return Validator
-     */
-    public Validator carDrivingLicence(String paramName) {
-        cn.hutool.core.lang.Validator.validateCarDrivingLicence((CharSequence) param, StrUtil.format(CAR_DRIVING_LICENCE_HINT_MSG, paramName));
-        return this;
-    }
-
-    /**
-     * 验证是否为车架号；别名：行驶证编号 车辆识别代号 车辆识别码
-     *
-     * @param paramName 参数名
-     * @return Validator
-     */
-    public Validator carVin(String paramName) {
-        cn.hutool.core.lang.Validator.validateCarVin((CharSequence) param, StrUtil.format(CAR_VIN_HINT_MSG, paramName));
-        return this;
-    }
-
-    /**
-     * 是否是有效的统一社会信用代码
-     * <pre>
-     * 第一部分：登记管理部门代码 1 位 (数字或大写英文字母)
-     * 第二部分：机构类别代码 1 位 (数字或大写英文字母)
-     * 第三部分：登记管理机关行政区划码 6 位 (数字)
-     * 第四部分：主体标识码（组织机构代码）9 位 (数字或大写英文字母)
-     * 第五部分：校验码 1 位 (数字或大写英文字母)
-     * </pre>
-     *
-     * @param paramName 参数名
-     * @return Validator
-     */
-    public Validator creditCode(String paramName) {
-        if (!cn.hutool.core.lang.Validator.isCreditCode((CharSequence) param)) {
-            throw new ValidateException(CREDIT_CODE_HINT_MSG, paramName);
-        }
-
         return this;
     }
 
@@ -495,11 +394,11 @@ public class Validator {
             Console.log("校验对象：{}", param);
             JSONArray errorHints = new JSONArray();
             violations.forEach(violation -> {
-                String errorkey = violation.getPropertyPath().toString();
+                String errorKey = violation.getPropertyPath().toString();
                 Object errorValue = violation.getInvalidValue();
                 String errorHintMsg = I18nUtils.getExt(violation.getMessage());
                 JSONObject errorHint = new JSONObject(true);
-                errorHint.put("errorkey", errorkey);
+                errorHint.put("errorKey", errorKey);
                 errorHint.put("errorValue", errorValue);
                 errorHint.put("errorHintMsg", errorHintMsg);
                 errorHints.add(errorHint);

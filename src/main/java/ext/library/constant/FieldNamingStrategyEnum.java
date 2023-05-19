@@ -13,7 +13,7 @@ public enum FieldNamingStrategyEnum {
 
     /**
      * 驼峰命名法，即：小驼峰命名法
-     * <p>CAMEL_CASE 策略，Java 对象属性：personId，序列化后属性：persionId
+     * <p>CAMEL_CASE 策略，Java 对象属性：personId，序列化后属性：personId
      */
     CAMEL_CASE(PropertyNamingStrategy.CamelCase),
 

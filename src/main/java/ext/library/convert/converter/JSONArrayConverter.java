@@ -1,7 +1,7 @@
 package ext.library.convert.converter;
 
 import cn.hutool.core.convert.AbstractConverter;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSONArray;
 import ext.library.convert.Convert;
 
 /**
