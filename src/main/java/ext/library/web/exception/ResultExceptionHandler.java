@@ -228,9 +228,8 @@ public class ResultExceptionHandler {
     @ExceptionHandler(AuthorizeException.class)
     public void authorizeExceptionHandler(AuthorizeException e) throws IOException {
         ExceptionUtils.printException(e);
-        // todo 指定跳转地址
         String location = SpringUtils.getBean(ExceptionHandlerProperties.class).getLocation();
-        Objects.requireNonNull(ServletUtils.getResponse()).sendRedirect("");
+        Objects.requireNonNull(ServletUtils.getResponse()).sendRedirect(location);
     }
 
     /**
