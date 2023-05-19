@@ -23,6 +23,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
+import ext.library.web.properties.CookieProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -687,8 +688,21 @@ public class ServletUtils {
      */
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAgeInSeconds, String path, String domain) {
         Cookie cookie = new Cookie(name, value);
-        if (domain != null) {
+        // 获取 cookie 配置
+        CookieProperties cookieProperties = SpringUtils.getBean(CookieProperties.class);
+        if (StringUtils.isNotBlank(domain)) {
             cookie.setDomain(domain);
+        } else if (StringUtils.isNotBlank(cookieProperties.getDomain())) {
+            cookie.setDomain(cookieProperties.getDomain());
+        }
+        if (Objects.nonNull(cookieProperties.getSameSite())) {
+            cookie.setAttribute("SameSite", cookieProperties.getSameSite().attributeValue());
+        }
+        if (Objects.nonNull(cookieProperties.getSecure())) {
+            cookie.setSecure(cookieProperties.getSecure());
+        }
+        if (Objects.nonNull(cookieProperties.getHttpOnly())) {
+            cookie.setHttpOnly(cookieProperties.getHttpOnly());
         }
         cookie.setMaxAge(maxAgeInSeconds);
         cookie.setPath(path);

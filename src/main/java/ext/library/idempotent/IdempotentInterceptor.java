@@ -7,7 +7,7 @@ import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;
 import ext.library.redis.idempotent.ApiIdempotent;
 import ext.library.util.SpringUtils;
-import ext.library.view.R;
+import ext.library.web.view.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.lang.NonNull;

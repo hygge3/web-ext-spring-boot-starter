@@ -1,7 +1,7 @@
 package ext.library.exception;
 
-import ext.library.view.R;
-import ext.library.view.Result;
+import ext.library.web.view.R;
+import ext.library.web.view.Result;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
