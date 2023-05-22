@@ -1,6 +1,6 @@
 package ext.library.web.exception;
 
-import ext.library.constant.Constant;
+import ext.library.constant.HttpHeader;
 import ext.library.util.I18nUtils;
 import ext.library.web.view.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Result> {
         body.setMsg(I18nUtils.getExt(body.getMsg()));
 
         // 3. 设置链路 ID
-        body.setTraceId(MDC.get(Constant.TRACE_ID));
+        body.setTraceId(MDC.get(HttpHeader.TRACE_ID));
 
         // 4. 响应结果
         return body;

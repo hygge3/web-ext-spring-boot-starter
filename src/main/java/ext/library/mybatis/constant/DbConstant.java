@@ -21,9 +21,9 @@ public interface DbConstant {
     /** 主键 */
     String DB_FIELD_ID = "id";
     /** 创建时间 */
-    String DB_FIELD_CREATE_TIME = "createTime";
+    String DB_FIELD_CREATE_TIME = "create_time";
     /** 更新时间 */
-    String DB_FIELD_UPDATE_TIME = "updateTime";
+    String DB_FIELD_UPDATE_TIME = "update-time";
     /** 删除时间：逻辑删除 */
     String DB_FIELD_DEFINITION_DELETE_TIME = "delete_time";
 

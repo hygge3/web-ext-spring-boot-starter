@@ -1,0 +1,48 @@
+{
+  "properties": [
+    {
+      "name": "ext.api-version.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 RESTful API 接口版本控制 .",
+      "defaultValue": false,
+      "sourceType": "ext.library.api.version.ApiVersionProperties"
+    },
+    {
+      "name": "ext.api-version.minimum-version",
+      "type": "java.lang.Double",
+      "description": "最小版本号，小于该版本号返回版本过时 .",
+      "sourceType": "ext.library.api.version.ApiVersionProperties"
+    },
+    {
+      "name": "ext.api-version.version-placeholder",
+      "type": "java.lang.String",
+      "description": "RequestMapping 版本占位符 .",
+      "defaultValue": "{version}",
+      "sourceType": "ext.library.api.version.ApiVersionProperties"
+    },
+    {
+      "name": "ext.auth.redis-captcha-prefix",
+      "type": "java.lang.String",
+      "description": "验证码前缀 .",
+      "defaultValue": "captcha_%s"
+    },
+    {
+      "name": "ext.auth.cookie-token-key",
+      "type": "java.lang.String",
+      "description": "Cookie Token Key .",
+      "defaultValue": "token"
+    },
+    {
+      "name": "ext.auth.redis-token-prefix",
+      "type": "java.lang.String",
+      "description": "Redis Token 前缀（自定义值，请保留“:”部分） .",
+      "defaultValue": "ext:auth:token:"
+    },
+    {
+      "name": "ext.auth.user-key",
+      "type": "java.lang.String",
+      "description": "Redis Token Value 序列化后的 key，反序列化时需使用，如：User.getUserId() .",
+      "defaultValue": "userId"
+    }
+  ]
+}

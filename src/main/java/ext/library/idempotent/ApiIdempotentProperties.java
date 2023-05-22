@@ -1,4 +1,4 @@
-package ext.library.redis.idempotent;
+package ext.library.idempotent;
 
 import ext.library.redis.config.properties.RedisProperties;
 import lombok.Data;

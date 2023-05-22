@@ -2,7 +2,6 @@ package ext.library.api.version;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
-import ext.library.api.version.annotation.ApiVersion;
 import ext.library.exception.ApiVersionDeprecatedException;
 import ext.library.util.StringUtils;
 import lombok.AllArgsConstructor;

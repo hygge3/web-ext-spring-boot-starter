@@ -5,7 +5,6 @@ import ext.library.exception.ParamException;
 import ext.library.exception.ResultException;
 import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;
-import ext.library.redis.idempotent.ApiIdempotent;
 import ext.library.util.SpringUtils;
 import ext.library.web.view.R;
 import lombok.extern.slf4j.Slf4j;

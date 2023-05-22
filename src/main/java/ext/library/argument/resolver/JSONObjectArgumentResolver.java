@@ -1,6 +1,6 @@
 package ext.library.argument.resolver;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ext.library.util.ParamUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;

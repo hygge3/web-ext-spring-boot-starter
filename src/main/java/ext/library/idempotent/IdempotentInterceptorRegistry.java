@@ -1,6 +1,5 @@
 package ext.library.idempotent;
 
-import ext.library.redis.idempotent.ApiIdempotentProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

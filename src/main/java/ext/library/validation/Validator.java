@@ -5,16 +5,15 @@ import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
 import ext.library.util.I18nUtils;
 import ext.library.util.SpringUtils;
 import ext.library.util.StringUtils;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.annotation.Resource;
 import jakarta.validation.ConstraintViolation;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -50,8 +49,6 @@ public class Validator {
     static final String REGEX_HINT_MSG = "参数 {} 不满足正则表达式：{}";
     static final String USERNAME_HINT_MSG = "参数 {} 不是一个合法的用户名";
     Object param;
-    @Resource
-    jakarta.validation.Validator validator;
 
     /**
      * 获得参数校验器并设置校验对象
@@ -388,7 +385,8 @@ public class Validator {
      * @return Validator
      */
     public Validator valid(Object param, Class<?>... groups) {
-        Set<ConstraintViolation<Object>> violations = validator.validate(param, groups);
+        Set<ConstraintViolation<Object>> violations = SpringUtils.getBean(jakarta.validation.Validator.class)
+                .validate(param, groups);
         if (violations.size() > 0) {
             log.warn("{} violations.", violations.size());
             Console.log("校验对象：{}", param);
@@ -397,15 +395,15 @@ public class Validator {
                 String errorKey = violation.getPropertyPath().toString();
                 Object errorValue = violation.getInvalidValue();
                 String errorHintMsg = I18nUtils.getExt(violation.getMessage());
-                JSONObject errorHint = new JSONObject(true);
+                JSONObject errorHint = new JSONObject();
                 errorHint.put("errorKey", errorKey);
                 errorHint.put("errorValue", errorValue);
                 errorHint.put("errorHintMsg", errorHintMsg);
                 errorHints.add(errorHint);
-                System.out.println(errorHint.toString(SerializerFeature.WriteMapNullValue));
+                System.out.println(errorHint.toString(JSONWriter.Feature.WriteMapNullValue));
             });
 
-            throw new ValidateException(errorHints.toString(SerializerFeature.WriteMapNullValue));
+            throw new ValidateException(errorHints.toString(JSONWriter.Feature.WriteMapNullValue));
         }
 
         return this;

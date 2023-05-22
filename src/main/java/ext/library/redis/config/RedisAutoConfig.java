@@ -1,9 +1,9 @@
 package ext.library.redis.config;
 
+import ext.library.idempotent.ApiIdempotentController;
 import ext.library.redis.client.Redis;
 import ext.library.redis.config.properties.RedisProperties;
 import ext.library.redis.constant.RedisSerializerEnum;
-import ext.library.redis.idempotent.ApiIdempotentController;
 import ext.library.util.ClassUtils;
 import ext.library.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class RedisAutoConfig {
 
     /**
      * <p>支持 FastJson 进行 Redis 存储对象序列/反序列化
-     * <p>https://github.com/alibaba/fastjson/wiki/%E5%9C%A8-Spring-%E4%B8%AD%E9%9B%86%E6%88%90-Fastjson
+     * <p><a href="https://github.com/alibaba/fastjson2/blob/main/docs/spring_support_cn.md">在 Spring 中集成 Fastjson2</a>
      */
     @Bean
     public RedisTemplate<String, Object> extRedisTemplate(RedisConnectionFactory redisConnectionFactory) {

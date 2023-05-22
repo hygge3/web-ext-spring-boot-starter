@@ -16,14 +16,14 @@ import java.util.Objects;
  * <p>如：WebMvc、WebFlux
  */
 @Component
-public interface WebEnv {
+public class WebEnv {
 
     // Result
 
     /**
      * {@link Result#response()}
      */
-    default void resultResponse(Result<?> result) {
+    public void resultResponse(Result<?> result) {
         HttpServletResponse response = ServletUtils.getResponse();
         Objects.requireNonNull(response).setStatus(result.getCode());
         response.setContentType("application/json; charset=utf-8");
@@ -45,7 +45,7 @@ public interface WebEnv {
      *
      * @return JSON 对象
      */
-    default JSONObject getParam() {
+    public JSONObject getParam() {
         return ServletUtils.getParamToJson();
 
     }
@@ -57,7 +57,7 @@ public interface WebEnv {
      * @param clazz 想要获取的参数类型
      * @return 想要的对象实例
      */
-    default <T> T getParam(Class<T> clazz) {
+    public <T> T getParam(Class<T> clazz) {
         return ServletUtils.getParamToJavaBean(clazz);
     }
 

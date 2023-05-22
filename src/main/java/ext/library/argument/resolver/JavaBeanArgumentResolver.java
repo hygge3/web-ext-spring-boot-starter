@@ -2,7 +2,7 @@ package ext.library.argument.resolver;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
 import ext.library.util.ParamUtils;
 import ext.library.util.SpringUtils;

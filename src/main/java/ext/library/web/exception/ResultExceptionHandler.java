@@ -4,7 +4,7 @@ import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
 import ext.library.exception.ApiVersionDeprecatedException;
 import ext.library.exception.AttackException;

@@ -25,6 +25,7 @@ import ext.library.idempotent.IdempotentInterceptorRegistry;
 import ext.library.util.ClassUtils;
 import ext.library.util.DateUtils;
 import ext.library.util.ListUtils;
+import ext.library.web.log.LogInterceptorRegistry;
 import ext.library.web.properties.FastJsonHttpMessageConverterProperties;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     final JacksonHttpMessageConverterProperties jacksonProperties;
     @Autowired(required = false)
     IdempotentInterceptorRegistry idempotentInterceptorRegistry;
+    @Autowired(required = false)
+    LogInterceptorRegistry logInterceptorRegistry;
 
     /**
      * 扩展 HTTP 消息转换器做 Json 解析处理
@@ -122,7 +125,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         config.setWriterFilters(ArrayUtil.toArray(filters, Filter.class));
         converter.setFastJsonConfig(config);
         converters.add(0, converter);
-        log.info("【初始化配置-FastJsonHttpMessageConverter】默认配置为 false，当前环境为 true：使用 FastJson 优先于默认的 Jackson 做 json 解析 ... 已初始化完毕。");
+        log.info("【初始化配置 - FastJson】默认配置为 false，当前环境为 true：使用 FastJson 优先于默认的 Jackson 做 json 解析 ... 已初始化完毕。");
     }
 
     private void mappingJackson2HttpMessageConverterConfig(MappingJackson2HttpMessageConverter converter) {
@@ -207,8 +210,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        // 添加日志拦截器
+        if (Objects.nonNull(logInterceptorRegistry)) {
+            logInterceptorRegistry.registry(registry);
+        }
         // 添加幂等性拦截器
-        if (idempotentInterceptorRegistry != null) {
+        if (Objects.nonNull(idempotentInterceptorRegistry)) {
             idempotentInterceptorRegistry.registry(registry);
         }
     }
@@ -224,6 +231,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjar/**").addResourceLocations("classpath:/META-INF/resources/webjar/");
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/");
     }
 
 }

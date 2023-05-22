@@ -1,4 +1,4 @@
-package ext.library.redis.idempotent;
+package ext.library.idempotent;
 
 import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;

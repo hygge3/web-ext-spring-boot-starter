@@ -79,7 +79,7 @@ public class WebAutoConfig {
         // 设置比常规过滤器更高的优先级，防止输入流被更早读取
         filterRegistrationBean.setOrder(webProperties.getRepeatedlyReadServletRequestFilterOrder());
         filterRegistrationBean.setFilter(new RepeatedlyReadServletRequestFilter());
-        log.info("【初始化配置-HttpServletRequest】默认配置为 true，当前环境为 true：默认启用输入流可反复读取的 HttpServletRequest ... 已初始化完毕。");
+        log.info("【初始化配置 - Body 反复读取】默认配置为 true，当前环境为 true：默认启用输入流可反复读取的 HttpServletRequest ... 已初始化完毕。");
         return filterRegistrationBean;
     }
 

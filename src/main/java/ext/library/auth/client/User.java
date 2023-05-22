@@ -1,6 +1,6 @@
 package ext.library.auth.client;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import ext.library.auth.config.properties.AuthProperties;
 import ext.library.exception.LoginException;
 import ext.library.exception.ResultException;

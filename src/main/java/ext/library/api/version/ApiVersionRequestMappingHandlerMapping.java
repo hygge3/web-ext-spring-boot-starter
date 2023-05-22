@@ -2,7 +2,6 @@ package ext.library.api.version;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import ext.library.api.version.annotation.ApiVersion;
 import ext.library.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.core.annotation.AnnotationUtils;

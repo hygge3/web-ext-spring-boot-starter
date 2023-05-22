@@ -18,7 +18,7 @@ public class ApiVersionProperties {
      * <p>
      * 默认：true
      */
-    boolean enabled = true;
+    boolean enabled = false;
 
     /**
      * 最小版本号，小于该版本号返回版本过时。

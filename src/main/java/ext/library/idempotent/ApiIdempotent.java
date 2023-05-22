@@ -1,4 +1,4 @@
-package ext.library.redis.idempotent;
+package ext.library.idempotent;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

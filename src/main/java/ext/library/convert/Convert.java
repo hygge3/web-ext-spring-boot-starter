@@ -4,9 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.convert.ConverterRegistry;
 import cn.hutool.core.lang.TypeReference;
-import com.alibaba.fastjson.parser.ParserConfig;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.util.TypeUtils;
 import ext.library.convert.converter.JSONArrayConverter;
 import ext.library.convert.converter.JSONListConverter;
 import ext.library.convert.converter.JSONObjectConverter;
@@ -21,9 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.alibaba.fastjson.JSON.toJSON;
-import static com.alibaba.fastjson.util.TypeUtils.cast;
-import static com.alibaba.fastjson.util.TypeUtils.castToJavaBean;
 
 /**
  * <b>类型转换器</b>
@@ -206,7 +204,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
 
         // 采用 fastjson 转换
         try {
-            return cast(value, clazz, ParserConfig.getGlobalInstance());
+            return TypeUtils.cast(value, clazz);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug("【Convert】采用 fastjson 类型转换器转换失败，正尝试 hutool 类型转换器转换。");
@@ -214,7 +212,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
             }
         }
 
-        // 采用 hutool 默认转换能力 + yue-library 扩展能力进行转换
+        // 采用 hutool 默认转换能力 + ext-library 扩展能力进行转换
         return cn.hutool.core.convert.Convert.convert(clazz, value);
     }
 
@@ -250,7 +248,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
                 return JSONObject.parseObject((String) value, clazz);
             }
 
-            return castToJavaBean(toJSONObject(value), clazz, ParserConfig.getGlobalInstance());
+            return TypeUtils.cast(toJSONObject(value), clazz);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug("【Convert】采用 fastjson 类型转换器转换失败，正尝试 hutool 类型转换器转换。");
@@ -258,7 +256,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
             }
         }
 
-        // 采用 hutool 默认转换能力 + yue-library 扩展能力进行转换
+        // 采用 hutool 默认转换能力 + ext-library 扩展能力进行转换
         return BeanUtil.toBean(value, clazz);
     }
 
@@ -315,7 +313,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
             return JSONArray.parseArray((String) value);
         }
 
-        return (JSONArray) toJSON(value);
+        return (JSONArray) JSON.toJSON(value);
     }
 
     // ----------------------------------------------------------------------- List 转换方法

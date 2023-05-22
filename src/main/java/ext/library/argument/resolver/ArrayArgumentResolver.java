@@ -150,7 +150,7 @@ public class ArrayArgumentResolver extends AbstractNamedValueMethodArgumentResol
             }
         }
 
-        // yue-library
+        // ext-library
         if (arg == null) {
             JSONObject param = null;
             try {

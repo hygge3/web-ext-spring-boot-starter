@@ -12,9 +12,5 @@ public interface Constant {
      */
     String PREFIX = "ext-library-";
 
-    /**
-     * 链路 ID
-     */
-    String TRACE_ID = "traceId";
 
 }
