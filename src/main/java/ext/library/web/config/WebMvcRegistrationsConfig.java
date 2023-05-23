@@ -26,7 +26,7 @@ public class WebMvcRegistrationsConfig implements WebMvcRegistrations {
             return WebMvcRegistrations.super.getRequestMappingHandlerMapping();
         }
 
-        log.info("【初始化配置 - 接口版本控制】默认配置为 true，当前环境为 true：RESTful API 接口版本控制，执行初始化 ...");
+        log.info("【初始化配置 - 接口版本控制】默认配置为 false，当前环境为 true：RESTful API 接口版本控制，执行初始化 ...");
         return new ApiVersionRequestMappingHandlerMapping(apiVersionProperties);
     }
 

@@ -20,7 +20,6 @@ import ext.library.exception.ResultException;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.ServletUtils;
 import ext.library.util.SpringUtils;
-import ext.library.web.properties.ExceptionHandlerProperties;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +27,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -147,6 +147,19 @@ public class ResultExceptionHandler {
     @ExceptionHandler(ParamVoidException.class)
     public Result<?> paramVoidExceptionHandler() {
         return R.paramVoid();
+    }
+
+    /**
+     * 参数效验未通过统一处理 -433
+     *
+     * @param e 参数校验未通过异常
+     * @return 结果
+     */
+    @ResponseBody
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public Result<?> missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException e) {
+        ExceptionUtils.printException(e);
+        return R.paramCheckNotPass(e.getMessage());
     }
 
     /**

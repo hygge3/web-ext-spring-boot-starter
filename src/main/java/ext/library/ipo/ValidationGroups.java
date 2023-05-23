@@ -1,5 +1,7 @@
 package ext.library.ipo;
 
+import jakarta.validation.groups.Default;
+
 /**
  * 校验分组 - 默认定义
  * <p>校验分组需灵活使用，默认定义只可解决常规场景或作为示例参考</p>
@@ -10,12 +12,12 @@ public class ValidationGroups {
 
     // CRUD（create, read, update, delete）
 
-    public interface Create {}
+    public interface Create extends Default {}
 
-    public interface Read {}
+    public interface Read extends Default {}
 
-    public interface Update {}
+    public interface Update extends Default {}
 
-    public interface Delete {}
+    public interface Delete extends Default {}
 
 }

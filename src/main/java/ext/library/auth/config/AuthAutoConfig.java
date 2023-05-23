@@ -1,6 +1,6 @@
 package ext.library.auth.config;
 
-import ext.library.auth.client.User;
+import ext.library.auth.client.UserClient;
 import ext.library.auth.config.properties.AuthProperties;
 import ext.library.redis.client.Redis;
 import ext.library.redis.config.RedisAutoConfig;
@@ -22,9 +22,9 @@ public class AuthAutoConfig {
 
     @Bean
     @ConditionalOnBean(Redis.class)
-    public User user() {
-        log.info("【初始化配置-AuthClient-User 客户端】配置项：" + AuthProperties.PREFIX + "。Bean：User ... 已初始化完毕。");
-        return new User();
+    public UserClient user() {
+        log.info("【初始化配置 - Auth-User 客户端】配置项：" + AuthProperties.PREFIX + "。Bean：User ... 已初始化完毕。");
+        return new UserClient();
     }
 
 }

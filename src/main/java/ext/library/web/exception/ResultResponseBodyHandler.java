@@ -2,6 +2,7 @@ package ext.library.web.exception;
 
 import ext.library.constant.HttpHeader;
 import ext.library.util.I18nUtils;
+import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -23,28 +24,35 @@ import java.util.Objects;
  */
 @Slf4j
 @ControllerAdvice
-public class ResultResponseBodyHandler implements ResponseBodyAdvice<Result> {
+public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
-        return Objects.requireNonNull(returnType.getMethod()).getReturnType() == Result.class;
+        return Objects.nonNull(returnType.getMethod());
     }
 
     @Override
-    public Result<?> beforeBodyWrite(@Nullable Result body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
+    public Result<?> beforeBodyWrite(@Nullable Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         // 1. 处理参数
         if (body == null) {
             return null;
         }
+        Result<?> result;
+        if (body instanceof Result<?>) {
+            result = (Result<?>) body;
+        } else {
+            result = R.success(body);
+        }
+
 
         // 2. 设置 i18n msg
-        body.setMsg(I18nUtils.getExt(body.getMsg()));
+        result.setMsg(I18nUtils.getExt(result.getMsg()));
 
         // 3. 设置链路 ID
-        body.setTraceId(MDC.get(HttpHeader.TRACE_ID));
+        result.setTraceId(MDC.get(HttpHeader.TRACE_ID));
 
         // 4. 响应结果
-        return body;
+        return result;
     }
 
 }

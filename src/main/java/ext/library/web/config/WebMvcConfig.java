@@ -21,11 +21,14 @@ import ext.library.argument.resolver.ArrayArgumentResolver;
 import ext.library.argument.resolver.CustomRequestParamMethodArgumentResolver;
 import ext.library.argument.resolver.JavaBeanArgumentResolver;
 import ext.library.constant.FieldNamingStrategyEnum;
+import ext.library.idempotent.ApiIdempotentProperties;
 import ext.library.idempotent.IdempotentInterceptorRegistry;
 import ext.library.util.ClassUtils;
 import ext.library.util.DateUtils;
 import ext.library.util.ListUtils;
+import ext.library.util.SpringUtils;
 import ext.library.web.log.LogInterceptorRegistry;
+import ext.library.web.log.LogProperties;
 import ext.library.web.properties.FastJsonHttpMessageConverterProperties;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +58,7 @@ import java.util.Objects;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import(IdempotentInterceptorRegistry.class)
+@Import({IdempotentInterceptorRegistry.class, LogInterceptorRegistry.class})
 public class WebMvcConfig implements WebMvcConfigurer {
 
     final FastJsonHttpMessageConverterProperties fastJsonProperties;
@@ -213,10 +216,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 添加日志拦截器
         if (Objects.nonNull(logInterceptorRegistry)) {
             logInterceptorRegistry.registry(registry);
+            log.info("【初始化配置 - log】默认配置为 true，当前环境为 {}：默认任何情况下都开启日志功能... 已初始化完毕。", SpringUtils
+                    .getBean(LogProperties.class).isEnabled());
         }
         // 添加幂等性拦截器
         if (Objects.nonNull(idempotentInterceptorRegistry)) {
             idempotentInterceptorRegistry.registry(registry);
+            log.info("【初始化配置 - 幂等】默认配置为 false，当前环境为 {}：默认不开启幂等校验... 已初始化完毕。", SpringUtils
+                    .getBean(ApiIdempotentProperties.class).isEnabled());
+
         }
     }
 

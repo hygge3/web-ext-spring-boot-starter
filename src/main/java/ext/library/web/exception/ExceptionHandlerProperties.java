@@ -1,4 +1,4 @@
-package ext.library.web.properties;
+package ext.library.web.exception;
 
 import ext.library.constant.Constant;
 import lombok.Data;

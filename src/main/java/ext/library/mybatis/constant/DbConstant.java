@@ -14,7 +14,7 @@ public interface DbConstant {
     /** 更新时间 */
     String CLASS_FIELD_UPDATE_TIME = "updateTime";
     /** 删除时间：逻辑删除 */
-    String CLASS_FIELD_DEFINITION_DELETE_TIME = "deleteTime";
+    String CLASS_FIELD_DEFINITION_DELETE = "isDeleted";
 
     // ====================== 数据库字段名定义 ======================
 
@@ -25,6 +25,6 @@ public interface DbConstant {
     /** 更新时间 */
     String DB_FIELD_UPDATE_TIME = "update-time";
     /** 删除时间：逻辑删除 */
-    String DB_FIELD_DEFINITION_DELETE_TIME = "delete_time";
+    String DB_FIELD_DEFINITION_DELETE = "is_deleted";
 
 }

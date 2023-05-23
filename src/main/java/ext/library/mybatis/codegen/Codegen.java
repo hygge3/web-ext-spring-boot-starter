@@ -1,5 +1,6 @@
 package ext.library.mybatis.codegen;
 
+import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
@@ -94,14 +95,17 @@ public class Codegen {
         updateTimeConfig.setOnUpdateValue("now()");
         globalConfig.addColumnConfig(updateTimeConfig);
         // 删除时间
-        globalConfig.setLogicDeleteColumn(DbConstant.DB_FIELD_DEFINITION_DELETE_TIME);
+        globalConfig.setLogicDeleteColumn(DbConstant.DB_FIELD_DEFINITION_DELETE);
         // 大字段批量设置
         Set<String> largeColumns = config.getLargeColumns();
-        for (String largeColumn : largeColumns) {
-            ColumnConfig largeColumnConfig = new ColumnConfig();
-            largeColumnConfig.setColumnName(largeColumn);
-            largeColumnConfig.setLarge(true);
-            globalConfig.addColumnConfig(largeColumnConfig);
+
+        if (CollUtil.isNotEmpty(largeColumns)) {
+            for (String largeColumn : largeColumns) {
+                ColumnConfig largeColumnConfig = new ColumnConfig();
+                largeColumnConfig.setColumnName(largeColumn);
+                largeColumnConfig.setLarge(true);
+                globalConfig.addColumnConfig(largeColumnConfig);
+            }
         }
 
         // 默认类型映射

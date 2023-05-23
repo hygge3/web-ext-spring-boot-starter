@@ -62,7 +62,7 @@ public class RedisAutoConfig {
     @Primary
     @ConditionalOnBean({RedisTemplate.class, StringRedisTemplate.class})
     public Redis redis(@Qualifier("extRedisTemplate") RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate) {
-        log.info("【初始化配置-Redis 客户端】配置项：{}，默认使用 {} 进行Redis存储对象序列/反序列化。Bean：Redis ... 已初始化完毕。", RedisProperties.PREFIX, ClassUtils
+        log.info("【初始化配置 - Redis】配置项：{}，默认使用 {} 进行Redis存储对象序列/反序列化。Bean：Redis ... 已初始化完毕。", RedisProperties.PREFIX, ClassUtils
                 .getClassName(RedisSerializerEnum.class, false).concat(".JDK"));
         return new Redis(redisTemplate, stringRedisTemplate);
     }

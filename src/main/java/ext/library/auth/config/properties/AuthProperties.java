@@ -1,6 +1,6 @@
 package ext.library.auth.config.properties;
 
-import ext.library.auth.client.User;
+import ext.library.auth.client.UserClient;
 import ext.library.constant.Constant;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,7 +30,7 @@ public class AuthProperties {
      */
     String redisTokenPrefix = PREFIX_REDIS + "token:";
     /**
-     * Redis Token Value 序列化后的 key，反序列化时需使用，如：{@linkplain User#getUserId()}
+     * Redis Token Value 序列化后的 key，反序列化时需使用，如：{@linkplain UserClient#getUserId()}
      * <p>默认：userId
      */
     String userKey = "userId";

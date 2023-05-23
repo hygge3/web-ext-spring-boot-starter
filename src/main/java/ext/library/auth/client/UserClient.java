@@ -24,7 +24,7 @@ import java.util.UUID;
  * <p>登录登出、第三方登录、token 自动解析获取用户信息、分布式验证码
  */
 @NoArgsConstructor
-public class User {
+public class UserClient {
     @Autowired
     protected Redis redis;
     @Autowired

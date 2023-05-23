@@ -1,6 +1,7 @@
 ext.library.argument.resolver.CustomArgumentResolversConfig
 ext.library.auth.config.AuthAutoConfig
-ext.library.base.config.BaseAutoConfig
+ext.library.config.BaseAutoConfig
+ext.library.mybatis.config.MybatisAutoConfig
 ext.library.redis.config.RedisAutoConfig
 ext.library.thread.pool.AsyncConfig
 ext.library.web.config.ResultErrorAutoConfig

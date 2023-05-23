@@ -23,13 +23,13 @@ import java.nio.charset.StandardCharsets;
 public class I18nUtils {
 
     private static MessageSource messageSource;
-    private static ResourceBundleMessageSource messageSourceYue;
+    private static ResourceBundleMessageSource messageSourceExt;
 
     public I18nUtils(MessageSource messageSource) {
         I18nUtils.messageSource = messageSource;
-        I18nUtils.messageSourceYue = new ResourceBundleMessageSource();
-        I18nUtils.messageSourceYue.setBasenames("YueMessages", "messages");
-        I18nUtils.messageSourceYue.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        I18nUtils.messageSourceExt = new ResourceBundleMessageSource();
+        I18nUtils.messageSourceExt.setBasenames("ExtMessages", "messages");
+        I18nUtils.messageSourceExt.setDefaultEncoding(StandardCharsets.UTF_8.name());
     }
 
     /**
@@ -55,7 +55,7 @@ public class I18nUtils {
      */
     public static String getExt(String msgKey) {
         try {
-            return messageSourceYue.getMessage(msgKey, null, LocaleContextHolder.getLocale());
+            return messageSourceExt.getMessage(msgKey, null, LocaleContextHolder.getLocale());
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 e.printStackTrace();
