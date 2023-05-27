@@ -1,4 +1,4 @@
-package ext.library.web.log;
+package ext.library.log;
 
 import ext.library.constant.Constant;
 import lombok.Data;
@@ -10,10 +10,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(LogProperties.PREFIX)
 public class LogProperties {
+
+    /**
+     * Prefix of {@link LogProperties}.
+     */
     public static final String PREFIX = Constant.CONFIG_PREFIX + ".log";
 
     /** 是否启用辅助日志 */
     boolean enabled = true;
+
     /**
      * 是否启用请求日志
      * <p>

@@ -1,4 +1,4 @@
-package ext.library.web.log;
+package ext.library.log;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

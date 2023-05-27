@@ -1,4 +1,4 @@
-package ext.library.web.log;
+package ext.library.log;
 
 import com.alibaba.fastjson2.JSONWriter;
 import ext.library.constant.HttpAttribute;

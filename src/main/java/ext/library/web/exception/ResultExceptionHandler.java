@@ -45,7 +45,7 @@ public class ResultExceptionHandler {
 
     @PostConstruct
     private void init() {
-        log.info("【初始化配置 - 全局统一异常处理】拦截所有 Controller 层异常，返回 HTTP 请求最外层对象 ... 已初始化完毕。");
+        log.info("【全局统一异常处理】配置项:{},初始化拦截所有 Controller 层异常，返回 HTTP 请求最外层对象...", ExceptionHandlerProperties.PREFIX);
     }
 
 

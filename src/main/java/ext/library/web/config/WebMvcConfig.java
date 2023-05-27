@@ -22,16 +22,15 @@ import ext.library.argument.resolver.CustomRequestParamMethodArgumentResolver;
 import ext.library.argument.resolver.JavaBeanArgumentResolver;
 import ext.library.constant.FieldNamingStrategyEnum;
 import ext.library.idempotent.IdempotentInterceptorRegistry;
+import ext.library.log.LogInterceptorRegistry;
 import ext.library.util.ClassUtils;
 import ext.library.util.DateUtils;
 import ext.library.util.ListUtils;
-import ext.library.web.log.LogInterceptorRegistry;
 import ext.library.web.properties.FastJsonHttpMessageConverterProperties;
 import ext.library.web.properties.HttpMessageConverterProperties;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -61,10 +60,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     final FastJsonHttpMessageConverterProperties fastJsonProperties;
     final JacksonHttpMessageConverterProperties jacksonProperties;
-    @Autowired(required = false)
-    IdempotentInterceptorRegistry idempotentInterceptorRegistry;
-    @Autowired(required = false)
-    LogInterceptorRegistry logInterceptorRegistry;
+    final IdempotentInterceptorRegistry idempotentInterceptorRegistry;
+    final LogInterceptorRegistry logInterceptorRegistry;
 
     /**
      * 扩展 HTTP 消息转换器做 Json 解析处理

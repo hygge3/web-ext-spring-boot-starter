@@ -27,7 +27,7 @@ public class BaseAutoConfig {
     @Bean
     @ConditionalOnMissingBean
     public Validator validator() {
-        log.info("【Validator 校验器】Bean：Validator，执行初始化 ...");
+        log.info("【校验器】Bean：Validator，执行初始化 ...");
         return new Validator();
     }
 

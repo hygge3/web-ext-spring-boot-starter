@@ -1,6 +1,6 @@
 package ext.library.idempotent;
 
-import ext.library.redis.config.properties.RedisProperties;
+import ext.library.constant.Constant;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -14,7 +14,7 @@ public class ApiIdempotentProperties {
     /**
      * Prefix of {@link ApiIdempotentProperties}.
      */
-    public static final String PREFIX = RedisProperties.PREFIX + "api-idempotent";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".api-idempotent";
 
     /**
      * 启用接口幂等性
