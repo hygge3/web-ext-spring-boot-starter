@@ -5,12 +5,12 @@ package ext.library.constant;
  */
 public interface Constant {
 
-    /** 项目前缀 */
-    String PROJECT_PREFIX = "ext";
+    /** 项目配置前缀 */
+    String CONFIG_PREFIX = "ext";
     /**
      * ext-library 前缀
      */
-    String PREFIX = "ext-library-";
+    String PREFIX = "Ext-";
 
 
 }

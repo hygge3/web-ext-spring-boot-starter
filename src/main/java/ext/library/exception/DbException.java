@@ -3,7 +3,7 @@ package ext.library.exception;
 import lombok.NoArgsConstructor;
 
 /**
- * <h3>Db 异常</h3><br>
+ * Db 异常
  */
 @NoArgsConstructor
 public class DbException extends RuntimeException {

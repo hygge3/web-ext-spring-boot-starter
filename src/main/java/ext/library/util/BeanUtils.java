@@ -8,8 +8,8 @@ import cn.hutool.core.util.StrUtil;
  */
 public class BeanUtils extends BeanUtil {
 
-    public static final String GET_METHOD_NAME_FORMAT = "get%s";
-    public static final String SET_METHOD_NAME_FORMAT = "set%s";
+    static final String GET_METHOD_NAME_FORMAT = "get%s";
+    static final String SET_METHOD_NAME_FORMAT = "set%s";
 
     /**
      * 获得 Java Bean get 方法名

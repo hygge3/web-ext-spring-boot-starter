@@ -7,7 +7,7 @@ import cn.hutool.core.net.NetUtil;
  */
 public class NetUtils extends NetUtil {
 
-    public final static String LOCAL_IPV6 = "0:0:0:0:0:0:0:1";
+    final static String LOCAL_IPV6 = "0:0:0:0:0:0:0:1";
 
     /**
      * 判定是否为内网 IP<br>

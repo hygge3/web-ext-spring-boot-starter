@@ -25,11 +25,11 @@ public class ParamUtils {
     // Validate
 
     /** 必传参数 */
-    private static final String PARAM_PREFIX_MUST = "【必传参数】：";
+    static final String PARAM_PREFIX_MUST = "【必传参数】：";
     /** 可选参数 */
-    private static final String PARAM_PREFIX_CAN = "【可选参数】：";
+    static final String PARAM_PREFIX_CAN = "【可选参数】：";
     /** 收到传参 */
-    private static final String PARAM_PREFIX_RECEIVED = "【收到传参】：";
+    static final String PARAM_PREFIX_RECEIVED = "【收到传参】：";
 
     // RequestParam
 
@@ -218,9 +218,7 @@ public class ParamUtils {
      */
     public static void paramValidate(List<JSONObject> paramList, String[] mustContainKeys, String... canContainKeys) {
         // 1. 校验参数是否为空
-        if (paramList.isEmpty()) {
-            throw new ParamVoidException();
-        }
+        Assert.notEmpty(paramList, ParamVoidException::new);
 
         // 2. 确认参数 key
         for (JSONObject paramJson : paramList) {

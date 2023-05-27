@@ -29,7 +29,7 @@ public class MybatisAutoConfig {
             MessageCollector collector = new ConsoleMessageCollector();
             AuditManager.setMessageCollector(collector);
         }
-        log.info("【初始化配置 - Mybatis】配置项：{}... 已初始化完毕。", MybatisProperties.PREFIX);
+        log.info("【Mybatis-Flex】配置项：{}, 已初始化完毕。", MybatisProperties.PREFIX);
     }
 
 }

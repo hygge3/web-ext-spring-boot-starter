@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(MybatisProperties.PREFIX)
 public class MybatisProperties {
-    static final String PREFIX = Constant.PROJECT_PREFIX + ".mybatis";
+    static final String PREFIX = Constant.CONFIG_PREFIX + ".mybatis";
 
     /**
      * 是否打印 banner

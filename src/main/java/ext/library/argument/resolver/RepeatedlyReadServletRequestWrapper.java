@@ -36,9 +36,7 @@ public class RepeatedlyReadServletRequestWrapper extends HttpServletRequestWrapp
     public ServletInputStream getInputStream() throws IOException {
         // 缓存数据
         final ByteArrayInputStream body = new ByteArrayInputStream(this.body);
-
         return new ServletInputStream() {
-
             @Override
             public boolean isFinished() {
                 return false;
@@ -50,16 +48,13 @@ public class RepeatedlyReadServletRequestWrapper extends HttpServletRequestWrapp
             }
 
             @Override
-            public void setReadListener(ReadListener readListener) {
-
-            }
+            public void setReadListener(ReadListener readListener) {}
 
             @Override
             public int read() throws IOException {
                 // 从缓存的数据中读取数据
                 return body.read();
             }
-
         };
     }
 

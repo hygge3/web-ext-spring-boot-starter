@@ -22,8 +22,8 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class I18nUtils {
 
-    private static MessageSource messageSource;
-    private static ResourceBundleMessageSource messageSourceExt;
+    static MessageSource messageSource;
+    static ResourceBundleMessageSource messageSourceExt;
 
     public I18nUtils(MessageSource messageSource) {
         I18nUtils.messageSource = messageSource;

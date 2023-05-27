@@ -1,10 +1,12 @@
 package ext.library.idempotent;
 
 import cn.hutool.core.util.StrUtil;
+import ext.library.constant.HttpAttribute;
 import ext.library.exception.ParamException;
 import ext.library.exception.ResultException;
 import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;
+import ext.library.util.Assert;
 import ext.library.util.SpringUtils;
 import ext.library.web.view.R;
 import lombok.extern.slf4j.Slf4j;
@@ -49,21 +51,20 @@ public class IdempotentInterceptor implements HandlerInterceptor {
     }
 
     private void checkApiIdempotent(HttpServletRequest request) {
-        String version = request.getHeader(RedisConstant.API_IDEMPOTENT_VERSION_REQUEST_KEY);
+        String version = request.getHeader(HttpAttribute.API_IDEMPOTENT_VERSION);
         if (StrUtil.isBlank(version)) {
             // header 中不存在 version
-            version = request.getParameter(RedisConstant.API_IDEMPOTENT_VERSION_REQUEST_KEY);
-            if (StrUtil.isBlank(version)) {
-                // parameter 中也不存在 version
-                throw new ParamException(StrUtil.format("【幂等性】幂等校验失败，请求中未包含 {} 参数", RedisConstant.API_IDEMPOTENT_VERSION_REQUEST_KEY));
-            }
+            version = request.getParameter(HttpAttribute.API_IDEMPOTENT_VERSION);
+            // parameter 中也不存在 version
+            Assert.notBlank(version, () -> new ParamException(StrUtil.format("【幂等性】幂等校验失败，请求中未包含 {} 参数", HttpAttribute.API_IDEMPOTENT_VERSION)));
         }
 
         Redis redis = SpringUtils.getBean(Redis.class);
         String redisKey = RedisConstant.API_IDEMPOTENT_KEY_PREFIX + version;
+
         if (Objects.equals(Boolean.FALSE, redis.getRedisTemplate().hasKey(redisKey))) {
             String msgPrompt = "请勿重复操作";
-            String dataPrompt = StrUtil.format("【幂等性】幂等校验失败，{} 参数已失效，当前 value: {}", RedisConstant.API_IDEMPOTENT_VERSION_REQUEST_KEY, version);
+            String dataPrompt = StrUtil.format("【幂等性】幂等校验失败，{} 参数已失效，当前 value: {}", HttpAttribute.API_IDEMPOTENT_VERSION, version);
             throw new ResultException(R.errorPrompt(msgPrompt, dataPrompt));
         }
 

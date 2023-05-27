@@ -3,7 +3,7 @@ package ext.library.api.version;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import ext.library.util.StringUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +16,10 @@ import java.util.Objects;
 /**
  * RESTful API 接口版本控制
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 
-    private ApiVersionProperties apiVersionProperties;
+    final ApiVersionProperties apiVersionProperties;
 
     @Override
     protected RequestCondition<?> getCustomTypeCondition(@NonNull Class<?> handlerType) {

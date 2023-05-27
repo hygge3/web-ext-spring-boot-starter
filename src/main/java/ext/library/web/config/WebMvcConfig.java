@@ -21,15 +21,13 @@ import ext.library.argument.resolver.ArrayArgumentResolver;
 import ext.library.argument.resolver.CustomRequestParamMethodArgumentResolver;
 import ext.library.argument.resolver.JavaBeanArgumentResolver;
 import ext.library.constant.FieldNamingStrategyEnum;
-import ext.library.idempotent.ApiIdempotentProperties;
 import ext.library.idempotent.IdempotentInterceptorRegistry;
 import ext.library.util.ClassUtils;
 import ext.library.util.DateUtils;
 import ext.library.util.ListUtils;
-import ext.library.util.SpringUtils;
 import ext.library.web.log.LogInterceptorRegistry;
-import ext.library.web.log.LogProperties;
 import ext.library.web.properties.FastJsonHttpMessageConverterProperties;
+import ext.library.web.properties.HttpMessageConverterProperties;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,15 +71,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void extendMessageConverters(@NonNull List<HttpMessageConverter<?>> converters) {
+        String converter = "";
         if (fastJsonProperties.isEnabled()) {
+            converter = "Fastjson";
             // 使用 FastJson 优先于默认的 Jackson 做 json 解析
             // https://github.com/alibaba/fastjson2/blob/main/docs/spring_support_cn.md
             fastJsonHttpMessageConverterConfig(converters);
         } else if (jacksonProperties.isEnabled()) {
+            converter = "Jackson";
             // 启用 ext-library 对 Jackson 进行增强配置
             MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = ListUtils.get(converters, MappingJackson2HttpMessageConverter.class);
             mappingJackson2HttpMessageConverterConfig(Objects.requireNonNull(mappingJackson2HttpMessageConverter));
         }
+        log.info("【消息转换器】配置项：{}，JSON 解析器:{}，执行初始化...", HttpMessageConverterProperties.PREFIX, converter);
     }
 
     private void fastJsonHttpMessageConverterConfig(List<HttpMessageConverter<?>> converters) {
@@ -127,8 +129,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         }
         config.setWriterFilters(ArrayUtil.toArray(filters, Filter.class));
         converter.setFastJsonConfig(config);
-        converters.add(0, converter);
-        log.info("【初始化配置 - FastJson】默认配置为 false，当前环境为 true：使用 FastJson 优先于默认的 Jackson 做 json 解析 ... 已初始化完毕。");
+        converters.add(converter);
     }
 
     private void mappingJackson2HttpMessageConverterConfig(MappingJackson2HttpMessageConverter converter) {
@@ -216,15 +217,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 添加日志拦截器
         if (Objects.nonNull(logInterceptorRegistry)) {
             logInterceptorRegistry.registry(registry);
-            log.info("【初始化配置 - log】默认配置为 true，当前环境为 {}：默认任何情况下都开启日志功能... 已初始化完毕。", SpringUtils
-                    .getBean(LogProperties.class).isEnabled());
         }
         // 添加幂等性拦截器
         if (Objects.nonNull(idempotentInterceptorRegistry)) {
             idempotentInterceptorRegistry.registry(registry);
-            log.info("【初始化配置 - 幂等】默认配置为 false，当前环境为 {}：默认不开启幂等校验... 已初始化完毕。", SpringUtils
-                    .getBean(ApiIdempotentProperties.class).isEnabled());
-
         }
     }
 
@@ -239,8 +235,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjar/**").addResourceLocations("classpath:/META-INF/resources/webjar/");
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/");
+        log.info("【Knife4j】添加静态资源映射路径...");
     }
 
 }

@@ -22,12 +22,11 @@ public class WebMvcRegistrationsConfig implements WebMvcRegistrations {
 
     @Override
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-        if (!apiVersionProperties.isEnabled()) {
-            return WebMvcRegistrations.super.getRequestMappingHandlerMapping();
+        if (apiVersionProperties.isEnabled()) {
+            log.info("【RESTful API 接口版本控制】配置项：{}。执行初始化 ...", ApiVersionProperties.PREFIX);
+            return new ApiVersionRequestMappingHandlerMapping(apiVersionProperties);
         }
-
-        log.info("【初始化配置 - 接口版本控制】默认配置为 false，当前环境为 true：RESTful API 接口版本控制，执行初始化 ...");
-        return new ApiVersionRequestMappingHandlerMapping(apiVersionProperties);
+        return WebMvcRegistrations.super.getRequestMappingHandlerMapping();
     }
 
 }

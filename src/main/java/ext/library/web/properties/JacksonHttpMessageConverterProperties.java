@@ -14,7 +14,7 @@ public class JacksonHttpMessageConverterProperties {
     /**
      * Prefix of {@link JacksonHttpMessageConverterProperties}.
      */
-    public static final String PREFIX = WebProperties.PREFIX + ".http-message-converter.jackson";
+    public static final String PREFIX = HttpMessageConverterProperties.PREFIX + ".jackson";
 
     /**
      * 启用 ext-library 对 Jackson 进行增强配置

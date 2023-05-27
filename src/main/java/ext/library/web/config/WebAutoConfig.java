@@ -1,9 +1,13 @@
 package ext.library.web.config;
 
+import ext.library.api.version.ApiVersionProperties;
 import ext.library.argument.resolver.CustomArgumentResolversConfig;
 import ext.library.argument.resolver.RepeatedlyReadServletRequestFilter;
 import ext.library.thread.pool.AsyncProperties;
 import ext.library.thread.pool.ContextDecorator;
+import ext.library.web.exception.ExceptionHandlerProperties;
+import ext.library.web.log.LogProperties;
+import ext.library.web.properties.CookieProperties;
 import ext.library.web.properties.CorsProperties;
 import ext.library.web.properties.FastJsonHttpMessageConverterProperties;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
@@ -33,7 +37,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @Import({WebMvcConfig.class, WebMvcRegistrationsConfig.class, CustomArgumentResolversConfig.class, WebEnv.class})
-@EnableConfigurationProperties({WebProperties.class, JacksonHttpMessageConverterProperties.class, FastJsonHttpMessageConverterProperties.class})
+@EnableConfigurationProperties({ApiVersionProperties.class, ExceptionHandlerProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class, FastJsonHttpMessageConverterProperties.class})
 public class WebAutoConfig {
 
     final WebProperties webProperties;
@@ -42,7 +46,7 @@ public class WebAutoConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "ext.cors", name = "allow", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = CorsProperties.PREFIX, name = "allow", havingValue = "true", matchIfMissing = true)
     public CorsFilter corsFilter(CorsProperties corsProperties) {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
@@ -63,7 +67,7 @@ public class WebAutoConfig {
 
         source.registerCorsConfiguration("/**", config);
 
-        log.info("【初始化配置 - 跨域】默认配置为 true，当前环境为 true：默认任何情况下都允许跨域访问 ... 已初始化完毕。");
+        log.info("【跨域】配置项：{}，初始化任何情况下都允许跨域访问...", CorsProperties.PREFIX);
         return new CorsFilter(source);
     }
 
@@ -79,7 +83,7 @@ public class WebAutoConfig {
         // 设置比常规过滤器更高的优先级，防止输入流被更早读取
         filterRegistrationBean.setOrder(webProperties.getRepeatedlyReadServletRequestFilterOrder());
         filterRegistrationBean.setFilter(new RepeatedlyReadServletRequestFilter());
-        log.info("【初始化配置 - Body 反复读取】默认配置为 true，当前环境为 true：默认启用输入流可反复读取的 HttpServletRequest ... 已初始化完毕。");
+        log.info("【Body 反复读取】配置项：{}，初始化启用输入流可反复读取的 HttpServletRequest...", WebProperties.PREFIX + ".enabled-repeatedly-read-servlet-request");
         return filterRegistrationBean;
     }
 

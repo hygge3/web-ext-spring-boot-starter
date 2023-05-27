@@ -1,7 +1,7 @@
 package ext.library.web.log;
 
 import com.alibaba.fastjson2.JSONWriter;
-import ext.library.constant.HttpHeader;
+import ext.library.constant.HttpAttribute;
 import ext.library.convert.Convert;
 import ext.library.util.IdUtils;
 import ext.library.util.ServletUtils;
@@ -33,13 +33,13 @@ public class LogInterceptor implements HandlerInterceptor {
         // 请求时间
         if (logProperties.isRequest()) {
             long requestTime = System.currentTimeMillis();
-            request.setAttribute(HttpHeader.REQUEST_TIME, requestTime);
+            request.setAttribute(HttpAttribute.REQUEST_TIME, requestTime);
         }
         // traceId 生成并放置请求头和 MDC
         if (logProperties.isTrace()) {
             String traceId = IdUtils.objectId();
-            response.setHeader(HttpHeader.TRACE_ID, traceId);
-            MDC.put(HttpHeader.TRACE_ID, traceId);
+            response.setHeader(HttpAttribute.TRACE_ID, traceId);
+            MDC.put(HttpAttribute.TRACE_ID, traceId);
         }
         return true;
     }
@@ -49,7 +49,7 @@ public class LogInterceptor implements HandlerInterceptor {
         LogProperties logProperties = SpringUtils.getBean(LogProperties.class);
         // 打印请求日志
         if (logProperties.isRequest()) {
-            long interval = System.currentTimeMillis() - Convert.toLong(request.getAttribute(HttpHeader.REQUEST_TIME));
+            long interval = System.currentTimeMillis() - Convert.toLong(request.getAttribute(HttpAttribute.REQUEST_TIME));
             StringJoiner sj = new StringJoiner(" ");
             sj.add(ServletUtils.getClientIP(request)).add(String.valueOf(interval)).add("ms").add(request.getMethod());
             if (ServletUtils.isGetMethod(request)) {

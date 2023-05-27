@@ -15,7 +15,7 @@ public class RedisProperties {
     /**
      * Prefix of {@link RedisProperties}.
      */
-    public static final String PREFIX = Constant.PROJECT_PREFIX + ".redis";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".redis";
 
     /**
      * <p>Redis 存储对象序列/反序列化器

@@ -151,7 +151,7 @@ public class Result<T> implements Serializable {
             return null;
         }
 
-        return JSONObject.toJSONString(data);
+        return Convert.toJSONString(data);
     }
 
     public Date dataToDate() {
@@ -167,7 +167,7 @@ public class Result<T> implements Serializable {
 
     public String castToJSONString() {
         this.setMsg(I18nUtils.getExt(this.getMsg()));
-        return JSONObject.toJSONString(this);
+        return Convert.toJSONString(this);
     }
 
     public JSONObject castToJSONObject() {

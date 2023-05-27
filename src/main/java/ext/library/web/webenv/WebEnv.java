@@ -1,6 +1,7 @@
 package ext.library.web.webenv;
 
 import com.alibaba.fastjson2.JSONObject;
+import ext.library.convert.Convert;
 import ext.library.util.ParamUtils;
 import ext.library.util.ServletUtils;
 import ext.library.web.view.Result;
@@ -30,7 +31,7 @@ public class WebEnv {
         PrintWriter writer;
         try {
             writer = response.getWriter();
-            writer.print(JSONObject.toJSONString(result));
+            writer.print(Convert.toJSONString(result));
             writer.close();
             response.flushBuffer();
         } catch (IOException e) {

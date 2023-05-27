@@ -57,17 +57,17 @@ import java.util.Objects;
  */
 public class ServletUtils {
 
-    public static final String METHOD_DELETE = "DELETE";
-    public static final String METHOD_HEAD = "HEAD";
-    public static final String METHOD_GET = "GET";
-    public static final String METHOD_OPTIONS = "OPTIONS";
-    public static final String METHOD_POST = "POST";
-    public static final String METHOD_PUT = "PUT";
-    public static final String METHOD_TRACE = "TRACE";
-    public static final String HTTP_TCP_NAME = "http://";
-    public static final String HTTPS_TCP_NAME = "https://";
-    public static final String BEARER_TYPE = "Bearer ";
-    public static final String ACCESS_TOKEN = "access_token";
+    static final String METHOD_DELETE = "DELETE";
+    static final String METHOD_HEAD = "HEAD";
+    static final String METHOD_GET = "GET";
+    static final String METHOD_OPTIONS = "OPTIONS";
+    static final String METHOD_POST = "POST";
+    static final String METHOD_PUT = "PUT";
+    static final String METHOD_TRACE = "TRACE";
+    static final String HTTP_TCP_NAME = "http://";
+    static final String HTTPS_TCP_NAME = "https://";
+    static final String BEARER_TYPE = "Bearer ";
+    static final String ACCESS_TOKEN = "access_token";
 
 
     /**

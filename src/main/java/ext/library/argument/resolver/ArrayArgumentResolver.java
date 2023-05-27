@@ -258,7 +258,6 @@ public class ArrayArgumentResolver extends AbstractNamedValueMethodArgumentResol
 
     @Nullable
     protected String formatUriValue(@Nullable ConversionService cs, @Nullable TypeDescriptor sourceType, @Nullable Object value) {
-
         if (value == null) {
             return null;
         } else if (value instanceof String) {

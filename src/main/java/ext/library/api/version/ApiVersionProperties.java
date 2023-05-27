@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Data
 @ConfigurationProperties(ApiVersionProperties.PREFIX)
 public class ApiVersionProperties {
-    static final String PREFIX = Constant.PROJECT_PREFIX + ".api-version";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".api-version";
 
     /**
      * 是否启用 <code style="color:red">RESTful API 接口版本控制</code>

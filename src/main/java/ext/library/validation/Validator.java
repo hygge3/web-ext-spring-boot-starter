@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
+import ext.library.util.Assert;
 import ext.library.util.I18nUtils;
 import ext.library.util.SpringUtils;
 import ext.library.util.StringUtils;
@@ -138,10 +139,7 @@ public class Validator {
     public Validator max(Number max, String paramName) {
         BigDecimal bigNum1 = NumberUtil.toBigDecimal((Number) param);
         BigDecimal bigNum2 = NumberUtil.toBigDecimal(max);
-
-        if (!NumberUtil.isLessOrEqual(bigNum1, bigNum2)) {
-            throw new ValidateException(StrUtil.format(MAX_HINT_MSG, paramName, max));
-        }
+        Assert.isTrue(NumberUtil.isLessOrEqual(bigNum1, bigNum2), () -> new ValidateException(StrUtil.format(MAX_HINT_MSG, paramName, max)));
         return this;
     }
 
@@ -155,10 +153,7 @@ public class Validator {
     public Validator min(Number min, String paramName) {
         BigDecimal bigNum1 = NumberUtil.toBigDecimal((Number) param);
         BigDecimal bigNum2 = NumberUtil.toBigDecimal(min);
-
-        if (!NumberUtil.isGreaterOrEqual(bigNum1, bigNum2)) {
-            throw new ValidateException(StrUtil.format(MIN_HINT_MSG, paramName, min));
-        }
+        Assert.isTrue(NumberUtil.isGreaterOrEqual(bigNum1, bigNum2), () -> new ValidateException(StrUtil.format(MIN_HINT_MSG, paramName, min)));
         return this;
     }
 
@@ -172,10 +167,7 @@ public class Validator {
      */
     public Validator length(int min, int max, String paramName) {
         int length = ObjectUtil.length(param);
-        if (!(length >= min && length <= max)) {
-            throw new ValidateException(StrUtil.format(LENGTH_HINT_MSG, paramName, min, max));
-        }
-
+        Assert.isTrue(length >= min && length <= max, () -> new ValidateException(StrUtil.format(LENGTH_HINT_MSG, paramName, min, max)));
         return this;
     }
 
@@ -358,9 +350,7 @@ public class Validator {
             isValid = false;
         }
 
-        if (!isValid) {
-            throw new ValidateException(USERNAME_HINT_MSG, paramName);
-        }
+        Assert.isTrue(isValid, () -> new ValidateException(USERNAME_HINT_MSG, paramName));
 
         return this;
     }

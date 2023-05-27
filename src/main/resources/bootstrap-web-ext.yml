@@ -10,9 +10,6 @@ spring:
     # 解决传日期参数报 400 转换错误问题
     format:
       date: yyyy-MM-dd HH:mm:ss
-    hiddenmethod:
-      filter:
-        enabled: true
   jackson:
     # 设置 json 日期序列化输出格式相对北京时间与格林尼治时间有八个小时的时差，设置偏移量
     time-zone: GMT+8

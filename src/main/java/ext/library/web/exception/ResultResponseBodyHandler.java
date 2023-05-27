@@ -1,6 +1,6 @@
 package ext.library.web.exception;
 
-import ext.library.constant.HttpHeader;
+import ext.library.constant.HttpAttribute;
 import ext.library.util.I18nUtils;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
@@ -49,7 +49,7 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
         result.setMsg(I18nUtils.getExt(result.getMsg()));
 
         // 3. 设置链路 ID
-        result.setTraceId(MDC.get(HttpHeader.TRACE_ID));
+        result.setTraceId(MDC.get(HttpAttribute.TRACE_ID));
 
         // 4. 响应结果
         return result;

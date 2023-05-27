@@ -14,7 +14,7 @@ import java.util.List;
 @ConfigurationProperties(CorsProperties.PREFIX)
 public class CorsProperties {
 
-    static final String PREFIX = Constant.PROJECT_PREFIX + ".cors";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".cors";
 
 
     /**

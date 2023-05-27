@@ -4,7 +4,6 @@ import ext.library.idempotent.ApiIdempotentController;
 import ext.library.redis.client.Redis;
 import ext.library.redis.config.properties.RedisProperties;
 import ext.library.redis.constant.RedisSerializerEnum;
-import ext.library.util.ClassUtils;
 import ext.library.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,8 +61,7 @@ public class RedisAutoConfig {
     @Primary
     @ConditionalOnBean({RedisTemplate.class, StringRedisTemplate.class})
     public Redis redis(@Qualifier("extRedisTemplate") RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate) {
-        log.info("【初始化配置 - Redis】配置项：{}，默认使用 {} 进行Redis存储对象序列/反序列化。Bean：Redis ... 已初始化完毕。", RedisProperties.PREFIX, ClassUtils
-                .getClassName(RedisSerializerEnum.class, false).concat(".JDK"));
+        log.info("【Redis】配置项：{}，Bean：Redis。执行初始化 ...", RedisProperties.PREFIX);
         return new Redis(redisTemplate, stringRedisTemplate);
     }
 

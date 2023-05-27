@@ -2,18 +2,20 @@ package ext.library.auth.client;
 
 import com.alibaba.fastjson2.JSONObject;
 import ext.library.auth.config.properties.AuthProperties;
+import ext.library.convert.Convert;
 import ext.library.exception.LoginException;
 import ext.library.exception.ResultException;
 import ext.library.redis.client.Redis;
+import ext.library.redis.constant.RedisConstant;
+import ext.library.util.Assert;
 import ext.library.util.IdUtils;
 import ext.library.util.ServletUtils;
 import ext.library.util.StringUtils;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import ext.library.web.view.ResultPrompt;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,16 +25,16 @@ import java.util.UUID;
  * <b>User 客户端</b>
  * <p>登录登出、第三方登录、token 自动解析获取用户信息、分布式验证码
  */
-@NoArgsConstructor
+
 public class UserClient {
-    @Autowired
-    protected Redis redis;
-    @Autowired
-    protected HttpServletRequest request;
-    @Autowired
-    protected AuthProperties authProperties;
-    @Autowired
-    private HttpServletResponse response;
+    @Resource
+    Redis redis;
+    @Resource
+    HttpServletRequest request;
+    @Resource
+    AuthProperties authProperties;
+    @Resource
+    HttpServletResponse response;
 
     /**
      * 获得请求 token
@@ -50,28 +52,22 @@ public class UserClient {
 
     /**
      * 获得用户 ID
-     * <p><code style="color:red"><b>注意：若 userId == null，请先确认 auth-service 模块的 login(Object) 方法是否存入 {@linkplain AuthProperties#getUserKey()} 字段，此处可以传 JSON 与 POJO 对象</b></code>
+     * <p><code style="color:red"><b>注意：若 userId == null，请先确认 login(Object) 方法是否存入 {@linkplain AuthProperties#getUserKey()} 字段，此处可以传 JSON 与 POJO 对象</b></code>
      *
      * @return userId
      */
     public Long getUserId() {
-        try {
-            // 1. 获得请求 token
-            String token = getRequestToken();
+        // 1. 获得请求 token
+        String token = getRequestToken();
 
-            // 2. 确认 token
-            if (StringUtils.isEmpty(token)) {
-                throw new LoginException("token is null");
-            }
+        // 2. 确认 token
+        Assert.notBlank(token, () -> new LoginException("token is null"));
 
-            // 3. 查询 Redis 中 token 的值
-            String tokenValue = redis.get(authProperties.getRedisTokenPrefix() + token);
+        // 3. 查询 Redis 中 token 的值
+        String tokenValue = redis.get(RedisConstant.AUTH_KEY_PREFIX + token);
 
-            // 4. 返回 userId
-            return JSONObject.parseObject(tokenValue).getLong(authProperties.getUserKey());
-        } catch (Exception e) {
-            throw new LoginException(e.getMessage());
-        }
+        // 4. 返回 userId
+        return Convert.toJSONObject(tokenValue).getLong(authProperties.getUserKey());
     }
 
     /**
@@ -82,27 +78,19 @@ public class UserClient {
      * @return POJO 对象
      */
     public <T> T getUser(Class<T> clazz) {
-        try {
-            // 1. 获得请求 token
-            String token = getRequestToken();
+        // 1. 获得请求 token
+        String token = getRequestToken();
 
-            // 2. 确认 token
-            if (StringUtils.isEmpty(token)) {
-                throw new LoginException("token == null");
-            }
+        // 2. 确认 token
+        Assert.notBlank(token, () -> new LoginException("token is null"));
 
-            // 3. 查询 Redis 中 token 的值
-            String tokenValue = redis.get(authProperties.getRedisTokenPrefix() + token);
+        // 3. 查询 Redis 中 token 的值
+        String tokenValue = redis.get(RedisConstant.AUTH_KEY_PREFIX + token);
 
-            // 4. 返回 POJO
-            T t = JSONObject.parseObject(tokenValue, clazz);
-            if (t == null) {
-                throw new LoginException(null);
-            }
-            return t;
-        } catch (Exception e) {
-            throw new LoginException(e.getMessage());
-        }
+        // 4. 返回 POJO
+        T t = Convert.convert(tokenValue, clazz);
+        Assert.notNull(t, () -> new LoginException("user is null"));
+        return t;
     }
 
     /**
@@ -115,10 +103,7 @@ public class UserClient {
     public void captchaValidate(String captcha) {
         String captchaRedisKey = String.format(authProperties.getRedisCaptchaPrefix(), captcha);
         String randCaptcha = redis.get(captchaRedisKey);
-        if (StringUtils.isEmpty(randCaptcha) || !randCaptcha.equalsIgnoreCase(captcha)) {
-            throw new ResultException(R.errorPrompt(ResultPrompt.CAPTCHA_ERROR));
-        }
-
+        Assert.isFalse(StringUtils.isEmpty(randCaptcha) || !randCaptcha.equalsIgnoreCase(captcha), () -> new ResultException(R.errorPrompt(ResultPrompt.CAPTCHA_ERROR)));
         redis.del(captchaRedisKey);
     }
 
@@ -152,7 +137,7 @@ public class UserClient {
         // 2. 注销会话
         String redisTokenKey;
         if (StringUtils.isNotEmpty(token)) {
-            redisTokenKey = authProperties.getRedisTokenPrefix() + token;
+            redisTokenKey = RedisConstant.AUTH_KEY_PREFIX + token;
             String tokenValue = redis.get(redisTokenKey);
             if (StringUtils.isNotEmpty(tokenValue)) {
                 redis.del(redisTokenKey);
@@ -161,7 +146,7 @@ public class UserClient {
 
         // 3. 生成新的 token
         token = UUID.randomUUID().toString();
-        redisTokenKey = authProperties.getRedisTokenPrefix() + token;
+        redisTokenKey = RedisConstant.AUTH_KEY_PREFIX + token;
 
         // 4. 登录成功 - 设置 token 至 Redis
         Integer tokenTimeout = authProperties.getTokenTimeout();
@@ -194,7 +179,7 @@ public class UserClient {
         }
 
         // 3. 清除 Redis-token
-        redis.del(authProperties.getRedisTokenPrefix() + token);
+        redis.del(RedisConstant.AUTH_KEY_PREFIX + token);
 
         // 4. 清除 Cookie-token
         ServletUtils.addCookie(response, authProperties.getCookieTokenKey(), null, 0);

@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(LogProperties.PREFIX)
 public class LogProperties {
-    public static final String PREFIX = Constant.PROJECT_PREFIX + ".log";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".log";
 
     /** 是否启用辅助日志 */
     boolean enabled = true;

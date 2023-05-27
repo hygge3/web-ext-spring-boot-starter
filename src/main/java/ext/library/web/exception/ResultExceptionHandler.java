@@ -8,7 +8,6 @@ import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
 import ext.library.exception.ApiVersionDeprecatedException;
 import ext.library.exception.AttackException;
-import ext.library.exception.AuthorizeException;
 import ext.library.exception.ClientFallbackException;
 import ext.library.exception.DbException;
 import ext.library.exception.ForbiddenException;
@@ -19,7 +18,6 @@ import ext.library.exception.ParamVoidException;
 import ext.library.exception.ResultException;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.ServletUtils;
-import ext.library.util.SpringUtils;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -231,19 +228,6 @@ public class ResultExceptionHandler {
     }
 
     // WEB 异常拦截
-
-    /**
-     * 拦截登录异常（Admin）-301
-     *
-     * @param e 认证异常
-     * @throws IOException 重定向失败
-     */
-    @ExceptionHandler(AuthorizeException.class)
-    public void authorizeExceptionHandler(AuthorizeException e) throws IOException {
-        ExceptionUtils.printException(e);
-        String location = SpringUtils.getBean(ExceptionHandlerProperties.class).getLocation();
-        Objects.requireNonNull(ServletUtils.getResponse()).sendRedirect(location);
-    }
 
     /**
      * 拦截所有未处理异常 -500

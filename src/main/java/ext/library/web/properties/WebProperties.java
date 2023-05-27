@@ -15,7 +15,7 @@ public class WebProperties {
     /**
      * Prefix of {@link WebProperties}.
      */
-    public static final String PREFIX = Constant.PROJECT_PREFIX + ".web";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".web";
 
     /**
      * 启用输入流可反复读取的 HttpServletRequest

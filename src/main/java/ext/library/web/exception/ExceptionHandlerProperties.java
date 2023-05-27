@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(ExceptionHandlerProperties.PREFIX)
 public class ExceptionHandlerProperties {
-    public static final String PREFIX = Constant.PROJECT_PREFIX + ".exception-handler";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".exception-handler";
 
     /**
      * 是否启用 <code style="color:red">全局统一异常处理</code> 自动配置

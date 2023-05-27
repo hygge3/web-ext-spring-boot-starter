@@ -34,7 +34,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
     @PostConstruct
     private void init() {
-        log.info("【初始化配置 - 异步线程池】异步线程池配置已加载，待使用时初始化 ...");
+        log.info("【异步线程池】配置项：{}。异步线程池配置已加载，待使用时初始化 ...", AsyncProperties.PREFIX);
     }
 
     /**
@@ -82,7 +82,7 @@ public class AsyncConfig implements AsyncConfigurer {
         // 异步线程上下文装饰器
         executor.setTaskDecorator(taskDecorator);
         executor.initialize();
-        log.info("【初始化配置 - 异步线程池】共用父线程上下文环境，异步执行任务时不丢失 token ... 已初始化完毕。");
+        log.info("【异步线程池】共用父线程上下文环境，异步执行任务时不丢失 token ... 已初始化完毕。");
         return executor;
     }
 

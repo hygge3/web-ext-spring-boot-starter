@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * <h2>子线程上下文装饰器</h2>
- * <p><a href="https://stackoverflow.com/questions/23732089/how-to-enable-request-scope-in-async-task-executor">...</a></p>
+ * <p><a href="https://stackoverflow.com/questions/23732089/how-to-enable-request-scope-in-async-task-executor">How to enable request scope in async task executor</a></p>
  * <p>传递：RequestAttributes and MDC and SecurityContext</p>
  */
 public class ContextDecorator extends AbstractContextDecorator {

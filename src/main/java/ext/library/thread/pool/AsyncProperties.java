@@ -19,12 +19,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(AsyncProperties.PREFIX)
 public class AsyncProperties {
-
-    /**
-     * ServletAsyncContext 阻塞超时时长 setAttribute 时所使用的固定变量名
-     */
-    public static final String SERVLET_ASYNC_CONTEXT_TIMEOUT_MILLIS = "servletAsyncContextTimeoutMillis";
-    static final String PREFIX = Constant.PROJECT_PREFIX + ".thread-pool.async";
+    public static final String PREFIX = Constant.CONFIG_PREFIX + ".thread-pool.async";
     /**
      * 是否启用 <code style="color:red">异步线程池</code> 自动配置
      * <p>

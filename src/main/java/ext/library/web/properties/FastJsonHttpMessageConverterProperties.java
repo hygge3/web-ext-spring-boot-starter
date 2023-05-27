@@ -15,13 +15,13 @@ public class FastJsonHttpMessageConverterProperties {
     /**
      * Prefix of {@link FastJsonHttpMessageConverterProperties}.
      */
-    static final String PREFIX = WebProperties.PREFIX + ".http-message-converter.fastjson";
+    static final String PREFIX = HttpMessageConverterProperties.PREFIX + ".fastjson";
 
     /**
      * 启用 FastJson 优先于默认的 Jackson 做 json 解析
      * <p>默认：false
      */
-    boolean enabled = false;
+    boolean enabled = true;
 
     /**
      * 字段命名策略

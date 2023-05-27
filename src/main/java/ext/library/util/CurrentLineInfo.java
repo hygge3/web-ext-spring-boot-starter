@@ -5,7 +5,7 @@ package ext.library.util;
  */
 public class CurrentLineInfo {
 
-    private static final int ORIGIN_STACK_INDEX = 2;
+    static final int ORIGIN_STACK_INDEX = 2;
 
     public static String getFileName() {
         return Thread.currentThread().getStackTrace()[ORIGIN_STACK_INDEX].getFileName();

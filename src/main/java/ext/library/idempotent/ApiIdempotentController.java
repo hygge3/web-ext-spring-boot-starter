@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ConditionalOnProperty(prefix = ApiIdempotentProperties.PREFIX, name = "enabled", havingValue = "true")
 public class ApiIdempotentController {
 
-    final ApiIdempotentProperties apiIdempotentProperties;
     final Redis redis;
+    final ApiIdempotentProperties apiIdempotentProperties;
 
     /**
      * 获得幂等版本号

@@ -1,6 +1,7 @@
 package ext.library.thread.pool;
 
 import cn.hutool.core.convert.Convert;
+import ext.library.constant.HttpAttribute;
 import lombok.AllArgsConstructor;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -32,7 +33,7 @@ public abstract class AbstractContextDecorator implements TaskDecorator {
 
         HttpServletRequest request = context.getRequest();
         request.startAsync();
-        Object servletAsyncContextTimeoutMillis = request.getAttribute(AsyncProperties.SERVLET_ASYNC_CONTEXT_TIMEOUT_MILLIS);
+        Object servletAsyncContextTimeoutMillis = request.getAttribute(HttpAttribute.SERVLET_ASYNC_CONTEXT_TIMEOUT_MILLIS);
         if (servletAsyncContextTimeoutMillis == null) {
             servletAsyncContextTimeoutMillis = asyncProperties.getServletAsyncContextTimeoutMillis();
         }

@@ -23,7 +23,7 @@ public class AuthAutoConfig {
     @Bean
     @ConditionalOnBean(Redis.class)
     public UserClient user() {
-        log.info("【初始化配置 - Auth-User 客户端】配置项：" + AuthProperties.PREFIX + "。Bean：User ... 已初始化完毕。");
+        log.info("【Auth 客户端】配置项：{}。Bean：UserClient，执行初始化 ...", AuthProperties.PREFIX);
         return new UserClient();
     }
 

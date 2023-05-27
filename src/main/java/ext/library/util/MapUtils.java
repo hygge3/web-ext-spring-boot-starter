@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 public class MapUtils extends MapUtil {
 
     /** 不可变的空 Json 常量 */
-    public final static JSONObject FINAL_EMPTY_JSON = new JSONObject();
+    final static JSONObject FINAL_EMPTY_JSON = new JSONObject();
 
     /**
      * 判断 Map 数据结构 key 的一致性

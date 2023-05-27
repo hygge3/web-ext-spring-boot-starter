@@ -59,21 +59,6 @@ public class Convert extends cn.hutool.core.convert.Convert {
     /**
      * 转换值为指定类型
      *
-     * @param <T>   目标类型
-     * @param type  类型
-     * @param value 值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     * @deprecated 请使用 {@linkplain #convert(Object, Class)}
-     */
-    @Deprecated
-    public static <T> T convert(Class<T> type, Object value) throws ConvertException {
-        return cn.hutool.core.convert.Convert.convert(type, value);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
      * @param <T>       目标类型
      * @param reference 类型参考，用于持有转换后的泛型类型
      * @param value     值
@@ -245,7 +230,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
         // 采用 fastjson 转换
         try {
             if (value instanceof String) {
-                return JSONObject.parseObject((String) value, clazz);
+                return JSON.parseObject((String) value, clazz);
             }
 
             return TypeUtils.cast(toJSONObject(value), clazz);

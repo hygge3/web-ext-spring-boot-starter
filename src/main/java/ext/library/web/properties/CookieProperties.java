@@ -13,7 +13,7 @@ import org.springframework.boot.web.server.Cookie;
 @ConfigurationProperties(CookieProperties.PREFIX)
 public class CookieProperties {
 
-    static final String PREFIX = Constant.PROJECT_PREFIX + ".cookie";
+    static final String PREFIX = Constant.CONFIG_PREFIX + ".cookie";
 
     /**
      * 指定哪些主机可以接受 Cookie。如果不指定，该属性默认为同一 host 设置 cookie，不包含子域名
