@@ -57,7 +57,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Import({IdempotentInterceptorRegistry.class, LogInterceptorRegistry.class})
 public class WebMvcConfig implements WebMvcConfigurer {
-
     final FastJsonHttpMessageConverterProperties fastJsonProperties;
     final JacksonHttpMessageConverterProperties jacksonProperties;
     final IdempotentInterceptorRegistry idempotentInterceptorRegistry;
