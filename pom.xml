@@ -22,7 +22,7 @@
         <!-- dependencies.version -->
         <hutool.version>5.8.19</hutool.version>
         <fastjson2.version>2.0.33</fastjson2.version>
-        <mybatis-flex.version>1.3.3</mybatis-flex.version>
+        <mybatis-flex.version>1.3.4</mybatis-flex.version>
         <mybatis-spring.version>3.0.2</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
         <!-- plugins.version -->
@@ -114,6 +114,13 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>

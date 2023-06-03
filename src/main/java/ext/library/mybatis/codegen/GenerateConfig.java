@@ -28,10 +28,14 @@ public class GenerateConfig {
     Set<String> largeColumns;
     // 是否生成 mapper 类
     boolean mapperGenerateEnable = true;
+    /** 是否生成 mapper xml */
+    boolean mapperXmlGenerateEnable = false;
     // 是否生成 service 类
     boolean serviceGenerateEnable = true;
     // 是否生成 serviceImpl 类
     boolean serviceImplGenerateEnable = true;
+    /** 服务缓存启用 */
+    boolean serviceCacheEnable = false;
     // 是否生成 controller 类
     boolean controllerGenerateEnable = true;
     // 生成那些表，白名单
