@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ext.library</groupId>
@@ -22,7 +22,7 @@
         <!-- dependencies.version -->
         <hutool.version>5.8.20</hutool.version>
         <fastjson2.version>2.0.34</fastjson2.version>
-        <mybatis-flex.version>1.4.0</mybatis-flex.version>
+        <mybatis-flex.version>1.4.4</mybatis-flex.version>
         <mybatis-spring.version>3.0.2</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
         <!-- plugins.version -->
