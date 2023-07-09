@@ -28,22 +28,34 @@ public class ResultPrompt {
 
     //---------------------异常提示预定义---------------------
 
-    /** 超出最大 limit 限制 */
+    /**
+     * 超出最大 limit 限制
+     */
     public static final String MAX_LIMIT = "超出最大 limit 限制";
 
-    /** 分布式锁 */
+    /**
+     * 分布式锁
+     */
     public static final String DISTRIBUTED_LOCK = "分布式锁...";
 
-    /** 多行插入错误 */
+    /**
+     * 多行插入错误
+     */
     public static final String INSERT_BATCH_ERROR = "执行多行插入命令失败，可能原因是：数据结构异常或无 ID 主键。请立即检查数据的一致性、唯一性。";
 
-    /** 单行删除错误 */
+    /**
+     * 单行删除错误
+     */
     public static final String DELETE_ERROR = "执行单行删除命令失败，可能原因是：数据结构异常或无 ID 主键。请立即检查数据的一致性、唯一性。";
 
-    /** 批次删除错误 */
+    /**
+     * 批次删除错误
+     */
     public static final String DELETE_BATCH_ERROR = "执行批次删除命令失败，可能原因是：数据结构异常或无 ID 主键。请立即检查数据的一致性、唯一性。";
 
-    /** 批次更新错误 */
+    /**
+     * 批次更新错误
+     */
     public static final String UPDATE_BATCH_ERROR = "执行批次更新命令失败，可能原因是：数据结构异常或无 ID 主键。请立即检查数据的一致性、唯一性。";
 
     //---------------------枚举提示引用预定义---------------------

@@ -35,7 +35,7 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
     public Result<?> beforeBodyWrite(@Nullable Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         // 1. 处理参数
         if (body == null) {
-            return null;
+            return R.success();
         }
         Result<?> result;
         if (body instanceof Result<?>) {
@@ -43,7 +43,6 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
         } else {
             result = R.success(body);
         }
-
 
         // 2. 设置 i18n msg
         result.setMsg(I18nUtils.getExt(result.getMsg()));

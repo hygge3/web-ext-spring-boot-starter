@@ -1,4 +1,3 @@
-ext.library.argument.resolver.CustomArgumentResolversConfig
 ext.library.auth.config.AuthAutoConfig
 ext.library.config.BaseAutoConfig
 ext.library.mybatis.config.MybatisAutoConfig
@@ -8,4 +7,4 @@ ext.library.web.config.ResultErrorAutoConfig
 ext.library.web.config.WebAutoConfig
 ext.library.web.config.WebMvcConfig
 ext.library.web.config.WebMvcRegistrationsConfig
-ext.library.web.datetime.DateTimeFormatConfig
+ext.library.web.config.DateTimeFormatConfig

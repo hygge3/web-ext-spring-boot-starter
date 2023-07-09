@@ -12,12 +12,28 @@ public class ValidationGroups {
 
     // CRUD（create, read, update, delete）
 
-    public interface Create extends Default {}
+    /**
+     * 创建
+     */
+    public interface Create extends Default {
+    }
 
-    public interface Read extends Default {}
+    /**
+     * 读
+     */
+    public interface Read extends Default {
+    }
 
-    public interface Update extends Default {}
+    /**
+     * 更新
+     */
+    public interface Update extends Default {
+    }
 
-    public interface Delete extends Default {}
+    /**
+     * 删除
+     */
+    public interface Delete extends Default {
+    }
 
 }

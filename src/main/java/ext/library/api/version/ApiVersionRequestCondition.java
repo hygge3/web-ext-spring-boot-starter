@@ -3,14 +3,14 @@ package ext.library.api.version;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import ext.library.exception.ApiVersionDeprecatedException;
+import ext.library.util.Assert;
 import ext.library.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
@@ -45,11 +45,10 @@ public class ApiVersionRequestCondition implements RequestCondition<ApiVersionRe
         double apiVersionValue = this.getApiVersion().value();
         if (pathVersion >= apiVersionValue) {
             double minimumVersion = apiVersionProperties.getMinimumVersion();
-            if ((this.getApiVersion()
-                    .deprecated() || minimumVersion > pathVersion) && NumberUtil.equals(pathVersion, apiVersionValue)) {
-                // 匹配到弃用版本接口
-                throw new ApiVersionDeprecatedException(StrUtil.format("客户端调用弃用版本 API 接口，requestURI：{}", requestUri));
-            } else if (this.getApiVersion().deprecated()) {
+            Assert.isFalse(
+                    (this.getApiVersion().deprecated() || minimumVersion > pathVersion) && NumberUtil.equals(pathVersion, apiVersionValue),
+                    () -> new ApiVersionDeprecatedException(StrUtil.format("客户端调用弃用版本 API 接口，requestURI：{}", requestUri)));
+            if (this.getApiVersion().deprecated()) {
                 // 继续匹配
                 return null;
             }

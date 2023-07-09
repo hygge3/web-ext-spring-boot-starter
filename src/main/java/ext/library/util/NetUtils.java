@@ -15,7 +15,7 @@ public class NetUtils extends NetUtil {
      *
      * @return 是否为内网 IP
      */
-    public static Boolean isInnerIP() {
+    public static Boolean isInnerIp() {
         // 1. 获取客户端 IP 地址，考虑反向代理的问题
         String ip = ServletUtils.getClientIP(ServletUtils.getRequest());
 

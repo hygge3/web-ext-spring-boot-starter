@@ -1,4 +1,4 @@
-package ext.library.web.datetime;
+package ext.library.web.config;
 
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;

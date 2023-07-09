@@ -4,7 +4,7 @@ import ext.library.thread.pool.AsyncConfig;
 import ext.library.util.I18nUtils;
 import ext.library.util.SpringUtils;
 import ext.library.validation.Validator;
-import ext.library.web.datetime.DateTimeFormatConfig;
+import ext.library.web.config.DateTimeFormatConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

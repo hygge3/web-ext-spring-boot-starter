@@ -17,9 +17,6 @@ import com.fasterxml.jackson.core.JsonStreamContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import ext.library.argument.resolver.ArrayArgumentResolver;
-import ext.library.argument.resolver.CustomRequestParamMethodArgumentResolver;
-import ext.library.argument.resolver.JavaBeanArgumentResolver;
 import ext.library.constant.FieldNamingStrategyEnum;
 import ext.library.idempotent.IdempotentInterceptorRegistry;
 import ext.library.log.LogInterceptorRegistry;
@@ -37,7 +34,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -193,16 +189,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         };
 
         objectMapper.getSerializerProvider().setNullValueSerializer(jsonSerializer);
-    }
-
-    /**
-     * 添加自定义方法参数解析器
-     */
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new JavaBeanArgumentResolver());
-        resolvers.add(new ArrayArgumentResolver(true));
-        resolvers.add(new CustomRequestParamMethodArgumentResolver(true));
     }
 
     /**

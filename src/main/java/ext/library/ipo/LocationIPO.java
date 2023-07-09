@@ -32,7 +32,7 @@ public class LocationIPO {
      * @param location 标准的经纬度 JSON 对象，包含的 key 有 ("lng", "lat")
      * @return 经纬度对象
      */
-    public static LocationIPO toLocationIPO(JSONObject location) {
+    public static LocationIPO toLocationIpo(JSONObject location) {
         double lng = location.getDouble("lng");
         double lat = location.getDouble("lat");
         return LocationIPO.builder().lng(lng).lat(lat).build();

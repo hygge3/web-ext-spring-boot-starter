@@ -6,20 +6,13 @@ import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
-import ext.library.exception.ApiVersionDeprecatedException;
-import ext.library.exception.AttackException;
-import ext.library.exception.ClientFallbackException;
-import ext.library.exception.DbException;
-import ext.library.exception.ForbiddenException;
-import ext.library.exception.LoginException;
-import ext.library.exception.ParamDecryptException;
-import ext.library.exception.ParamException;
-import ext.library.exception.ParamVoidException;
-import ext.library.exception.ResultException;
+import ext.library.exception.*;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.ServletUtils;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.validation.BindException;
@@ -30,8 +23,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
@@ -225,6 +216,20 @@ public class ResultExceptionHandler {
         log.error("【解密错误】错误信息如下：{}", e.getMessage());
         ExceptionUtils.printException(e);
         return R.paramDecryptError();
+    }
+
+    /**
+     * 非法参数（断言）异常统一处理 -435
+     *
+     * @param e 解密异常
+     * @return 结果
+     */
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result<?> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+        log.error("【执行存在不合理】错误信息如下：{}", e.getMessage());
+        ExceptionUtils.printException(e);
+        return R.errorPrompt(e.getMessage());
     }
 
     // WEB 异常拦截

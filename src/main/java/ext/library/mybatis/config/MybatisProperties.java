@@ -13,13 +13,6 @@ public class MybatisProperties {
     static final String PREFIX = Constant.CONFIG_PREFIX + ".mybatis";
 
     /**
-     * 是否打印 banner
-     * <p>
-     * 默认：true
-     */
-    boolean banner = true;
-
-    /**
      * 是否启用执行日志
      * <p>
      * 默认：true

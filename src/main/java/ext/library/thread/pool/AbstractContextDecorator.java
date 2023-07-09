@@ -2,16 +2,15 @@ package ext.library.thread.pool;
 
 import cn.hutool.core.convert.Convert;
 import ext.library.constant.HttpAttribute;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 
 /**
  * <h2>子线程上下文装饰器</h2>
- * <p><a href="https://stackoverflow.com/questions/23732089/how-to-enable-request-scope-in-async-task-executor">...</a></p>
+ * <p><a href="https://stackoverflow.com/questions/23732089/how-to-enable-request-scope-in-async-task-executor">How to enable request scope in async task executor</a></p>
  * <p>传递：RequestAttributes and MDC and SecurityContext</p>
  */
 @AllArgsConstructor

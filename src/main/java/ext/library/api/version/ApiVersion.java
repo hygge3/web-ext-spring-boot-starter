@@ -1,10 +1,6 @@
 package ext.library.api.version;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * RESTful API 接口版本定义
@@ -23,8 +19,8 @@ public @interface ApiVersion {
     /**
      * RESTful API 接口版本号
      * <p>最近优先原则：在方法上的 {@link ApiVersion} 可覆盖在类上面的 {@link ApiVersion}，如下：
-     * <p>类上面的 {@link #value()} 值 = 1.1，
-     * <p>方法上面的 {@link #value()} 值 = 2.1，
+     * <p>类上面的值 = 1.1，
+     * <p>方法上面的值 = 2.1，
      * <p>最终效果：v2.1
      */
     double value() default 1;

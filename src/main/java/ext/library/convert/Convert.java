@@ -32,6 +32,7 @@ public class Convert extends cn.hutool.core.convert.Convert {
 
     // 注册自定义转换器
     static {
+        log.info("【自定义转换器】Convert，执行初始化 ...");
         ConverterRegistry converterRegistry = ConverterRegistry.getInstance();
         converterRegistry.putCustom(JSONObject.class, JSONObjectConverter.class)
                 .putCustom(JSONArray.class, JSONArrayConverter.class);

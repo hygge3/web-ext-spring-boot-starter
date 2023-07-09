@@ -1,15 +1,16 @@
 package ext.library.mybatis.config;
 
-import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.audit.ConsoleMessageCollector;
 import com.mybatisflex.core.audit.MessageCollector;
+import com.mybatisflex.core.logicdelete.LogicDeleteProcessor;
+import com.mybatisflex.core.logicdelete.impl.DateTimeLogicDeleteProcessor;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import jakarta.annotation.PostConstruct;
 
 @Slf4j
 @Configuration
@@ -20,8 +21,6 @@ public class MybatisAutoConfig {
 
     @PostConstruct
     public void init() {
-        FlexGlobalConfig globalConfig = FlexGlobalConfig.getDefaultConfig();
-        globalConfig.setPrintBanner(mybatisProperties.isBanner());
         if (mybatisProperties.isLog()) {
             // 开启审计功能
             AuditManager.setAuditEnable(true);
@@ -32,4 +31,8 @@ public class MybatisAutoConfig {
         log.info("【Mybatis-Flex】配置项：{}, 已初始化完毕。", MybatisProperties.PREFIX);
     }
 
+    @Bean
+    public LogicDeleteProcessor logicDeleteProcessor() {
+        return new DateTimeLogicDeleteProcessor();
+    }
 }

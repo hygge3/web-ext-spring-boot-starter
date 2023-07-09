@@ -14,7 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ParamFormatIPO {
 
+    /**
+     * 键
+     */
     String key;
+    /**
+     * 类型
+     */
     Class<?> clazz;
 
 }
