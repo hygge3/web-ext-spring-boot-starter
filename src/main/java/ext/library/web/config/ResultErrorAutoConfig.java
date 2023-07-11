@@ -1,8 +1,7 @@
 package ext.library.web.config;
 
-import ext.library.web.exception.ResultErrorController;
-import ext.library.web.exception.ResultExceptionHandler;
-import ext.library.web.exception.ResultResponseBodyHandler;
+import ext.library.exception.config.ResultErrorController;
+import ext.library.exception.config.ResultExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.web.ServerProperties;

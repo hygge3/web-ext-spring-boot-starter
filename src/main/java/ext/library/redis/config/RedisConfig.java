@@ -33,7 +33,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Import(ApiIdempotentController.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 @EnableConfigurationProperties({RedisProperties.class})
-public class RedisAutoConfig {
+public class RedisConfig {
 
     final RedisProperties redisProperties;
 

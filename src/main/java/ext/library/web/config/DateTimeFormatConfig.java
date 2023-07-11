@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * 日期时间格式化配置
+ * RequestBody 日期时间反序列化配置
  */
 @Configuration
 public class DateTimeFormatConfig {

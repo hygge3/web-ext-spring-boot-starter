@@ -1,4 +1,4 @@
-package ext.library.log;
+package ext.library.web.log;
 
 import ext.library.web.properties.WebProperties;
 import lombok.Data;
@@ -34,10 +34,5 @@ public class LogProperties {
      * 默认：true
      */
     boolean trace = false;
-
-    /**
-     * 是否启用 sql 日志
-     */
-    boolean sql = false;
 
 }

@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 /**
  * <h2>RESTful 驼峰命名法基础实体</h2>
+ * <p>
+ * 继承该类必须配置 mapstruct-plus
  */
 public class BaseEntity implements Serializable {
 

@@ -1,11 +1,12 @@
 package ext.library.web.config;
 
 import ext.library.api.version.ApiVersionProperties;
-import ext.library.log.LogProperties;
-import ext.library.repeatedly.read.RepeatedlyReadServletRequestFilter;
+import ext.library.idempotent.ApiIdempotentProperties;
+import ext.library.web.log.LogProperties;
+import ext.library.web.repeatedly.RepeatedlyReadServletRequestFilter;
 import ext.library.thread.pool.AsyncProperties;
 import ext.library.thread.pool.ContextDecorator;
-import ext.library.web.exception.ExceptionHandlerProperties;
+import ext.library.exception.config.ExceptionHandlerProperties;
 import ext.library.web.properties.*;
 import ext.library.web.webenv.WebEnv;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @Import({WebMvcConfig.class, WebMvcRegistrationsConfig.class, WebEnv.class})
-@EnableConfigurationProperties({ApiVersionProperties.class, ExceptionHandlerProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class, FastJsonHttpMessageConverterProperties.class})
+@EnableConfigurationProperties({ApiVersionProperties.class, ExceptionHandlerProperties.class, ApiIdempotentProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class})
 public class WebAutoConfig {
 
     final WebProperties webProperties;

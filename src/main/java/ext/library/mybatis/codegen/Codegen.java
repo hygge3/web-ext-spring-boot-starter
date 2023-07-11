@@ -5,10 +5,10 @@ import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
-import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import com.zaxxer.hikari.HikariDataSource;
 import ext.library.mybatis.constant.DbConstant;
 import ext.library.util.Assert;
+import ext.library.util.StringUtils;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -33,35 +33,53 @@ public class Codegen {
         dataSource.setPassword(config.getPassword());
 
         // 创建配置内容
+        GlobalConfig globalConfig = createGlobalConfig(config);
+
+        //通过 datasource 和 globalConfig 创建代码生成器
+        Generator generator = new Generator(dataSource, globalConfig);
+        //生成代码
+        generator.generate();
+    }
+
+    public static GlobalConfig createGlobalConfig(GenerateConfig config) {
+        //创建配置内容
         GlobalConfig globalConfig = new GlobalConfig();
 
         // 注释配置
-        // 作者
-        globalConfig.setAuthor("Mybatis-Flex");
+        globalConfig.getJavadocConfig()
+                // 作者
+                .setAuthor("Mybatis-Flex Codegen");
 
         // 包配置
-        // 文件输出目录
-        globalConfig.setSourceDir(config.getSourceDir());
-        // 根包名
         Assert.notBlank(config.getBasePackage(), "必须指定根包名");
-        globalConfig.setBasePackage(config.getBasePackage());
+        globalConfig.getPackageConfig()
+                // 根包名
+                .setBasePackage(config.getBasePackage());
+        if (StringUtils.isNotBlank(config.getSourceDir())) {
+            globalConfig.setSourceDir(config.getSourceDir());
+        }
 
-        // 策略模式
-        // 设置表前缀，多个前缀用英文逗号（,）隔开
-        globalConfig.setTablePrefix(config.getTablePrefix());
-        // 设置某个列的全局配置
+        // 策略配置
+        globalConfig.getStrategyConfig()
+                // 数据库表前缀，多个前缀用英文逗号（,）隔开
+                .setTablePrefix(config.getTablePrefix())
+                // 逻辑删除的默认字段名称
+                .setLogicDeleteColumn(DbConstant.DB_FIELD_DELETE_TIME)
+                // 生成哪些表，白名单
+                .setGenerateTables(config.getGenerateTables())
+                // 不生成哪些表，黑名单
+                .setUnGenerateTables(config.getUnGenerateTables());
+        // 某个列的全局配置
         // 创建时间
-        ColumnConfig createTimeConfig = new ColumnConfig();
-        createTimeConfig.setColumnName(DbConstant.DB_FIELD_CREATE_TIME);
-        createTimeConfig.setOnInsertValue("now()");
-        globalConfig.setColumnConfig(createTimeConfig);
+        ColumnConfig createTime = new ColumnConfig();
+        createTime.setColumnName(DbConstant.DB_FIELD_CREATE_TIME);
+        createTime.setOnInsertValue("now()");
+        globalConfig.setColumnConfig(createTime);
         // 更新时间
-        ColumnConfig updateTimeConfig = new ColumnConfig();
-        updateTimeConfig.setColumnName(DbConstant.DB_FIELD_UPDATE_TIME);
-        updateTimeConfig.setOnUpdateValue("now()");
-        globalConfig.setColumnConfig(updateTimeConfig);
-        // 删除标识
-        globalConfig.setLogicDeleteColumn(DbConstant.DB_FIELD_DEFINITION_DELETE);
+        ColumnConfig updateTime = new ColumnConfig();
+        updateTime.setColumnName(DbConstant.DB_FIELD_UPDATE_TIME);
+        updateTime.setOnUpdateValue("now()");
+        globalConfig.setColumnConfig(updateTime);
         // 大字段批量设置
         Set<String> largeColumns = config.getLargeColumns();
         if (CollUtil.isNotEmpty(largeColumns)) {
@@ -72,56 +90,51 @@ public class Codegen {
                 globalConfig.setColumnConfig(largeColumnConfig);
             }
         }
-        Assert.notEmpty(config.getGenerateTables(), "必须指定需要生成代码的表");
-        // 生成哪些表，白名单
-        globalConfig.setGenerateTables(config.getGenerateTables());
-        // 不生成哪些表，黑名单
-        globalConfig.setUnGenerateTables(config.getUnGenerateTables());
-
-        // 模板配置 使用默认模板
 
         // Entity 生成配置
-        // 是否覆盖之前生成的文件
-        globalConfig.setEntityOverwriteEnable(true);
-        // Entity 类的后缀
-        globalConfig.setEntityClassSuffix("DO");
-        // Entity 默认实现的接口
-        globalConfig.setEntityInterfaces(new Class<?>[0]);
-        // Entity 类的父类，可以自定义一些 BaseEntity 类
-        globalConfig.setEntitySupperClass(config.getEntitySupperClass());
+        globalConfig.enableEntity()
+                // Entity 类的父类，可以自定义一些 BaseEntity 类
+                .setSupperClass(config.getEntitySupperClass())
+                // 是否覆盖之前生成的文件
+                .setOverwriteEnable(false)
+                // Entity 默认实现的接口
+                .setImplInterfaces()
+                // Entity 是否使用 Lombok 注解
+                .setWithLombok(true);
 
-        // 是否生成 Mapper
-        globalConfig.setMapperGenerateEnable(config.isMapperGenerateEnable());
+        // Mapper 生成配置
+        globalConfig.enableMapper()
+                // 是否添加 @Mapper 注解
+                .setMapperAnnotation(true)
+                // 是否覆盖之前生成的文件
+                .setOverwriteEnable(true);
 
-        // 是否生成 Service
-        globalConfig.setServiceGenerateEnable(config.isServiceGenerateEnable());
-        globalConfig.setServiceOverwriteEnable(false);
+        // Service 生成配置
+        globalConfig.enableService()
+                // 是否覆盖之前生成的文件
+                .setOverwriteEnable(false);
 
-        // 是否生成 ServiceImpl
-        globalConfig.setServiceImplGenerateEnable(config.isServiceImplGenerateEnable());
-        globalConfig.setServiceImplOverwriteEnable(false);
-        if (config.isServiceCacheEnable()) {
-            globalConfig.setServiceImplSupperClass(CacheableServiceImpl.class);
-        }
+        // ServiceImpl 生成配置
+        globalConfig.enableServiceImpl()
+                // 是否覆盖之前生成的文件
+                .setOverwriteEnable(false)
+                // 是否添加缓存示例代码
+                .setCacheExample(config.isAddCacheExample());
 
-        // 是否生成 Controller
-        globalConfig.setControllerGenerateEnable(config.isControllerGenerateEnable());
-        globalConfig.setControllerOverwriteEnable(false);
+        // Controller 生成配置
+        globalConfig.enableController()
+                // 是否覆盖之前生成的文件
+                .setOverwriteEnable(false);
 
-        // TableDef 设置
-        globalConfig.setTableDefGenerateEnable(true);
+        // TableDef 生成配置
+        globalConfig.enableTableDef()
+                // 是否覆盖之前生成的文件
+                .setOverwriteEnable(true);
 
-        // MapperXml 生成配置
-        globalConfig.setMapperXmlGenerateEnable(config.isMapperXmlGenerateEnable());
 
         // 默认类型映射
         JdbcTypeMapping.registerMapping(Timestamp.class, LocalDateTime.class);
         JdbcTypeMapping.registerMapping(BigInteger.class, Long.class);
-
-        // 通过 datasource 和 globalConfig 创建代码生成器
-        Generator generator = new Generator(dataSource, globalConfig);
-
-        // 生成代码
-        generator.generate();
+        return globalConfig;
     }
 }

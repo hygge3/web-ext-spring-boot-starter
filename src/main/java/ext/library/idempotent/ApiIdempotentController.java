@@ -7,7 +7,6 @@ import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/open/apiIdempotent")
-@EnableConfigurationProperties({ApiIdempotentProperties.class})
 @ConditionalOnProperty(prefix = ApiIdempotentProperties.PREFIX, name = "enabled", havingValue = "true")
 public class ApiIdempotentController {
 

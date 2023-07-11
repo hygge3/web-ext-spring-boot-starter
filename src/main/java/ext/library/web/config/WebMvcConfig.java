@@ -1,41 +1,26 @@
 package ext.library.web.config;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONReader;
-import com.alibaba.fastjson2.filter.BeanContext;
-import com.alibaba.fastjson2.filter.ContextValueFilter;
-import com.alibaba.fastjson2.filter.Filter;
-import com.alibaba.fastjson2.filter.NameFilter;
-import com.alibaba.fastjson2.support.config.FastJsonConfig;
-import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonStreamContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import ext.library.constant.FieldNamingStrategyEnum;
 import ext.library.idempotent.IdempotentInterceptorRegistry;
-import ext.library.log.LogInterceptorRegistry;
 import ext.library.util.ClassUtils;
-import ext.library.util.DateUtils;
 import ext.library.util.ListUtils;
-import ext.library.web.properties.FastJsonHttpMessageConverterProperties;
-import ext.library.web.properties.HttpMessageConverterProperties;
+import ext.library.util.StringUtils;
+import ext.library.web.log.LogInterceptorRegistry;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
@@ -53,7 +38,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Import({IdempotentInterceptorRegistry.class, LogInterceptorRegistry.class})
 public class WebMvcConfig implements WebMvcConfigurer {
-    final FastJsonHttpMessageConverterProperties fastJsonProperties;
     final JacksonHttpMessageConverterProperties jacksonProperties;
     final IdempotentInterceptorRegistry idempotentInterceptorRegistry;
     final LogInterceptorRegistry logInterceptorRegistry;
@@ -63,65 +47,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void extendMessageConverters(@NonNull List<HttpMessageConverter<?>> converters) {
-        String converter = "";
-        if (fastJsonProperties.isEnabled()) {
-            converter = "Fastjson";
-            // 使用 FastJson 优先于默认的 Jackson 做 json 解析
-            // https://github.com/alibaba/fastjson2/blob/main/docs/spring_support_cn.md
-            fastJsonHttpMessageConverterConfig(converters);
-        } else if (jacksonProperties.isEnabled()) {
-            converter = "Jackson";
+        if (jacksonProperties.isEnabled()) {
             // 启用 ext-library 对 Jackson 进行增强配置
             MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = ListUtils.get(converters, MappingJackson2HttpMessageConverter.class);
             mappingJackson2HttpMessageConverterConfig(Objects.requireNonNull(mappingJackson2HttpMessageConverter));
+            log.info("【消息转换器】配置项：{}，执行初始化...", JacksonHttpMessageConverterProperties.PREFIX);
         }
-        log.info("【消息转换器】配置项：{}，JSON 解析器:{}，执行初始化...", HttpMessageConverterProperties.PREFIX, converter);
-    }
-
-    private void fastJsonHttpMessageConverterConfig(List<HttpMessageConverter<?>> converters) {
-        // 1. 创建 FastJsonHttpMessageConverter
-        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-        converter.setSupportedMediaTypes(CollUtil.newArrayList(MediaType.APPLICATION_JSON, new MediaType("application", "*+json")));
-        FastJsonConfig config = new FastJsonConfig();
-        config.setDateFormat(DateUtils.DATE_TIME_FORMAT);
-        config.setReaderFeatures(JSONReader.Feature.FieldBased // 基于字段反序列化，如果不配置，会默认基于 public 的 field 和 getter 方法序列化。配置后，会基于非 static 的 field（包括 private）做反序列化。在 fieldbase 配置下会更安全
-                , JSONReader.Feature.SupportArrayToBean // 支持数据映射的方式
-                , JSONReader.Feature.SupportSmartMatch // 默认下是 camel case 精确匹配，打开这个后，能够智能识别 camel/upper/pascal/snake/Kebab 五中 case
-                , JSONReader.Feature.IgnoreSetNullValue // 忽略输入为 null 的字段
-                , JSONReader.Feature.DuplicateKeyValueAsArray// 重复 Key 的 Value 不是替换而是组合成数组
-        );
-        config.setWriterFeatures(fastJsonProperties.getSerializerFeatures());
-
-        // 2. 配置 FastJsonHttpMessageConverter 规则
-        ContextValueFilter contextValueFilter = (BeanContext context, Object object, String name, Object value) -> {
-            if (context == null) {
-                if (fastJsonProperties.isWriteNullAsStringEmpty()) {
-                    return StrUtil.EMPTY;
-                }
-                return value;
-            }
-            Class<?> fieldClass = context.getFieldClass();
-            if (value != null || ClassUtils.isBasicType(fieldClass) || Collection.class.isAssignableFrom(fieldClass)) {
-                return value;
-            }
-            if (fastJsonProperties.isWriteNullMapAsEmpty() && Map.class.isAssignableFrom(fieldClass)) {
-                return new JSONObject();
-            }
-            return null;
-        };
-
-        // 3. 配置 FastJsonHttpMessageConverter
-        List<Filter> filters = CollUtil.newArrayList();
-        if (fastJsonProperties.isWriteNullAsStringEmpty() || fastJsonProperties.isWriteNullMapAsEmpty()) {
-            filters.add(contextValueFilter);
-        }
-        FieldNamingStrategyEnum fieldNamingStrategy = fastJsonProperties.getFieldNamingStrategy();
-        if (fieldNamingStrategy != null) {
-            filters.add(NameFilter.of(fieldNamingStrategy.getPropertyNamingStrategy()));
-        }
-        config.setWriterFilters(ArrayUtil.toArray(filters, Filter.class));
-        converter.setFastJsonConfig(config);
-        converters.add(converter);
     }
 
     private void mappingJackson2HttpMessageConverterConfig(MappingJackson2HttpMessageConverter converter) {
@@ -180,7 +111,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
             private void writeNullOrEmpty(JsonGenerator gen) throws IOException {
                 if (jacksonProperties.isWriteNullAsStringEmpty()) {
-                    gen.writeString(StrUtil.EMPTY);
+                    gen.writeString(StringUtils.EMPTY);
                     return;
                 }
 
@@ -204,20 +135,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         if (Objects.nonNull(idempotentInterceptorRegistry)) {
             idempotentInterceptorRegistry.registry(registry);
         }
-    }
-
-    /**
-     * 添加资源处理程序
-     * <p>
-     * 解决 knife4j 无法访问 doc.html 的问题
-     *
-     * @param registry 注册表
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjar/**").addResourceLocations("classpath:/META-INF/resources/webjar/");
-        log.info("【Knife4j】添加静态资源映射路径...");
     }
 
 }

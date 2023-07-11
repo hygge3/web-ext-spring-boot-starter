@@ -1,4 +1,4 @@
-package ext.library.web.exception;
+package ext.library.web.config;
 
 import ext.library.constant.HttpAttribute;
 import ext.library.util.I18nUtils;

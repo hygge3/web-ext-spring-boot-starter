@@ -15,5 +15,7 @@ spring:
     time-zone: GMT+8
     # 格式化 json 输出的时间问题，将格林尼治时间进行转换
     date-format: yyyy-MM-dd HH:mm:ss
+    locale: zh_CN
+
   main:
     allow-bean-definition-overriding: true

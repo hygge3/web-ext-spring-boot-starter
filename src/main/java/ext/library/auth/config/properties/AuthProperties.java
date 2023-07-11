@@ -33,12 +33,6 @@ public class AuthProperties {
     String userKey = "id";
 
     /**
-     * IP 前缀（自定义值，请保留“<code style="color:red">_%s</code>”部分）
-     * <p>默认：ip_%s
-     */
-    String ipPrefix = "ip_%s";
-
-    /**
      * Token 超时时间（单位：秒）
      * <p>默认：36000（10 小时）
      */

@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import;
 @Slf4j
 @Configuration
 @Import({SpringUtils.class, I18nUtils.class, AsyncConfig.class, DateTimeFormatConfig.class})
-public class BaseAutoConfig {
+public class BaseConfig {
 
     /**
      * Validator-校验器

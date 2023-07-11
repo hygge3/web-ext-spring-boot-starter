@@ -1,7 +1,7 @@
 package ext.library.web.properties;
 
 import ext.library.constant.Constant;
-import ext.library.repeatedly.read.RepeatedlyReadServletRequestFilter;
+import ext.library.web.repeatedly.RepeatedlyReadServletRequestFilter;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

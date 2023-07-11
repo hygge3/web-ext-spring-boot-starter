@@ -1,4 +1,4 @@
-package ext.library.repeatedly.read;
+package ext.library.web.repeatedly;
 
 import ext.library.util.ServletUtils;
 import jakarta.servlet.ReadListener;

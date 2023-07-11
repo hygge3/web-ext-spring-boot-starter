@@ -14,14 +14,14 @@ public class JacksonHttpMessageConverterProperties {
     /**
      * Prefix of {@link JacksonHttpMessageConverterProperties}.
      */
-    public static final String PREFIX = HttpMessageConverterProperties.PREFIX + ".jackson";
+    public static final String PREFIX = WebProperties.PREFIX + ".http-message-converter";
 
     /**
      * 启用 ext-library 对 Jackson 进行增强配置
      * <p>Jackson 是 SpringBoot 默认的 Json 解析器
      * <p>默认：false
      */
-    boolean enabled = false;
+    boolean enabled = true;
 
     /**
      * 字段命名策略

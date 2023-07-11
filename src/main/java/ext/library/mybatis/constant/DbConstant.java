@@ -37,7 +37,7 @@ public interface DbConstant {
     /**
      * 更新时间
      */
-    String DB_FIELD_UPDATE_TIME = "update-time";
+    String DB_FIELD_UPDATE_TIME = "update_time";
     /**
      * 删除时间：逻辑删除
      */

@@ -1,7 +1,7 @@
 ext.library.auth.config.AuthAutoConfig
-ext.library.config.BaseAutoConfig
-ext.library.mybatis.config.MybatisAutoConfig
-ext.library.redis.config.RedisAutoConfig
+ext.library.config.BaseConfig
+ext.library.mybatis.config.MybatisConfig
+ext.library.redis.config.RedisConfig
 ext.library.thread.pool.AsyncConfig
 ext.library.web.config.ResultErrorAutoConfig
 ext.library.web.config.WebAutoConfig

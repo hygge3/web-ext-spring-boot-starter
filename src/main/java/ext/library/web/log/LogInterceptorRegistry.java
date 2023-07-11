@@ -1,9 +1,7 @@
-package ext.library.log;
+package ext.library.web.log;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
@@ -13,8 +11,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ConditionalOnClass(LogProperties.class)
-@ConditionalOnBean(LogProperties.class)
 public class LogInterceptorRegistry {
 
     final LogProperties logProperties;

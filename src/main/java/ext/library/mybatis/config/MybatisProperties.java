@@ -17,6 +17,6 @@ public class MybatisProperties {
      * <p>
      * 默认：true
      */
-    boolean log = true;
+    boolean log = false;
 
 }

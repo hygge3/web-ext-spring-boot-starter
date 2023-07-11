@@ -3,7 +3,7 @@ package ext.library.auth.config;
 import ext.library.auth.client.UserClient;
 import ext.library.auth.config.properties.AuthProperties;
 import ext.library.redis.client.Redis;
-import ext.library.redis.config.RedisAutoConfig;
+import ext.library.redis.config.RedisConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@AutoConfigureAfter(RedisAutoConfig.class)
+@AutoConfigureAfter(RedisConfig.class)
 @EnableConfigurationProperties({AuthProperties.class})
 public class AuthAutoConfig {
 

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties({MybatisProperties.class})
-public class MybatisAutoConfig {
+public class MybatisConfig {
     final MybatisProperties mybatisProperties;
 
     @PostConstruct

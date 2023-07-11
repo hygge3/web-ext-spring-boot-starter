@@ -1,4 +1,4 @@
-package ext.library.web.exception;
+package ext.library.exception.config;
 
 import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.exceptions.ValidateException;

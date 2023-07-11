@@ -1,4 +1,4 @@
-package ext.library.web.exception;
+package ext.library.exception.config;
 
 import ext.library.constant.Constant;
 import lombok.Data;
