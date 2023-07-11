@@ -40,12 +40,17 @@ public class PageResult<T> {
      */
     List<T> records;
 
-    public static <T> Page<T> toPage(@NonNull PageResult<?> pageResult) {
-        if (Objects.nonNull(pageResult.getTotalRows())) {
-            return Page.of(Math.toIntExact(pageResult.getPageNum()), pageResult.getPageSize()
-                    .byteValue(), pageResult.getTotalRows());
+    /**
+     * 转换为分页对象
+     *
+     * @return {@link Page}<{@link T}>
+     */
+    public Page<T> toPage() {
+        if (Objects.nonNull(this.getTotalRows())) {
+            return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize()
+                    .byteValue(), this.getTotalRows());
         }
-        return Page.of(Math.toIntExact(pageResult.getPageNum()), pageResult.getPageSize());
+        return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize());
     }
 
     public static <T> PageResult<T> of(@NonNull Page<T> page) {

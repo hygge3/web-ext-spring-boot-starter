@@ -11,8 +11,12 @@ import ext.library.util.Assert;
 import ext.library.util.StringUtils;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 /**
@@ -73,12 +77,12 @@ public class Codegen {
         // 创建时间
         ColumnConfig createTime = new ColumnConfig();
         createTime.setColumnName(DbConstant.DB_FIELD_CREATE_TIME);
-        createTime.setOnInsertValue("now()");
+        createTime.setOnInsertValue("NOW()");
         globalConfig.setColumnConfig(createTime);
         // 更新时间
         ColumnConfig updateTime = new ColumnConfig();
         updateTime.setColumnName(DbConstant.DB_FIELD_UPDATE_TIME);
-        updateTime.setOnUpdateValue("now()");
+        updateTime.setOnUpdateValue("NOW()");
         globalConfig.setColumnConfig(updateTime);
         // 大字段批量设置
         Set<String> largeColumns = config.getLargeColumns();
@@ -134,6 +138,8 @@ public class Codegen {
 
         // 默认类型映射
         JdbcTypeMapping.registerMapping(Timestamp.class, LocalDateTime.class);
+        JdbcTypeMapping.registerMapping(Date.class, LocalDate.class);
+        JdbcTypeMapping.registerMapping(Time.class, LocalTime.class);
         JdbcTypeMapping.registerMapping(BigInteger.class, Long.class);
         return globalConfig;
     }

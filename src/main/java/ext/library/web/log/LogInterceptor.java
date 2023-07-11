@@ -6,6 +6,7 @@ import ext.library.convert.Convert;
 import ext.library.util.IdUtils;
 import ext.library.util.ServletUtils;
 import ext.library.util.SpringUtils;
+import ext.library.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +49,10 @@ public class LogInterceptor implements HandlerInterceptor {
         // 打印请求日志
         long interval = System.currentTimeMillis() - Convert.toLong(request.getAttribute(HttpAttribute.REQUEST_TIME));
         StringJoiner sj = new StringJoiner(" ");
-        sj.add(ServletUtils.getClientIP(request)).add(String.valueOf(interval)).add("ms").add(request.getMethod());
-        if (ServletUtils.isGetMethod(request)) {
-            sj.add(request.getRequestURI() + "?" + request.getQueryString());
-            log.info(sj.toString());
-        } else {
-            sj.add(request.getRequestURI());
-            log.info(sj.toString());
-            log.info(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
+        sj.add(ServletUtils.getClientIP(request)).add(String.valueOf(interval)).add("ms").add(request.getMethod()).add(request.getRequestURI());
+        log.info(sj + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : ""));
+        if (ServletUtils.isPostMethod(request)) {
+            System.out.println(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
         }
         // MDC 清空
         MDC.clear();
