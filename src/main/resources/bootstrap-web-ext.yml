@@ -17,3 +17,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   main:
     allow-bean-definition-overriding: true
+mybatis-flex:
+  global-config:
+    deleted-value-of-logic-delete: NOW()
+    normal-value-of-logic-delete: null
