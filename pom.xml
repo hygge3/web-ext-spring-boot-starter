@@ -27,8 +27,6 @@
         <jsr305.version>3.0.2</jsr305.version>
         <pagehelper.version>5.3.3</pagehelper.version>
         <mapstruct-plus.version>1.3.5</mapstruct-plus.version>
-        <!-- plugins.version -->
-        <smart-doc.version>2.7.1</smart-doc.version>
     </properties>
     <dependencies>
         <!-- spring -->
@@ -43,10 +41,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -122,6 +116,11 @@
             <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
             <version>${mapstruct-plus.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -150,11 +149,6 @@
                             <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Amapstruct.plus.unmappedSourcePolicy=WARN</arg>
-                        <arg>-Amapstruct.plus.unmappedTargetPolicy=WARN</arg>
-                        <arg>-Amapstruct.plus.builder.disableBuilder=false</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
