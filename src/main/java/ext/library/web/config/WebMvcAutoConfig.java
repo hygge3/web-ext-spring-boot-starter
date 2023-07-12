@@ -37,7 +37,7 @@ import java.util.Objects;
 @Configuration
 @RequiredArgsConstructor
 @Import({IdempotentInterceptorRegistry.class, LogInterceptorRegistry.class})
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebMvcAutoConfig implements WebMvcConfigurer {
     final JacksonHttpMessageConverterProperties jacksonProperties;
     final IdempotentInterceptorRegistry idempotentInterceptorRegistry;
     final LogInterceptorRegistry logInterceptorRegistry;
@@ -51,7 +51,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             // 启用 ext-library 对 Jackson 进行增强配置
             MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = ListUtils.get(converters, MappingJackson2HttpMessageConverter.class);
             mappingJackson2HttpMessageConverterConfig(Objects.requireNonNull(mappingJackson2HttpMessageConverter));
-            log.info("【消息转换器】配置项：{}，执行初始化...", JacksonHttpMessageConverterProperties.PREFIX);
+            log.info("【消息转换器】配置项：{}，执行初始化 ...", JacksonHttpMessageConverterProperties.PREFIX);
         }
     }
 

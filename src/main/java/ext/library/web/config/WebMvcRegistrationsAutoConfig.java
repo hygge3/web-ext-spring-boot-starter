@@ -16,14 +16,14 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(ApiVersionProperties.class)
-public class WebMvcRegistrationsConfig implements WebMvcRegistrations {
+public class WebMvcRegistrationsAutoConfig implements WebMvcRegistrations {
 
     final ApiVersionProperties apiVersionProperties;
 
     @Override
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
         if (apiVersionProperties.isEnabled()) {
-            log.info("【RESTful API 接口版本控制】配置项：{}。执行初始化 ...", ApiVersionProperties.PREFIX);
+            log.info("【RESTful API 接口版本控制】配置项：{}，执行初始化 ...", ApiVersionProperties.PREFIX);
             return new ApiVersionRequestMappingHandlerMapping(apiVersionProperties);
         }
         return WebMvcRegistrations.super.getRequestMappingHandlerMapping();

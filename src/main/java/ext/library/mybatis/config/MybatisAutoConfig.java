@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties({MybatisProperties.class})
-public class MybatisConfig implements MyBatisFlexCustomizer {
+public class MybatisAutoConfig implements MyBatisFlexCustomizer {
     final MybatisProperties mybatisProperties;
 
     @Override
@@ -31,12 +31,12 @@ public class MybatisConfig implements MyBatisFlexCustomizer {
             MessageCollector collector = new ConsoleMessageCollector();
             AuditManager.setMessageCollector(collector);
         }
-        log.info("【Mybatis-Flex】配置项：{}, 已初始化完毕。", MybatisProperties.PREFIX);
+        log.info("【Mybatis-Flex】配置项：{}。执行初始化 ...", MybatisProperties.PREFIX);
     }
 
     @Bean
     public LogicDeleteProcessor logicDeleteProcessor() {
-        log.info("【Mybatis-Flex】逻辑删除处理已初始化完毕。");
+        log.info("【Mybatis-Flex】逻辑删除处理器。执行初始化 ...");
         return new DateTimeLogicDeleteProcessor();
     }
 
@@ -49,7 +49,7 @@ public class MybatisConfig implements MyBatisFlexCustomizer {
      */
     @Bean
     public PageInterceptor pageInterceptor() {
-        log.info("【Mybatis-Flex】PageHelper 处理已初始化完毕。");
+        log.info("【Mybatis-Flex】集成 PageHelper。执行初始化 ...");
         return new PageInterceptor();
     }
 }

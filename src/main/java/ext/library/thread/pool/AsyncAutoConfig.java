@@ -1,5 +1,6 @@
 package ext.library.thread.pool;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -11,7 +12,6 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import jakarta.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 
 /**
@@ -27,7 +27,7 @@ import java.util.concurrent.Executor;
 @RequiredArgsConstructor
 @EnableConfigurationProperties(AsyncProperties.class)
 @ConditionalOnProperty(prefix = AsyncProperties.PREFIX, name = "enabled", havingValue = "true")
-public class AsyncConfig implements AsyncConfigurer {
+public class AsyncAutoConfig implements AsyncConfigurer {
 
     final AsyncProperties asyncProperties;
     final TaskDecorator taskDecorator;
@@ -82,7 +82,7 @@ public class AsyncConfig implements AsyncConfigurer {
         // 异步线程上下文装饰器
         executor.setTaskDecorator(taskDecorator);
         executor.initialize();
-        log.info("【异步线程池】共用父线程上下文环境，异步执行任务时不丢失 token ... 已初始化完毕。");
+        log.info("【异步线程池】共用父线程上下文环境，异步执行任务时不丢失 token, 初始化完毕。");
         return executor;
     }
 

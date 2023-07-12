@@ -22,7 +22,7 @@ public class IdempotentInterceptorRegistry {
         if (apiIdempotentProperties != null) {
             boolean idempotentEnabled = apiIdempotentProperties.isEnabled();
             if (idempotentEnabled) {
-                log.info("【幂等】配置项：{}。添加幂等性拦截器 ...", ApiIdempotentProperties.PREFIX);
+                log.info("【幂等】配置项：{}，添加幂等性拦截器 ...", ApiIdempotentProperties.PREFIX);
                 registry.addInterceptor(new IdempotentInterceptor());
             }
         }

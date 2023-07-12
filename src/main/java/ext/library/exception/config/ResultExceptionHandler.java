@@ -36,7 +36,7 @@ public class ResultExceptionHandler {
 
     @PostConstruct
     private void init() {
-        log.info("【全局统一异常处理】配置项:{},初始化拦截所有 Controller 层异常，返回 HTTP 请求最外层对象...", ExceptionHandlerProperties.PREFIX);
+        log.info("【全局统一异常处理】配置项:{}。初始化拦截所有异常 ...", ExceptionHandlerProperties.PREFIX);
     }
 
 
@@ -247,40 +247,6 @@ public class ResultExceptionHandler {
     }
 
     /**
-     * DB 异常统一处理 -506
-     *
-     * @param e DB 异常
-     * @return 结果
-     */
-    @ResponseBody
-    @ExceptionHandler(DbException.class)
-    public Result<?> dbExceptionHandler(DbException e) {
-        e.printStackTrace();
-        if (e.isShowMsg()) {
-            return R.dbError(e.getMessage());
-        }
-        return R.dbError();
-    }
-
-    // /**
-    //  * 服务降级失败 -507
-    //  *
-    //  * @param e 转换异常
-    //  * @return 结果
-    //  */
-    // @ResponseBody
-    // @ExceptionHandler(FeignException.class)
-    // public Result<?> feignExceptionHandler(FeignException e) {
-    //     log.error("【服务降级】接口调用失败，FeignException 错误内容如下：", e);
-    //     String contentUTF8 = ReflectUtil.invoke(e, "contentUTF8");
-    //     try {
-    //         return Convert.toJavaBean(contentUTF8, Result.class);
-    //     } catch (Exception ex) {
-    //         return R.clientFallback(contentUTF8);
-    //     }
-    // }
-
-    /**
      * 服务降级 -507
      *
      * @param e 服务降级异常
@@ -302,7 +268,7 @@ public class ResultExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ConvertException.class)
     public Result<?> convertExceptionHandler(ConvertException e) {
-        log.error("【类型转换异常】转换类型失败，错误信息如下：{}", e.getMessage());
+        log.error("【类型转换异常】转换类型失败，错误信息如下:{}", e.getMessage());
         ExceptionUtils.printException(e);
         return R.typeConvertError(e.getMessage());
     }

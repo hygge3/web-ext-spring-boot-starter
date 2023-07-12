@@ -1,10 +1,10 @@
 package ext.library.config;
 
-import ext.library.thread.pool.AsyncConfig;
+import ext.library.thread.pool.AsyncAutoConfig;
 import ext.library.util.I18nUtils;
 import ext.library.util.SpringUtils;
 import ext.library.validation.Validator;
-import ext.library.web.config.DateTimeFormatConfig;
+import ext.library.web.config.DateTimeFormatAutoConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Import;
  */
 @Slf4j
 @Configuration
-@Import({SpringUtils.class, I18nUtils.class, AsyncConfig.class, DateTimeFormatConfig.class})
-public class BaseConfig {
+@Import({SpringUtils.class, I18nUtils.class, AsyncAutoConfig.class, DateTimeFormatAutoConfig.class})
+public class BaseAutoConfig {
 
     /**
      * Validator-校验器
@@ -27,7 +27,7 @@ public class BaseConfig {
     @Bean
     @ConditionalOnMissingBean
     public Validator validator() {
-        log.info("【校验器】Bean：Validator，执行初始化 ...");
+        log.info("【校验器】Bean：Validator。执行初始化 ...");
         return new Validator();
     }
 

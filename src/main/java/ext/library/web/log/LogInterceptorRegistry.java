@@ -22,7 +22,7 @@ public class LogInterceptorRegistry {
         if (logProperties != null) {
             boolean logEnabled = logProperties.isEnabled();
             if (logEnabled) {
-                log.info("【日志】配置项：{}。添加日志拦截器 ...", LogProperties.PREFIX);
+                log.info("【请求日志】配置项：{}，添加日志拦截器 ...", LogProperties.PREFIX);
                 registry.addInterceptor(new LogInterceptor());
             }
         }

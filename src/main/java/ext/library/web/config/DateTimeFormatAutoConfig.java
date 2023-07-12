@@ -22,7 +22,7 @@ import java.time.LocalTime;
  * RequestBody 日期时间反序列化配置
  */
 @Configuration
-public class DateTimeFormatConfig {
+public class DateTimeFormatAutoConfig {
 
     /**
      * 关于日期时间反序列化，只有在使用 {@link RequestBody} 时有效

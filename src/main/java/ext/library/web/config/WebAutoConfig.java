@@ -1,13 +1,16 @@
 package ext.library.web.config;
 
 import ext.library.api.version.ApiVersionProperties;
+import ext.library.exception.config.ExceptionHandlerProperties;
 import ext.library.idempotent.ApiIdempotentProperties;
-import ext.library.web.log.LogProperties;
-import ext.library.web.repeatedly.RepeatedlyReadServletRequestFilter;
 import ext.library.thread.pool.AsyncProperties;
 import ext.library.thread.pool.ContextDecorator;
-import ext.library.exception.config.ExceptionHandlerProperties;
-import ext.library.web.properties.*;
+import ext.library.web.log.LogProperties;
+import ext.library.web.properties.CookieProperties;
+import ext.library.web.properties.CorsProperties;
+import ext.library.web.properties.JacksonHttpMessageConverterProperties;
+import ext.library.web.properties.WebProperties;
+import ext.library.web.repeatedly.RepeatedlyReadServletRequestFilter;
 import ext.library.web.webenv.WebEnv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +35,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import({WebMvcConfig.class, WebMvcRegistrationsConfig.class, WebEnv.class})
+@Import({WebMvcAutoConfig.class, WebMvcRegistrationsAutoConfig.class, WebEnv.class})
 @EnableConfigurationProperties({ApiVersionProperties.class, ExceptionHandlerProperties.class, ApiIdempotentProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class})
 public class WebAutoConfig {
 
@@ -63,7 +66,7 @@ public class WebAutoConfig {
 
         source.registerCorsConfiguration("/**", config);
 
-        log.info("【跨域】配置项：{}，初始化任何情况下都允许跨域访问...", CorsProperties.PREFIX);
+        log.info("【跨域】配置项：{}，任何情况下都允许跨域访问，执行初始化 ...", CorsProperties.PREFIX);
         return new CorsFilter(source);
     }
 
@@ -79,7 +82,7 @@ public class WebAutoConfig {
         // 设置比常规过滤器更高的优先级，防止输入流被更早读取
         filterRegistrationBean.setOrder(webProperties.getRepeatedlyReadServletRequestFilterOrder());
         filterRegistrationBean.setFilter(new RepeatedlyReadServletRequestFilter());
-        log.info("【Body 反复读取】配置项：{}，初始化启用输入流可反复读取的 HttpServletRequest...", WebProperties.PREFIX + ".enabled-repeatedly-read-servlet-request");
+        log.info("【Body 反复读取】配置项：{}，输入流可反复读取的 HttpServletRequest，执行初始化...", WebProperties.PREFIX + ".enabled-repeatedly-read-servlet-request");
         return filterRegistrationBean;
     }
 
