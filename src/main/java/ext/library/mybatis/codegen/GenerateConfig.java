@@ -34,6 +34,10 @@ public class GenerateConfig {
     // 大字段字段名称列表
     Set<String> largeColumns;
     /**
+     * 租户列表
+     */
+    String tenantColumn;
+    /**
      * 是否添加缓存示例代码
      */
     boolean addCacheExample = false;

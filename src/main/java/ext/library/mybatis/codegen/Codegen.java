@@ -75,15 +75,15 @@ public class Codegen {
                 .setUnGenerateTables(config.getUnGenerateTables());
         // 某个列的全局配置
         // 创建时间
-        ColumnConfig createTime = new ColumnConfig();
-        createTime.setColumnName(DbConstant.DB_FIELD_CREATE_TIME);
-        createTime.setOnInsertValue("NOW()");
-        globalConfig.setColumnConfig(createTime);
+        ColumnConfig createTimeConfig = new ColumnConfig();
+        createTimeConfig.setColumnName(DbConstant.DB_FIELD_CREATE_TIME);
+        createTimeConfig.setOnInsertValue("NOW()");
+        globalConfig.setColumnConfig(createTimeConfig);
         // 更新时间
-        ColumnConfig updateTime = new ColumnConfig();
-        updateTime.setColumnName(DbConstant.DB_FIELD_UPDATE_TIME);
-        updateTime.setOnUpdateValue("NOW()");
-        globalConfig.setColumnConfig(updateTime);
+        ColumnConfig updateTimeConfig = new ColumnConfig();
+        updateTimeConfig.setColumnName(DbConstant.DB_FIELD_UPDATE_TIME);
+        updateTimeConfig.setOnUpdateValue("NOW()");
+        globalConfig.setColumnConfig(updateTimeConfig);
         // 大字段批量设置
         Set<String> largeColumns = config.getLargeColumns();
         if (CollUtil.isNotEmpty(largeColumns)) {
@@ -93,6 +93,14 @@ public class Codegen {
                 largeColumnConfig.setLarge(true);
                 globalConfig.setColumnConfig(largeColumnConfig);
             }
+        }
+        // 租户 id
+        String tenantColumn = config.getTenantColumn();
+        if (StringUtils.isNotBlank(tenantColumn)) {
+            ColumnConfig tenantColumnConfig = new ColumnConfig();
+            tenantColumnConfig.setColumnName(tenantColumn);
+            tenantColumnConfig.setTenantId(true);
+            globalConfig.setColumnConfig(tenantColumnConfig);
         }
 
         // Entity 生成配置
