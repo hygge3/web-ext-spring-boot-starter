@@ -22,6 +22,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ import java.util.Objects;
  * 全局统一异常处理
  */
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 @ConditionalOnProperty(prefix = ExceptionHandlerProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ResultExceptionHandler {
 
@@ -48,7 +49,6 @@ public class ResultExceptionHandler {
      * @param e 结果异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ResultException.class)
     public synchronized Result<?> resultExceptionHandler(ResultException e) {
         var result = e.getResult();
@@ -63,7 +63,6 @@ public class ResultExceptionHandler {
      * @param e 登录异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(LoginException.class)
     public Result<?> loginExceptionHandler(LoginException e) {
         ExceptionUtils.printException(e);
@@ -76,7 +75,6 @@ public class ResultExceptionHandler {
      * @param e 非法请求异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(AttackException.class)
     public Result<?> attackExceptionHandler(AttackException e) {
         ExceptionUtils.printException(e);
@@ -90,7 +88,6 @@ public class ResultExceptionHandler {
      * @param e 无权限异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ForbiddenException.class)
     public Result<?> forbiddenExceptionHandler(ForbiddenException e) {
         ExceptionUtils.printException(e);
@@ -104,7 +101,6 @@ public class ResultExceptionHandler {
      * @param e 方法不允许异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Result<?> httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException e) {
         String uri = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
@@ -119,7 +115,6 @@ public class ResultExceptionHandler {
      * @param e API 接口版本弃用异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ApiVersionDeprecatedException.class)
     public Result<?> apiVersionDeprecatedExceptionHandler(ApiVersionDeprecatedException e) {
         ExceptionUtils.printException(e);
@@ -131,7 +126,6 @@ public class ResultExceptionHandler {
      *
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ParamVoidException.class)
     public Result<?> paramVoidExceptionHandler() {
         return R.paramVoid();
@@ -143,7 +137,6 @@ public class ResultExceptionHandler {
      * @param e 参数校验未通过异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Result<?> missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException e) {
         ExceptionUtils.printException(e);
@@ -156,7 +149,6 @@ public class ResultExceptionHandler {
      * @param e 参数校验未通过异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ParamException.class)
     public Result<?> paramExceptionHandler(ParamException e) {
         ExceptionUtils.printException(e);
@@ -169,7 +161,6 @@ public class ResultExceptionHandler {
      * @param e 验证异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(BindException.class)
     public Result<?> bindExceptionHandler(BindException e) {
         String uri = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
@@ -193,7 +184,6 @@ public class ResultExceptionHandler {
      * @param e 验证异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ValidateException.class)
     public Result<?> validateExceptionHandler(ValidateException e) {
         ExceptionUtils.printException(e);
@@ -210,7 +200,6 @@ public class ResultExceptionHandler {
      * @param e 解密异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ParamDecryptException.class)
     public Result<?> paramDecryptExceptionHandler(ParamDecryptException e) {
         log.error("【解密错误】错误信息如下：{}", e.getMessage());
@@ -224,7 +213,6 @@ public class ResultExceptionHandler {
      * @param e 解密异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<?> illegalArgumentExceptionHandler(IllegalArgumentException e) {
         log.error("【执行存在不合理】错误信息如下：{}", e.getMessage());
@@ -240,7 +228,6 @@ public class ResultExceptionHandler {
      * @param e 异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result<?> exceptionHandler(Exception e) {
         return R.getResult(e);
@@ -252,7 +239,6 @@ public class ResultExceptionHandler {
      * @param e 服务降级异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ClientFallbackException.class)
     public Result<?> clientFallbackExceptionHandler(ClientFallbackException e) {
         ExceptionUtils.printException(e);
@@ -265,7 +251,6 @@ public class ResultExceptionHandler {
      * @param e 转换异常
      * @return 结果
      */
-    @ResponseBody
     @ExceptionHandler(ConvertException.class)
     public Result<?> convertExceptionHandler(ConvertException e) {
         log.error("【类型转换异常】转换类型失败，错误信息如下:{}", e.getMessage());

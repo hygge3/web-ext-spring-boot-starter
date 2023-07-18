@@ -21,7 +21,8 @@ public enum ResultEnum {
      *
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.3.1">HTTP/1.1: Semantics and Content, section 6.3.1</a>
      */
-    SUCCESS(200, "ext.library.base.view.ResultEnum.SUCCESS.msg"), LOGGED_IN(210, "ext.library.base.view.ResultEnum.LOGGED_IN.msg"),
+    SUCCESS(200, "ext.library.base.view.ResultEnum.SUCCESS.msg"),
+    LOGGED_IN(210, "ext.library.base.view.ResultEnum.LOGGED_IN.msg"),
 
     // 300 - 资源、重定向、定位等提示
 
@@ -45,7 +46,10 @@ public enum ResultEnum {
      *
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.5.1">HTTP/1.1: Semantics and Content, section 6.5.1</a>
      */
-    BAD_REQUEST(400, "ext.library.base.view.ResultEnum.BAD_REQUEST.msg"), UNAUTHORIZED(401, "ext.library.base.view.ResultEnum.UNAUTHORIZED.msg"), ATTACK(402, "ext.library.base.view.ResultEnum.ATTACK.msg"), FORBIDDEN(403, "ext.library.base.view.ResultEnum.FORBIDDEN.msg"),
+    BAD_REQUEST(400, "ext.library.base.view.ResultEnum.BAD_REQUEST.msg"),
+    UNAUTHORIZED(401, "ext.library.base.view.ResultEnum.UNAUTHORIZED.msg"),
+    ATTACK(402, "ext.library.base.view.ResultEnum.ATTACK.msg"),
+    FORBIDDEN(403, "ext.library.base.view.ResultEnum.FORBIDDEN.msg"),
 
     /**
      * {@link HttpStatus#NOT_FOUND}
@@ -70,7 +74,8 @@ public enum ResultEnum {
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.5.9">
      * HTTP/1.1: Semantics and Content, section 6.5.9</a>
      */
-    GONE(410, "ext.library.base.view.ResultEnum.GONE.msg"), UNSUPPORTED_MEDIA_TYPE(415, "ext.library.base.view.ResultEnum.UNSUPPORTED_MEDIA_TYPE.msg"),
+    GONE(410, "ext.library.base.view.ResultEnum.GONE.msg"),
+    UNSUPPORTED_MEDIA_TYPE(415, "ext.library.base.view.ResultEnum.UNSUPPORTED_MEDIA_TYPE.msg"),
 
     /**
      * {@link HttpStatus#TOO_MANY_REQUESTS}
@@ -78,7 +83,11 @@ public enum ResultEnum {
      *
      * @see <a href="https://tools.ietf.org/html/rfc6585#section-4">Additional HTTP Status Codes</a>
      */
-    TOO_MANY_REQUESTS(429, "ext.library.base.view.ResultEnum.TOO_MANY_REQUESTS.msg"), PARAM_VOID(432, "ext.library.base.view.ResultEnum.PARAM_VOID.msg"), PARAM_CHECK_NOT_PASS(433, "ext.library.base.view.ResultEnum.PARAM_CHECK_NOT_PASS.msg"), PARAM_VALUE_INVALID(434, "ext.library.base.view.ResultEnum.PARAM_VALUE_INVALID.msg"), PARAM_DECRYPT_ERROR(435, "ext.library.base.view.ResultEnum.PARAM_DECRYPT_ERROR.msg"),
+    TOO_MANY_REQUESTS(429, "ext.library.base.view.ResultEnum.TOO_MANY_REQUESTS.msg"),
+    PARAM_VOID(432, "ext.library.base.view.ResultEnum.PARAM_VOID.msg"),
+    PARAM_CHECK_NOT_PASS(433, "ext.library.base.view.ResultEnum.PARAM_CHECK_NOT_PASS.msg"),
+    PARAM_VALUE_INVALID(434, "ext.library.base.view.ResultEnum.PARAM_VALUE_INVALID.msg"),
+    PARAM_DECRYPT_ERROR(435, "ext.library.base.view.ResultEnum.PARAM_DECRYPT_ERROR.msg"),
 
     // 500 - 服务器错误
 
@@ -108,7 +117,12 @@ public enum ResultEnum {
      *
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.6.5">HTTP/1.1: Semantics and Content, section 6.6.5</a>
      */
-    GATEWAY_TIMEOUT(504, "ext.library.base.view.ResultEnum.GATEWAY_TIMEOUT.msg"), DATA_STRUCTURE(505, "ext.library.base.view.ResultEnum.DATA_STRUCTURE.msg"), DB_ERROR(506, "ext.library.base.view.ResultEnum.DB_ERROR.msg"), CLIENT_FALLBACK(507, "ext.library.base.view.ResultEnum.CLIENT_FALLBACK.msg"), CLIENT_FALLBACK_ERROR(508, "ext.library.base.view.ResultEnum.CLIENT_FALLBACK_ERROR.msg"), TYPE_CONVERT_ERROR(509, "ext.library.base.view.ResultEnum.TYPE_CONVERT_ERROR.msg"),
+    GATEWAY_TIMEOUT(504, "ext.library.base.view.ResultEnum.GATEWAY_TIMEOUT.msg"),
+    DATA_STRUCTURE(505, "ext.library.base.view.ResultEnum.DATA_STRUCTURE.msg"),
+    DB_ERROR(506, "ext.library.base.view.ResultEnum.DB_ERROR.msg"),
+    CLIENT_FALLBACK(507, "ext.library.base.view.ResultEnum.CLIENT_FALLBACK.msg"),
+    CLIENT_FALLBACK_ERROR(508, "ext.library.base.view.ResultEnum.CLIENT_FALLBACK_ERROR.msg"),
+    TYPE_CONVERT_ERROR(509, "ext.library.base.view.ResultEnum.TYPE_CONVERT_ERROR.msg"),
 
     // 600 - 自定义错误提示
 
