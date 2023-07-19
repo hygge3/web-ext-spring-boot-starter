@@ -33,7 +33,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <optional>true</optional>
         </dependency>
         <!-- springboot 参数校验-->
         <dependency>
@@ -105,7 +104,6 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2-extension-spring6</artifactId>
             <version>${fastjson2.version}</version>
-            <optional>true</optional>
         </dependency>
         <!-- 自动插入编辑器并构建工具 https://projectlombok.org -->
         <dependency>
@@ -118,7 +116,6 @@
             <groupId>io.github.linpeilie</groupId>
             <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
             <version>${mapstruct-plus.version}</version>
-            <optional>true</optional>
         </dependency>
         <!-- findbugs 是一套成熟的 bug 解决方案，通过 jsr305 提供的注解类，适合在底层通用代码库中使用。 -->
         <dependency>
