@@ -1,7 +1,16 @@
 spring:
   config:
     activate:
+      # 当前配置名称
       on-profile: web-ext
+  data:
+    redis:
+      lettuce:
+        pool:
+          # 开启 redis lettuce 连接池
+          enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     # 解决传日期参数报 400 转换错误问题
     format:
@@ -11,10 +20,85 @@ spring:
     time-zone: GMT+8
     # 格式化 json 输出的时间问题，将格林尼治时间进行转换
     date-format: yyyy-MM-dd HH:mm:ss
-    locale: zh_CN
+    locale: zh-CN
+    # 全局设置 pojo 或被@JsonInclude 注解的属性的序列化方式
+    default-property-inclusion: NON-EMPTY
+    # 常规默认，枚举类 SerializationFeature 中的枚举属性为 key，值为 boolean 设置 jackson 序列化特性，具体 key 请看 SerializationFeature 源码
+    serialization:
+      # 忽略无法转换的对象
+      fail-on-empty-beans: false
+      #是否使用缩进，格式化输出
+      indent-output: false
+      # 循环引用报错
+      fail-on-self-references: true
+      # 是否字符数组输出 json 数组 (false 则输出字符串)
+      write-char-arrays-as-json-arrays: true
+      # 循环引用返回 null
+      write-self-references-as-null: false
+      # 将枚举输出 toString
+      write-enums-using-to-string: false
+      # 对象属性值是空集合是否输出空 json 数组
+      write-empty-json-arrays: true
+      # 是否将单个元素的集合展开，（即：去除数组符号"[]"）
+      write-single-elem-arrays-unwrapped: false
+      #是否调用 BigDecimal#toPlainString() 输出
+      write-bigdecimal-as-plain: true
+      #map 序列化后，是否用 key 对其排序
+      order-map-entries-by-keys: false
+    # 枚举类 DeserializationFeature 中的枚举属性为 key，值为 boolean 设置 jackson 反序列化特性，具体 key 请看 DeserializationFeature 源码
+    deserialization:
+      # 允许对象忽略 json 中不存在的属性
+      fail-on-unknown-properties: false
+      # 将浮点数反序列化为 BIG-DECIMAL
+      use-big-decimal-for-floats: true
+    # 枚举类 MapperFeature 中的枚举属性为 key，值为 boolean 设置 jackson ObjectMapper 特性
+    # ObjectMapper 在 jackson 中负责 json 的读写、json 与 pojo 的互转、json tree 的互转，具体特性请看 MapperFeature，常规默认即可
+    mapper:
+      # 使用 getter 取代 setter 探测属性，如类中含 getName() 但不包含 name 属性与 setName()，传输的 vo json 格式模板中依旧含 name 属性
+      use-getters-as-setters: true
+    # 枚举类 JsonParser.Feature 枚举类中的枚举属性为 key，值为 boolean 设置 jackson JsonParser 特性
+    # JsonParser 在 jackson 中负责 json 内容的读取，具体特性请看 JsonParser.Feature，一般无需设置默认即可
+    parser:
+      # 允许出现特殊字符和转义符
+      allow-unquoted-control-chars: true
+      # 允许出现单引号
+      allow-single-quotes: true
+      # 是否允许 json 注解（Json 规范是不能加注释的，但这里可以配置）
+      allow-comments: false
+      # 是否允许 json 数组中出现缺失值（如 ["value1",,"value3",] 将被反序列化为 ["value1", null, "value3", null]）
+      allow-missing-values: true
+      # 是否允许 json 尾部有逗号（如{"a": true,}）
+      allow-trailing-comma: false
+    # 枚举类 JsonGenerator.Feature 枚举类中的枚举属性为 key，值为 boolean 设置 jackson JsonGenerator 特性，一般无需设置默认即可
+    # JsonGenerator 在 jackson 中负责编写 json 内容，具体特性请看 JsonGenerator.Feature
+    generator:
+      # 是否为字段名添加引号
+      quote-field-names: true
+      # 按 BigDecimal 的 toPlainString() 输出
+      write-bigdecimal-as-plain: false
   main:
     allow-bean-definition-overriding: true
+    banner-mode: console
+  servlet:
+    multipart:
+      # 文件最大限制为 10mb，默认为 1mb
+      max-file-size: 10MB
+server:
+  compression:
+    # 开启响应内容压缩
+    enabled: true
 mybatis-flex:
   global-config:
+    # 逻辑删除数据存在标记值
     deleted-value-of-logic-delete: NOW()
+    # 逻辑删除数据删除标记值
     normal-value-of-logic-delete: null
+  # 指定 MyBatis 的执行器
+  executor-type: reuse
+  configuration:
+    # 指定发现自动映射目标未知列（或未知属性类型）的行为
+    auto-mapping-unknown-column-behavior: warning
+    # 是否开启驼峰命名自动映射
+    map-underscore-to-camel-case: true
+    # 从 SQL 中删除多余的空格字符
+    shrink-whitespaces-in-sql: true

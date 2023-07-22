@@ -1,6 +1,5 @@
 package ext.library.web.config;
 
-import ext.library.api.version.ApiVersionProperties;
 import ext.library.exception.config.ExceptionHandlerProperties;
 import ext.library.idempotent.ApiIdempotentProperties;
 import ext.library.thread.pool.AsyncProperties;
@@ -35,8 +34,8 @@ import java.util.List;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import({WebMvcAutoConfig.class, WebMvcRegistrationsAutoConfig.class, WebEnv.class})
-@EnableConfigurationProperties({ApiVersionProperties.class, ExceptionHandlerProperties.class, ApiIdempotentProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class})
+@Import({DateTimeFormatAutoConfig.class, WebMvcAutoConfig.class, WebMvcRegistrationsAutoConfig.class, WebEnv.class})
+@EnableConfigurationProperties({ExceptionHandlerProperties.class, ApiIdempotentProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class})
 public class WebAutoConfig {
 
     final WebProperties webProperties;

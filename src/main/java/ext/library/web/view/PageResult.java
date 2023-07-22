@@ -41,18 +41,11 @@ public class PageResult<T> {
     List<T> records;
 
     /**
-     * 转换为分页对象
+     * ORM 分页对象转应用分页对象
      *
-     * @return {@link Page}<{@link T}>
+     * @param page ORM 分页对象
+     * @return {@link PageResult}<{@link T}>
      */
-    public Page<T> toPage() {
-        if (Objects.nonNull(this.getTotalRows())) {
-            return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize()
-                    .byteValue(), this.getTotalRows());
-        }
-        return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize());
-    }
-
     public static <T> PageResult<T> of(@NonNull Page<T> page) {
         PageResult<T> pageResult = new PageResult<>();
         if (page.getTotalRow() == 0) {
@@ -64,6 +57,19 @@ public class PageResult<T> {
         pageResult.setTotalPages(page.getTotalPage());
         pageResult.setRecords(page.getRecords());
         return pageResult;
+    }
+
+    /**
+     * 应用分页对象转换 ORM 分页对象
+     *
+     * @return {@link Page}<{@link T}>
+     */
+    public Page<T> toPage() {
+        if (Objects.nonNull(this.getTotalRows())) {
+            return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize()
+                    .byteValue(), this.getTotalRows());
+        }
+        return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize());
     }
 
     /**

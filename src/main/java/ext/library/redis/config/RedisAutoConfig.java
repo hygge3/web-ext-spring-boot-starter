@@ -4,7 +4,6 @@ import ext.library.idempotent.ApiIdempotentController;
 import ext.library.redis.client.Redis;
 import ext.library.redis.config.properties.RedisProperties;
 import ext.library.redis.constant.RedisSerializerEnum;
-import ext.library.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,15 +19,12 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * redis 自动配置
  */
 @Slf4j
 @Configuration
-@EnableScheduling
 @RequiredArgsConstructor
 @Import(ApiIdempotentController.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
@@ -46,7 +42,7 @@ public class RedisAutoConfig {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
 
-        // 支持FastJson进行Redis存储对象序列/反序列化
+        // 支持Jackson进行Redis存储对象序列/反序列化
         if (redisProperties.getRedisSerializer() != RedisSerializerEnum.JDK) {
             redisTemplate.setDefaultSerializer(redisProperties.getRedisSerializer().getRedisSerializer());
         }
@@ -63,12 +59,6 @@ public class RedisAutoConfig {
     public Redis redis(@Qualifier("extRedisTemplate") RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate) {
         log.info("【Redis】配置项：{}，Bean：Redis。执行初始化 ...", RedisProperties.PREFIX);
         return new Redis(redisTemplate, stringRedisTemplate);
-    }
-
-    @Scheduled(cron = "* 1 * * * *")
-    public void heartbeat() {
-        SpringUtils.getBean(Redis.class).get("heartbeat");
-        log.debug("Redis heartbeat");
     }
 
 }
