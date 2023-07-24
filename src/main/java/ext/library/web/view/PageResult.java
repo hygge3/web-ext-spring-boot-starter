@@ -1,6 +1,7 @@
 package ext.library.web.view;
 
 import cn.hutool.core.collection.CollUtil;
+import com.github.pagehelper.PageInfo;
 import com.mybatisflex.core.paginate.Page;
 import ext.library.convert.Convert;
 import lombok.AllArgsConstructor;
@@ -22,11 +23,11 @@ public class PageResult<T> {
     /**
      * 当前页
      */
-    Long pageNum;
+    Long pageNum = 1L;
     /**
      * 每页显示条数
      */
-    Integer pageSize;
+    Integer pageSize = 10;
     /**
      * 总条数
      */
@@ -56,6 +57,25 @@ public class PageResult<T> {
         pageResult.setTotalRows(page.getTotalRow());
         pageResult.setTotalPages(page.getTotalPage());
         pageResult.setRecords(page.getRecords());
+        return pageResult;
+    }
+
+    /**
+     * PageHelper 分页对象转应用分页对象
+     *
+     * @param pageInfo 页面信息
+     * @return {@link PageResult}<{@link T}>
+     */
+    public static <T> PageResult<T> of(@NonNull PageInfo<T> pageInfo) {
+        PageResult<T> pageResult = new PageResult<>();
+        if (pageInfo.getTotal() == 0) {
+            return pageResult.empty();
+        }
+        pageResult.setPageNum((long) pageInfo.getPageNum());
+        pageResult.setPageSize(pageInfo.getPageSize());
+        pageResult.setTotalRows(pageInfo.getTotal());
+        pageResult.setTotalPages((long) pageInfo.getPages());
+        pageResult.setRecords(pageInfo.getList());
         return pageResult;
     }
 
