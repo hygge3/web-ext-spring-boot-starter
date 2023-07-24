@@ -21,7 +21,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
         <hutool.version>5.8.20</hutool.version>
-        <fastjson2.version>2.0.36</fastjson2.version>
+        <fastjson2.version>2.0.37</fastjson2.version>
         <mybatis-flex.version>1.5.1</mybatis-flex.version>
         <mybatis-spring.version>3.0.2</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
