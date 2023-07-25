@@ -4,6 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import com.github.pagehelper.PageInfo;
 import com.mybatisflex.core.paginate.Page;
 import ext.library.convert.Convert;
+import ext.library.mybatis.entity.BaseEntity;
+import ext.library.util.ListUtils;
+import ext.library.util.SpringUtils;
+import io.github.linpeilie.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -111,7 +115,22 @@ public class PageResult<T> {
      * @return {@link PageResult}<{@link T}>
      */
     public <E> PageResult<E> convert(Class<E> clazz) {
-        return replace(Convert.toList(clazz, records));
+        List<E> list = CollUtil.newArrayList();
+        if (ListUtils.isEmpty(records)) {
+            return replace(list);
+
+        }
+        try {
+            for (T record : records) {
+                if (clazz.isAssignableFrom(BaseEntity.class)) {
+                    Converter converter = SpringUtils.getBean(Converter.class);
+                    list.add(converter.convert(record, clazz));
+                }
+            }
+        } catch (Exception e) {
+            list = Convert.toList(clazz, records);
+        }
+        return replace(list);
     }
 
     /**
