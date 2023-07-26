@@ -122,9 +122,11 @@ public class PageResult<T> {
         }
         try {
             for (T record : records) {
-                if (clazz.isAssignableFrom(BaseEntity.class)) {
+                if (BaseEntity.class.isAssignableFrom(clazz)) {
                     Converter converter = SpringUtils.getBean(Converter.class);
                     list.add(converter.convert(record, clazz));
+                }else {
+                    list.add(Convert.convert(record, clazz));
                 }
             }
         } catch (Exception e) {

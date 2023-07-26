@@ -21,8 +21,6 @@ spring:
     # 格式化 json 输出的时间问题，将格林尼治时间进行转换
     date-format: yyyy-MM-dd HH:mm:ss
     locale: zh-CN
-    # 全局设置 pojo 或被@JsonInclude 注解的属性的序列化方式
-    default-property-inclusion: NON-EMPTY
     # 常规默认，枚举类 SerializationFeature 中的枚举属性为 key，值为 boolean 设置 jackson 序列化特性，具体 key 请看 SerializationFeature 源码
     serialization:
       # 忽略无法转换的对象
