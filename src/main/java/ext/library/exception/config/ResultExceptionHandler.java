@@ -1,5 +1,8 @@
 package ext.library.exception.config;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
+import cn.dev33.satoken.exception.NotRoleException;
 import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.lang.Console;
@@ -19,9 +22,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
@@ -70,6 +71,18 @@ public class ResultExceptionHandler {
     }
 
     /**
+     * Sa-Token 拦截登录异常（User）-401
+     *
+     * @param e 登录异常
+     * @return 结果
+     */
+    @ExceptionHandler(NotLoginException.class)
+    public Result<?> saTokenExceptionHandler(NotLoginException e) {
+        ExceptionUtils.printException(e);
+        return R.unauthorized();
+    }
+
+    /**
      * 非法请求异常拦截 -402
      *
      * @param e 非法请求异常
@@ -90,6 +103,30 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(ForbiddenException.class)
     public Result<?> forbiddenExceptionHandler(ForbiddenException e) {
+        ExceptionUtils.printException(e);
+        return R.forbidden();
+    }
+
+    /**
+     * Sa-Token 无权限异常访问处理 -403
+     *
+     * @param e 无权限异常
+     * @return 结果
+     */
+    @ExceptionHandler(NotPermissionException.class)
+    public Result<?> notPermissionExceptionHandler(NotPermissionException e) {
+        ExceptionUtils.printException(e);
+        return R.forbidden();
+    }
+
+    /**
+     * Sa-Token 无角色异常访问处理 -403
+     *
+     * @param e 无权限异常
+     * @return 结果
+     */
+    @ExceptionHandler(NotRoleException.class)
+    public Result<?> notRoleExceptionHandler(NotRoleException e) {
         ExceptionUtils.printException(e);
         return R.forbidden();
     }

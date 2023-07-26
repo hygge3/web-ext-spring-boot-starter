@@ -105,7 +105,12 @@
             <artifactId>mybatis-flex-codegen</artifactId>
             <version>${mybatis-flex.version}</version>
         </dependency>
-        <!-- 数据库连接池 https://github.com/brettwooldridge/HikariCP -->
+        <!-- https://mvnrepository.com/artifact/cn.dev33/sa-token-core -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>1.35.0.RC</version>
+        </dependency>
         <!-- json 序列化 https://alibaba.github.io/fastjson2/ -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
