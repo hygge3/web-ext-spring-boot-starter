@@ -12,6 +12,7 @@ import io.github.linpeilie.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.lang.NonNull;
 
 import java.util.Collections;
@@ -93,7 +94,8 @@ public class PageResult<T> implements IPage {
      *
      * @return {@link Page}<{@link T}>
      */
-    public Page<T> toPage() {
+    @SuppressWarnings("rawtypes")
+    public Page toPage() {
         Page<T> page = new Page<>();
         if (Objects.nonNull(pageNum)) {
             page.setPageNumber(pageNum);
