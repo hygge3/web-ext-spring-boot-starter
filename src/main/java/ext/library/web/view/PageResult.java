@@ -1,6 +1,7 @@
 package ext.library.web.view;
 
 import cn.hutool.core.collection.CollUtil;
+import com.github.pagehelper.IPage;
 import com.github.pagehelper.PageInfo;
 import com.mybatisflex.core.paginate.Page;
 import ext.library.convert.Convert;
@@ -23,7 +24,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageResult<T> {
+public class PageResult<T> implements IPage {
     /**
      * 当前页
      */
@@ -40,6 +41,10 @@ public class PageResult<T> {
      * 总页数
      */
     Long totalPages;
+    /**
+     * 排序字段
+     */
+    String orderBy;
     /**
      * 结果集
      */
@@ -90,8 +95,7 @@ public class PageResult<T> {
      */
     public Page<T> toPage() {
         if (Objects.nonNull(this.getTotalRows())) {
-            return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize()
-                    .byteValue(), this.getTotalRows());
+            return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize(), this.getTotalRows());
         }
         return Page.of(Math.toIntExact(this.getPageNum()), this.getPageSize());
     }
@@ -125,7 +129,7 @@ public class PageResult<T> {
                 if (BaseEntity.class.isAssignableFrom(clazz)) {
                     Converter converter = SpringUtils.getBean(Converter.class);
                     list.add(converter.convert(record, clazz));
-                }else {
+                } else {
                     list.add(Convert.convert(record, clazz));
                 }
             }
