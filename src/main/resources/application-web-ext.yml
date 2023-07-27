@@ -91,6 +91,8 @@ mybatis-flex:
     deleted-value-of-logic-delete: NOW()
     # 逻辑删除数据删除标记值
     normal-value-of-logic-delete: null
+    # 默认的分页查询时的每页数据量
+    default-page-size: 10
   # 指定 MyBatis 的执行器
   executor-type: reuse
   configuration:
