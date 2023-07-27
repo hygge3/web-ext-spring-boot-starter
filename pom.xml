@@ -22,7 +22,7 @@
         <!-- dependencies.version -->
         <hutool.version>5.8.20</hutool.version>
         <fastjson2.version>2.0.37</fastjson2.version>
-        <mybatis-flex.version>1.5.2</mybatis-flex.version>
+        <mybatis-flex.version>1.5.3</mybatis-flex.version>
         <mybatis-spring.version>3.0.2</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
         <pagehelper.version>5.3.3</pagehelper.version>
