@@ -12,9 +12,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
+    # 404 抛异常
+    throw-exception-if-no-handler-found: true
     # 解决传日期参数报 400 转换错误问题
     format:
       date: yyyy-MM-dd HH:mm:ss
+    static-path-pattern: /static/**
   jackson:
     # 设置 json 日期序列化输出格式相对北京时间与格林尼治时间有八个小时的时差，设置偏移量
     time-zone: GMT+8

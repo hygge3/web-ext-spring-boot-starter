@@ -24,6 +24,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -129,6 +130,18 @@ public class ResultExceptionHandler {
     public Result<?> notRoleExceptionHandler(NotRoleException e) {
         ExceptionUtils.printException(e);
         return R.forbidden();
+    }
+
+    /**
+     * 接口未找到（Not Found） -404
+     *
+     * @param e 接口未找到异常
+     * @return 结果
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public Result<?> noHandlerFoundExceptionHandler(NoHandlerFoundException e) {
+        ExceptionUtils.printException(e);
+        return R.notFound();
     }
 
     /**
