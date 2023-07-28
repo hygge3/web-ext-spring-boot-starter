@@ -22,7 +22,6 @@ public @interface RedisLimit {
      */
     long expire() default 60;
 
-
     /**
      * 得不到令牌的提示语
      */
