@@ -119,7 +119,7 @@
         <!-- json 序列化 https://alibaba.github.io/fastjson2/ -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2-extension-spring6</artifactId>
+            <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
         </dependency>
         <!-- 自动插入编辑器并构建工具 https://projectlombok.org -->
