@@ -33,12 +33,11 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public Result<?> beforeBodyWrite(@Nullable Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
+        Result<?> result;
         // 1. 处理参数
         if (body == null) {
-            return R.success();
-        }
-        Result<?> result;
-        if (body instanceof Result<?>) {
+            result = R.success();
+        } else if (body instanceof Result<?>) {
             result = (Result<?>) body;
         } else {
             result = R.success(body);
