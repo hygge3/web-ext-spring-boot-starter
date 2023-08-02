@@ -49,7 +49,7 @@ public class LogInterceptor implements HandlerInterceptor {
         // 打印请求日志
         long interval = System.currentTimeMillis() - Convert.toLong(request.getAttribute(HttpAttribute.REQUEST_TIME));
         StringJoiner sj = new StringJoiner(" ");
-        sj.add(ServletUtils.getClientIP(request)).add(String.valueOf(interval)).add("ms").add(request.getMethod()).add(request.getRequestURI());
+        sj.add(ServletUtils.getClientIP(request)).add(interval + "ms").add(request.getMethod()).add(request.getRequestURI());
         log.info(sj + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : ""));
         if (ServletUtils.isPostMethod(request)) {
             System.out.println(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
