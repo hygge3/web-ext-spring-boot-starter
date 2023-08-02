@@ -62,8 +62,8 @@ public class PageResult<T> implements IPage {
         if (page.getTotalRow() == 0) {
             return pageResult.empty();
         }
-        pageResult.setPageNum(page.getPageNumber());
-        pageResult.setPageSize(page.getPageSize());
+        pageResult.setPageNum(Math.toIntExact(page.getPageNumber()));
+        pageResult.setPageSize(Math.toIntExact(page.getPageSize()));
         pageResult.setTotalRows(page.getTotalRow());
         pageResult.setTotalPages(Math.toIntExact(page.getTotalPage()));
         pageResult.setRecords(page.getRecords());
