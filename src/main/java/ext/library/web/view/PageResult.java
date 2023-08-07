@@ -12,7 +12,6 @@ import io.github.linpeilie.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.lang.NonNull;
 
 import java.util.Collections;
@@ -29,19 +28,19 @@ public class PageResult<T> implements IPage {
     /**
      * 当前页
      */
-    Integer pageNum;
+    Integer pageNum = 1;
     /**
      * 每页显示条数
      */
-    Integer pageSize;
+    Integer pageSize = 10;
     /**
      * 总条数
      */
-    Long totalRows;
+    Long totalRows = 0L;
     /**
      * 总页数
      */
-    Integer totalPages;
+    Integer totalPages = 0;
     /**
      * 排序字段
      */
@@ -115,8 +114,6 @@ public class PageResult<T> implements IPage {
      * @return {@link PageResult}<{@link T}>
      */
     public PageResult<T> empty() {
-        totalRows = 0L;
-        totalPages = 0;
         records = Collections.emptyList();
         return this;
     }
