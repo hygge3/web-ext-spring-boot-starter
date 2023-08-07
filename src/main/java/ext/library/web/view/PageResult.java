@@ -1,7 +1,6 @@
 package ext.library.web.view;
 
 import cn.hutool.core.collection.CollUtil;
-import com.github.pagehelper.IPage;
 import com.github.pagehelper.PageInfo;
 import com.mybatisflex.core.paginate.Page;
 import ext.library.convert.Convert;
@@ -24,23 +23,23 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageResult<T> implements IPage {
+public class PageResult<T> {
     /**
      * 当前页
      */
-    Integer pageNum = 1;
+    Integer pageNum;
     /**
      * 每页显示条数
      */
-    Integer pageSize = 10;
+    Integer pageSize;
     /**
      * 总条数
      */
-    Long totalRows = 0L;
+    Long totalRows;
     /**
      * 总页数
      */
-    Integer totalPages = 0;
+    Integer totalPages;
     /**
      * 排序字段
      */
@@ -89,31 +88,15 @@ public class PageResult<T> implements IPage {
     }
 
     /**
-     * 应用分页对象转换 ORM 分页对象
-     *
-     * @return {@link Page}<{@link T}>
-     */
-    @SuppressWarnings("rawtypes")
-    public Page toPage() {
-        Page<T> page = new Page<>();
-        if (Objects.nonNull(pageNum)) {
-            page.setPageNumber(pageNum);
-        }
-        if (Objects.nonNull(pageSize)) {
-            page.setPageNumber(pageSize);
-        }
-        if (Objects.nonNull(totalRows)) {
-            page.setTotalRow(totalRows);
-        }
-        return page;
-    }
-
-    /**
      * 空结果
      *
      * @return {@link PageResult}<{@link T}>
      */
     public PageResult<T> empty() {
+        this.pageNum = 0;
+        this.pageSize = 0;
+        this.totalPages = 0;
+        this.totalRows = 0L;
         records = Collections.emptyList();
         return this;
     }
