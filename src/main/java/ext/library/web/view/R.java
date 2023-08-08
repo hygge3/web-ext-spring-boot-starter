@@ -1,11 +1,9 @@
 package ext.library.web.view;
 
 import cn.hutool.core.util.StrUtil;
-import ext.library.exception.ResultException;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.I18nUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -489,17 +487,10 @@ public class R {
             if (resultEnum != null) {
                 return error(resultEnum.getCode(), resultEnum.getMsg(), e.toString());
             }
-        } else if (e instanceof MyBatisSystemException) {
-            try {
-                if (e.getCause().getCause() instanceof ResultException) {
-                    return ((ResultException) e.getCause().getCause()).getResult();
-                }
-            } catch (Exception ignore) {
-            }
         }
 
         // 处理所有未处理异常 -500
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, 200);
         return internalServerError(ExceptionUtils.getPrintExceptionToJson(e));
     }
 
