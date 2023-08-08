@@ -489,8 +489,8 @@ public class R {
             }
         }
 
+        e.printStackTrace();
         // 处理所有未处理异常 -500
-        ExceptionUtils.printException(e, 200);
         return internalServerError(ExceptionUtils.getPrintExceptionToJson(e));
     }
 
