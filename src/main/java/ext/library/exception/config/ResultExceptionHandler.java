@@ -15,6 +15,8 @@ import ext.library.util.ServletUtils;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 全局统一异常处理
@@ -224,6 +227,28 @@ public class ResultExceptionHandler {
             paramHint.put(key, msg);
             Console.error(key + " " + msg);
         });
+
+        return R.paramCheckNotPass(paramHint);
+    }
+
+    /**
+     * 违反约束异常统一处理 -433
+     *
+     * @param e 异常
+     * @return 结果
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Result<?> constraintViolationExceptionHandler(ConstraintViolationException e) {
+        String uri = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
+        Console.error("uri={}", uri);
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        JSONObject paramHint = new JSONObject();
+        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+            String key = constraintViolation.getPropertyPath().toString();
+            String msg = constraintViolation.getMessage();
+            paramHint.put(key, msg);
+            Console.error(key + " " + msg);
+        }
 
         return R.paramCheckNotPass(paramHint);
     }
