@@ -474,6 +474,33 @@ public class R {
         return errorPrompt(I18nUtils.get(msgKey), data);
     }
 
+    // 700 - 自定义弹窗错误提示
+    /**
+     * <b>错误弹窗提示 -700</b>
+     * <p>适用于弹窗告知用户操作提示、业务消息提示、友好的错误提示等场景。
+     *
+     * @param msg 提示消息
+     * @return HTTP 请求，最外层响应对象
+     */
+    public static Result<?> alertErrorPrompt(String msg) {
+        return error(ResultEnum.ALERT_ERROR_PROMPT.getCode(), msg);
+    }
+
+    /**
+     * <b>错误提示 -700</b>
+     * <p>适用于弹窗告知用户操作提示、业务消息提示、友好的错误提示等场景。
+     * <p>msg 支持文本模板格式化，{} 表示占位符
+     * <pre class="code">例：("this is {} for {}", "a", "b") = this is a for b</pre>
+     *
+     * @param msg    文本模板，被替换的部分用 {} 表示
+     * @param values 文本模板中占位符被替换的值
+     * @return HTTP 请求，最外层响应对象
+     */
+    public static Result<?> alertPromptFormat(String msg, Object... values) {
+        return alertErrorPrompt(StrUtil.format(msg, values));
+    }
+
+
     // ------ Result exception builder ------
 
     public static Result<?> getResult(Throwable e) {

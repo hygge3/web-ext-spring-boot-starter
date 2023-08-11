@@ -63,6 +63,19 @@ public class ResultExceptionHandler {
     }
 
     /**
+     * 需要弹窗提示结果处理
+     *
+     * @param e 结果异常
+     * @return 结果
+     */
+    @ExceptionHandler(AlertException.class)
+    public synchronized Result<?> alertExceptionHandler(AlertException e) {
+        var result = e.getResult();
+        log.warn(result.toString());
+        return result;
+    }
+
+    /**
      * 拦截登录异常（User）-401
      *
      * @param e 登录异常

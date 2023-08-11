@@ -129,7 +129,12 @@ public enum ResultEnum {
     /**
      * 错误提示，请使用具体的错误提示信息覆盖此 {@link #msg}
      */
-    ERROR_PROMPT(600, "错误提示，请使用具体的错误提示信息覆盖此 msg");
+    ERROR_PROMPT(600, "错误提示，请使用具体的错误提示信息覆盖此 msg"),
+
+    /**
+     * 弹窗错误提示
+     */
+    ALERT_ERROR_PROMPT(700, "弹窗提示，请使用具体的错误提示信息覆盖此 msg");
 
     final Integer code;
     final String msg;
