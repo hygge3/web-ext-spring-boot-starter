@@ -20,16 +20,6 @@ public enum RedisSerializerEnum {
         public RedisSerializer<Object> getRedisSerializer() {
             return new JdkSerializationRedisSerializer();
         }
-    }, FASTJSON {
-        @Override
-        public RedisSerializer<Object> getRedisSerializer() {
-            return new GenericFastJsonRedisSerializer();
-        }
-    }, FASTJSONB {
-        @Override
-        public RedisSerializer<Object> getRedisSerializer() {
-            return new GenericFastJsonRedisSerializer(true);
-        }
     }, JACKSON {
         @Override
         public RedisSerializer<Object> getRedisSerializer() {
