@@ -52,7 +52,9 @@ public class LogInterceptor implements HandlerInterceptor {
         sj.add(ServletUtils.getClientIP(request)).add(interval + "ms").add(request.getMethod()).add(request.getRequestURI());
         log.info(sj + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : ""));
         if (ServletUtils.hasBodyMethod(request)) {
-            System.out.println(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
+            try {
+                System.out.println(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
+            }catch (Exception ignored){}
         }
         // MDC 清空
         MDC.clear();
