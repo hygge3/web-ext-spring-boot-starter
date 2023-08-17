@@ -1,6 +1,5 @@
 package ext.library.redis.constant;
 
-import com.alibaba.fastjson2.support.spring6.data.redis.GenericFastJsonRedisSerializer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
