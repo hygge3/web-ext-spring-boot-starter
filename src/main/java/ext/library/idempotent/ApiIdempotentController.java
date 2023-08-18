@@ -3,8 +3,6 @@ package ext.library.idempotent;
 import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;
 import ext.library.util.IdUtils;
-import ext.library.web.view.R;
-import ext.library.web.view.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +25,11 @@ public class ApiIdempotentController {
      * 获得幂等版本号
      */
     @GetMapping("/getVersion")
-    public Result<?> getVersion() {
+    public String getVersion() {
         String version = IdUtils.getSimpleUUID();
         String key = RedisConstant.API_IDEMPOTENT_KEY_PREFIX + version;
         redis.set(key, version, apiIdempotentProperties.getVersionTimeout());
-        return R.success(version);
+        return version;
     }
 
 }

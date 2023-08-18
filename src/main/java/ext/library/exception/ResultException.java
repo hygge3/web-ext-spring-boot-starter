@@ -2,34 +2,58 @@ package ext.library.exception;
 
 import cn.hutool.core.util.StrUtil;
 import ext.library.web.view.R;
-import ext.library.web.view.Result;
 import ext.library.web.view.ResultPrompt;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@linkplain Result} 结果异常定义
+ * 结果异常定义
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ResultException extends RuntimeException {
-
-    static final long serialVersionUID = -4332073495864145387L;
 
     /**
      * 业务定位标识
      * <p>用于上层捕获异常（如：多重 try_catch）时，方便业务定位
      */
     int businessId;
-    Result<?> result;
+    /**
+     * 是否是弹窗警告
+     */
+    boolean alert;
+    /**
+     * 数据
+     */
+    Object data;
 
     /**
-     * <b>异常消息构造</b>
+     * <b>异常提示消息构造</b>
      * {@linkplain R#errorPrompt(String)} 的便捷方式
      */
     public ResultException(String msg) {
         super(msg);
-        this.result = R.errorPrompt(msg);
+    }
+
+    /**
+     * <b>异常提示消息构造</b>
+     * {@linkplain R#errorPrompt(String)} 的便捷方式
+     */
+    public ResultException(String msg, Object data) {
+        super(msg);
+        this.data = data;
+    }
+
+    /**
+     * <b>弹窗异常消息构造</b>
+     * {@linkplain R#errorPrompt(String)} 的便捷方式
+     *
+     * @param alert 弹窗异常
+     * @param msg   消息
+     */
+    public ResultException(boolean alert, String msg) {
+        super(msg);
+        this.alert = alert;
     }
 
     /**
@@ -41,28 +65,6 @@ public class ResultException extends RuntimeException {
      */
     public ResultException(String msg, Object... values) {
         super(StrUtil.format(msg, values));
-        this.result = R.errorPromptFormat(msg, values);
-    }
-
-    public ResultException(Result<?> result) {
-        super(result.getMsg());
-        this.result = result;
-    }
-
-    /**
-     * <b>异常消息构造</b>
-     * {@linkplain R#errorPrompt(String)} 的便捷方式
-     */
-    public ResultException(int businessId, String msg) {
-        super(msg);
-        this.businessId = businessId;
-        this.result = R.errorPrompt(msg);
-    }
-
-    public ResultException(int businessId, Result<?> result) {
-        super(result.getMsg());
-        this.businessId = businessId;
-        this.result = result;
     }
 
 }

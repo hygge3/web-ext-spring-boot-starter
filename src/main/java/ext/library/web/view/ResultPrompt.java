@@ -61,17 +61,6 @@ public class ResultPrompt {
     //---------------------枚举提示引用预定义---------------------
 
     /**
-     * 数据结构异常 - 不正确的结果
-     *
-     * @param expected 预期内容
-     * @param actual   实际内容
-     * @return 提示信息
-     */
-    public static String dataStructure(Object expected, Object actual) {
-        return ResultEnum.DATA_STRUCTURE.getMsg() + " Incorrect result size: expected " + expected + ", actual " + actual;
-    }
-
-    /**
      * 服务不可用 - 停机维护
      *
      * @param restoreTime 预计恢复时间（如：2020-12-31 08:00:00）

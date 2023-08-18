@@ -20,6 +20,11 @@ public class ExceptionHandlerProperties {
     boolean enabled = true;
 
     /**
+     * 问题类型
+     */
+    String problemType;
+
+    /**
      * 重定向位置 URL（可以是绝对的或相对的）
      * the redirect location URL (maybe absolute or relative)
      */

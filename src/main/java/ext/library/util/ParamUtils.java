@@ -11,7 +11,6 @@ import ext.library.exception.ParamVoidException;
 import ext.library.exception.ResultException;
 import ext.library.ipo.ParamFormatIPO;
 import ext.library.validation.Validator;
-import ext.library.web.view.R;
 import ext.library.web.webenv.WebEnv;
 
 import java.util.Arrays;
@@ -171,9 +170,7 @@ public class ParamUtils {
      */
     public static void paramValidate(Object... objects) {
         for (Object object : objects) {
-            if (ObjectUtils.isNull(object)) {
-                throw new ResultException(R.paramCheckNotPass());
-            }
+            Assert.notNull(object, ParamVoidException::new);
         }
     }
 

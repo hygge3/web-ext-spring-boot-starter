@@ -8,15 +8,14 @@ import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;
 import ext.library.util.Assert;
 import ext.library.util.SpringUtils;
-import ext.library.web.view.R;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
@@ -65,7 +64,7 @@ public class IdempotentInterceptor implements HandlerInterceptor {
         if (Objects.equals(Boolean.FALSE, redis.getRedisTemplate().hasKey(redisKey))) {
             String msgPrompt = "请勿重复操作";
             String dataPrompt = StrUtil.format("【幂等性】幂等校验失败，{} 参数已失效，当前 value: {}", HttpAttribute.API_IDEMPOTENT_VERSION, version);
-            throw new ResultException(R.errorPrompt(msgPrompt, dataPrompt));
+            throw new ResultException(msgPrompt, dataPrompt);
         }
 
         if (!redis.del(redisKey)) {

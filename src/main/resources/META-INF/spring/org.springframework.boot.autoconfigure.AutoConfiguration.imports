@@ -2,7 +2,6 @@ ext.library.config.BaseAutoConfig
 ext.library.mybatis.config.MybatisAutoConfig
 ext.library.redis.config.RedisAutoConfig
 ext.library.thread.pool.AsyncAutoConfig
-ext.library.web.config.ResultErrorAutoConfig
 ext.library.web.config.WebAutoConfig
 ext.library.web.config.WebMvcAutoConfig
 ext.library.web.config.WebMvcRegistrationsAutoConfig
