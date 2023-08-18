@@ -1,20 +1,13 @@
 package ext.library.convert;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.ConvertException;
-import cn.hutool.core.convert.ConverterRegistry;
-import cn.hutool.core.lang.TypeReference;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.util.TypeUtils;
-import ext.library.convert.converter.JSONArrayConverter;
-import ext.library.convert.converter.JSONListConverter;
-import ext.library.convert.converter.JSONObjectConverter;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Dict;
+import ext.library.util.DateUtils;
+import ext.library.util.JsonUtils;
 import ext.library.util.ListUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,114 +22,6 @@ import java.util.Map;
  */
 @Slf4j
 public class Convert extends cn.hutool.core.convert.Convert {
-
-    // 注册自定义转换器
-    static {
-        log.info("【自定义转换器】Convert，执行初始化 ...");
-        ConverterRegistry converterRegistry = ConverterRegistry.getInstance();
-        converterRegistry.putCustom(JSONObject.class, JSONObjectConverter.class)
-                .putCustom(JSONArray.class, JSONArrayConverter.class);
-        List<Type> registryTypes = JSONListConverter.getRegistryTypes();
-        for (Type registryType : registryTypes) {
-            converterRegistry.putCustom(registryType, JSONListConverter.class);
-        }
-    }
-
-    // --------------------------------------- 覆盖 hutool 转换方法，防止直接调用父类静态方法，导致因为本类未加载，从而自定义转换器未注册
-
-    /**
-     * 转换值为指定类型，类型采用字符串表示
-     *
-     * @param <T>       目标类型
-     * @param className 类的字符串表示
-     * @param value     值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convertByClassName(String className, Object value) throws ConvertException {
-        return cn.hutool.core.convert.Convert.convertByClassName(className, value);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>       目标类型
-     * @param reference 类型参考，用于持有转换后的泛型类型
-     * @param value     值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convert(TypeReference<T> reference, Object value) throws ConvertException {
-        return cn.hutool.core.convert.Convert.convert(reference, value);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>   目标类型
-     * @param type  类型
-     * @param value 值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convert(Type type, Object value) throws ConvertException {
-        return cn.hutool.core.convert.Convert.convert(type, value);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>          目标类型
-     * @param type         类型
-     * @param value        值
-     * @param defaultValue 默认值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convert(Class<T> type, Object value, T defaultValue) throws ConvertException {
-        return cn.hutool.core.convert.Convert.convert(type, value, defaultValue);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>          目标类型
-     * @param type         类型
-     * @param value        值
-     * @param defaultValue 默认值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convert(Type type, Object value, T defaultValue) throws ConvertException {
-        return cn.hutool.core.convert.Convert.convert(type, value, defaultValue);
-    }
-
-    /**
-     * 转换值为指定类型，不抛异常转换<br>
-     * 当转换失败时返回{@code null}
-     *
-     * @param <T>   目标类型
-     * @param type  目标类型
-     * @param value 值
-     * @return 转换后的值，转换失败返回 null
-     */
-    public static <T> T convertQuietly(Type type, Object value) {
-        return cn.hutool.core.convert.Convert.convertQuietly(type, value);
-    }
-
-    /**
-     * 转换值为指定类型，不抛异常转换<br>
-     * 当转换失败时返回默认值
-     *
-     * @param <T>          目标类型
-     * @param type         目标类型
-     * @param value        值
-     * @param defaultValue 默认值
-     * @return 转换后的值
-     */
-    public static <T> T convertQuietly(Type type, Object value, T defaultValue) {
-        return cn.hutool.core.convert.Convert.convertQuietly(type, value, defaultValue);
-    }
 
     // ----------------------------------------------------------------------- 推荐转换方法
 
@@ -172,29 +57,18 @@ public class Convert extends cn.hutool.core.convert.Convert {
         // JDK8 日期时间转换
         if (value instanceof String str) {
             if (clazz == LocalDate.class) {
-                return (T) LocalDate.parse(str);
+                return (T) DateUtils.parseLocalDateTime(str, DateUtils.DATE_FORMAT);
             } else if (clazz == LocalDateTime.class) {
-                return (T) LocalDateTime.parse(str);
+                return (T) DateUtils.parseLocalDateTime(str, DateUtils.DATE_TIME_FORMAT);
             }
         }
 
-        // JSONObject 转换
-        if (clazz == JSONObject.class) {
-            return (T) toJSONObject(value);
-        }
-
-        // JSONArray 转换
-        if (clazz == JSONArray.class) {
-            return (T) toJSONArray(value);
-        }
-
-        // 采用 fastjson 转换
+        // 采用 json 转换
         try {
-            return TypeUtils.cast(value, clazz);
+            return JsonUtils.parseObject(value, clazz);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("【Convert】采用 fastjson 类型转换器转换失败，正尝试 hutool 类型转换器转换。");
-                e.printStackTrace();
+                log.debug("【Convert】采用 json 类型转换器转换失败，正尝试 hutool 类型转换器转换。", e);
             }
         }
 
@@ -204,14 +78,6 @@ public class Convert extends cn.hutool.core.convert.Convert {
 
     /**
      * <h2 style="color:red">转换值为指定 POJO 类型</h2>
-     * <p>
-     * <b><i>性能测试对比如下：</i></b><br>
-     * <i>1、Spring BeanUtils：</i>性能伯仲，兼容性远超<br>
-     * <i>2、Cglib BeanCopier：</i>性能伯仲，兼容性远超<br>
-     * <i>3、Apache BeanUtils：</i>秒杀<br>
-     * <i>4、Apache PropertyUtils：</i>秒杀<br>
-     * <i>5、Dozer：</i>秒杀<br>
-     * </p>
      *
      * @param <T>   泛型
      * @param value 被转换的值
@@ -228,17 +94,12 @@ public class Convert extends cn.hutool.core.convert.Convert {
             return (T) value;
         }
 
-        // 采用 fastjson 转换
+        // 采用 json 转换
         try {
-            if (value instanceof String) {
-                return JSON.parseObject((String) value, clazz);
-            }
-
-            return TypeUtils.cast(toJSONObject(value), clazz);
+            return JsonUtils.parseObject(value, clazz);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("【Convert】采用 fastjson 类型转换器转换失败，正尝试 hutool 类型转换器转换。");
-                e.printStackTrace();
+                log.debug("【Convert】采用 fastjson 类型转换器转换失败，正尝试 hutool 类型转换器转换。", e);
             }
         }
 
@@ -253,53 +114,35 @@ public class Convert extends cn.hutool.core.convert.Convert {
      * @return JSON 字符串
      */
     public static String toJSONString(Object value) {
-        return JSONObject.toJSONString(value);
+        return JsonUtils.toString(value);
     }
 
     /**
-     * 转换为 {@linkplain JSONObject}
+     * 转换为 {@linkplain Dict}
      *
      * @param value 被转换的值
-     * @return JSON 对象
+     * @return Dict 对象
      */
-    @SuppressWarnings("unchecked")
-    public static JSONObject toJSONObject(Object value) {
-        if (value instanceof JSONObject) {
-            return (JSONObject) value;
+    public static Dict toDict(Object value) {
+        if (value instanceof Dict dict) {
+            return dict;
         }
 
-        if (value instanceof Map) {
-            return new JSONObject((Map<String, Object>) value);
+        if (value instanceof String str) {
+            return JsonUtils.parseDict(str);
         }
 
-        if (value instanceof String) {
-            return JSONObject.parseObject((String) value);
-        }
-
-        return JSONObject.parseObject(JSONObject.toJSONString(value));
+        return Dict.parse(value);
     }
 
     /**
-     * 转换为 {@linkplain JSONArray}
+     * 转换为 {@linkplain List<Dict>}
      *
      * @param value 被转换的值
-     * @return JSON 数组
+     * @return Dict 数组
      */
-    @SuppressWarnings("unchecked")
-    public static JSONArray toJSONArray(Object value) {
-        if (value instanceof JSONArray) {
-            return (JSONArray) value;
-        }
-
-        if (value instanceof List) {
-            return new JSONArray((List<Object>) value);
-        }
-
-        if (value instanceof String) {
-            return JSONArray.parseArray((String) value);
-        }
-
-        return (JSONArray) JSON.toJSON(value);
+    public static List<Dict> toDictList(Object value) {
+        return JsonUtils.parseDictList(value);
     }
 
     // ----------------------------------------------------------------------- List 转换方法
@@ -318,45 +161,23 @@ public class Convert extends cn.hutool.core.convert.Convert {
     }
 
     /**
-     * {@linkplain JSONArray} 转 {@linkplain List}-{@linkplain Class}
+     * {@linkplain List<Dict>} 转 {@linkplain List}-{@linkplain Class}
      *
-     * @param <T>       泛型
-     * @param jsonArray 需要转换的 JSONArray
-     * @param clazz     json 转换的 POJO 类型
+     * @param <T>          泛型
+     * @param list         需要转换的 List
+     * @param elementClass 集合中的元素类型
      * @return 转换后的 List
-     * @see ListUtils#toList(JSONArray, Class)
      */
-    public static <T> List<T> toList(JSONArray jsonArray, Class<T> clazz) {
-        return ListUtils.toList(jsonArray, clazz);
+    public static <T> List<T> toList(List<Dict> list, Class<T> elementClass) {
+        List<T> result = CollUtil.newArrayList();
+        for (Dict dict : list) {
+            result.add(dict.toBean(elementClass));
+        }
+        return result;
     }
 
     /**
-     * {@linkplain List}-{@linkplain JSONObject} 转 {@linkplain List}-{@linkplain Class}
-     *
-     * @param <T>   泛型
-     * @param list  需要转换的 List
-     * @param clazz json 转换的 POJO 类型
-     * @return 转换后的 List
-     * @see ListUtils#toList(List, Class)
-     */
-    public static <T> List<T> toList(List<JSONObject> list, Class<T> clazz) {
-        return ListUtils.toList(list, clazz);
-    }
-
-    /**
-     * {@linkplain List}-{@linkplain JSONObject} 转 {@linkplain List}-{@linkplain String}
-     *
-     * @param list    需要转换的 List
-     * @param keepKey 保留值的 key
-     * @return 转换后的 List
-     * @see ListUtils#toList(List, String)
-     */
-    public static List<String> toList(List<JSONObject> list, String keepKey) {
-        return ListUtils.toList(list, keepKey);
-    }
-
-    /**
-     * {@linkplain List}-{@linkplain JSONObject} 转 {@linkplain List}-{@linkplain Class}
+     * {@linkplain List}-{@linkplain Dict} 转 {@linkplain List}-{@linkplain Class}
      *
      * @param <T>     泛型
      * @param list    需要转换的 List
@@ -365,24 +186,24 @@ public class Convert extends cn.hutool.core.convert.Convert {
      * @return 转换后的 List
      * @see ListUtils#toList(List, String, Class)
      */
-    public static <T> List<T> toList(List<JSONObject> list, String keepKey, Class<T> clazz) {
+    public static <T> List<T> toList(List<Dict> list, String keepKey, Class<T> clazz) {
         return ListUtils.toList(list, keepKey, clazz);
     }
 
     /**
-     * {@linkplain List} - {@linkplain JSONObject} 转 {@linkplain List} - {@linkplain String}并去除重复元素
+     * {@linkplain List} - {@linkplain Dict} 转 {@linkplain List} - {@linkplain String}并去除重复元素
      *
      * @param list    需要转换的 List
      * @param keepKey 保留值的 key
      * @return 处理后的 List
      * @see ListUtils#toListAndDistinct(List, String)
      */
-    public static List<String> toListAndDistinct(List<JSONObject> list, String keepKey) {
+    public static List<String> toListAndDistinct(List<Dict> list, String keepKey) {
         return ListUtils.toListAndDistinct(list, keepKey);
     }
 
     /**
-     * {@linkplain List}-{@linkplain JSONObject} 转 {@linkplain List}-{@linkplain Class}并去除重复元素
+     * {@linkplain List}-{@linkplain Dict} 转 {@linkplain List}-{@linkplain Class}并去除重复元素
      *
      * @param <T>     泛型
      * @param list    需要转换的 List
@@ -391,12 +212,12 @@ public class Convert extends cn.hutool.core.convert.Convert {
      * @return 处理后的 List
      * @see ListUtils#toListAndDistinct(List, String, Class)
      */
-    public static <T> List<T> toListAndDistinct(List<JSONObject> list, String keepKey, Class<T> clazz) {
+    public static <T> List<T> toListAndDistinct(List<Dict> list, String keepKey, Class<T> clazz) {
         return ListUtils.toListAndDistinct(list, keepKey, clazz);
     }
 
     /**
-     * {@linkplain List} - {@linkplain Map} 转 {@linkplain List} - {@linkplain JSONObject}
+     * {@linkplain List} - {@linkplain Map} 转 {@linkplain List} - {@linkplain Dict}
      * <p>
      * <b><i>性能测试说明：</i></b><br>
      * <i>测试 CPU：</i>i7-4710MQ<br>
@@ -405,30 +226,14 @@ public class Convert extends cn.hutool.core.convert.Convert {
      *
      * @param list 需要转换的 List
      * @return 转换后的 List
-     * @see ListUtils#toJsonList(List)
+     * @see ListUtils#toDictList(List)
      */
-    public static List<JSONObject> toJsonList(List<Map<String, Object>> list) {
-        return ListUtils.toJsonList(list);
+    public static List<Dict> toDictList(List<Map<String, Object>> list) {
+        return ListUtils.toDictList(list);
     }
 
     /**
-     * {@linkplain JSONArray} 转 {@linkplain List} - {@linkplain JSONObject}
-     * <p>
-     * <b><i>性能测试报告：</i></b><br>
-     * <i>无类型转换（类型推断）：</i>见 {@linkplain #toJsonList(List)}<br>
-     * <i>安全模式强制类型转换：</i>暂未测试<br>
-     * </p>
-     *
-     * @param jsonArray 需要转换的 JSONArray
-     * @return 转换后的 jsonList
-     * @see ListUtils#toJsonList(JSONArray)
-     */
-    public static List<JSONObject> toJsonList(JSONArray jsonArray) {
-        return ListUtils.toJsonList(jsonArray);
-    }
-
-    /**
-     * {@linkplain List} - {@linkplain Class} 转 {@linkplain List} - {@linkplain JSONObject}
+     * {@linkplain List} - {@linkplain Class} 转 {@linkplain List} - {@linkplain Dict}
      * <p>
      * <b><i>性能测试报告：</i></b><br>
      * <i>安全模式强制类型转换：</i>暂未测试<br>
@@ -436,39 +241,15 @@ public class Convert extends cn.hutool.core.convert.Convert {
      *
      * @param <T>  泛型
      * @param list 需要转换的 List
-     * @return 转换后的 jsonList
-     * @see ListUtils#toJsonListT(List)
+     * @return 转换后的 DictList
+     * @see ListUtils#toDictListT(List)
      */
-    public static <T> List<JSONObject> toJsonListT(List<T> list) {
-        return ListUtils.toJsonListT(list);
+    public static <T> List<Dict> toDictListT(List<T> list) {
+        return ListUtils.toDictListT(list);
     }
 
     /**
-     * {@linkplain JSONArray} 转 {@linkplain JSONObject}[]
-     * <p>对象引用转换，内存指针依旧指向元数据
-     *
-     * @param jsonArray 需要转换的 JSONArray
-     * @return 转换后的 jsons
-     * @see ListUtils#toJsons(JSONArray)
-     */
-    public static JSONObject[] toJsons(JSONArray jsonArray) {
-        return ListUtils.toJsons(jsonArray);
-    }
-
-    /**
-     * {@linkplain List}-{@linkplain JSONObject} 转 {@linkplain JSONObject}[]
-     * <p>对象引用转换，内存指针依旧指向元数据
-     *
-     * @param list 需要转换的 List
-     * @return 转换后的 jsons
-     * @see ListUtils#toJsons(List)
-     */
-    public static JSONObject[] toJsons(List<JSONObject> list) {
-        return ListUtils.toJsons(list);
-    }
-
-    /**
-     * {@linkplain List} - {@linkplain Class} 转 {@linkplain JSONObject}[]
+     * {@linkplain List} - {@linkplain Class} 转 {@linkplain Dict}[]
      * <p>
      * <b><i>性能测试报告：</i></b><br>
      * <i>安全模式强制类型转换：</i>暂未测试<br>
@@ -476,15 +257,15 @@ public class Convert extends cn.hutool.core.convert.Convert {
      *
      * @param <T>  泛型
      * @param list 需要转换的 List
-     * @return 转换后的 jsons
-     * @see ListUtils#toJsonsT(List)
+     * @return 转换后的 Dicts
+     * @see ListUtils#toDictsT(List)
      */
-    public static <T> JSONObject[] toJsonsT(List<T> list) {
-        return ListUtils.toJsonsT(list);
+    public static <T> Dict[] toDictsT(List<T> list) {
+        return ListUtils.toDictsT(list);
     }
 
     /**
-     * {@linkplain List} - {@linkplain Class} 转 {@linkplain JSONObject}[] 并移除空对象
+     * {@linkplain List} - {@linkplain Class} 转 {@linkplain Dict}[] 并移除空对象
      * <p>
      * <b><i>性能测试报告：</i></b><br>
      * <i>安全模式强制类型转换：</i>暂未测试<br>
@@ -492,26 +273,26 @@ public class Convert extends cn.hutool.core.convert.Convert {
      *
      * @param <T>  泛型
      * @param list 需要转换的 List
-     * @return 转换后的 jsons
-     * @see ListUtils#toJsonsTAndRemoveEmpty(List)
+     * @return 转换后的 Dicts
+     * @see ListUtils#toDictsTAndRemoveEmpty(List)
      */
-    public static <T> JSONObject[] toJsonsTAndRemoveEmpty(List<T> list) {
-        return ListUtils.toJsonsTAndRemoveEmpty(list);
+    public static <T> Dict[] toDictsTAndRemoveEmpty(List<T> list) {
+        return ListUtils.toDictsTAndRemoveEmpty(list);
     }
 
     /**
-     * {@linkplain String} 转 {@linkplain JSONObject}[]
+     * {@linkplain String} 转 {@linkplain Dict}[]
      *
      * @param jsonString 需要转换的 JSON 字符串
-     * @return JSON 数组
-     * @see ListUtils#toJsons(String)
+     * @return Dict 数组
+     * @see ListUtils#toDicts(String)
      */
-    public static JSONObject[] toJsons(String jsonString) {
-        return ListUtils.toJsons(jsonString);
+    public static Dict[] toDicts(String jsonString) {
+        return ListUtils.toDicts(jsonString);
     }
 
     /**
-     * {@linkplain String} 转 {@linkplain JSONObject}[]
+     * {@linkplain String} 转 {@linkplain Dict}[]
      * <blockquote>示例：
      * <pre>
      *    {@code
@@ -528,10 +309,10 @@ public class Convert extends cn.hutool.core.convert.Convert {
      * @param regex 文本分割表达式，同{@linkplain String}类的 split() 方法
      * @param key   JSON 的 key 名称
      * @return 转换后的 jsons
-     * @see ListUtils#toJsons(String, String, String)
+     * @see ListUtils#toDicts(String, String, String)
      */
-    public static JSONObject[] toJsons(String text, String regex, String key) {
-        return ListUtils.toJsons(text, regex, key);
+    public static Dict[] toDicts(String text, String regex, String key) {
+        return ListUtils.toDicts(text, regex, key);
     }
 
 }

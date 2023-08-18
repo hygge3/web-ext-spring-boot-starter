@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClientFallbackException extends RuntimeException {
 
-    static final long serialVersionUID = -3620957053991110208L;
-
     public ClientFallbackException(String message) {
         super(message);
     }

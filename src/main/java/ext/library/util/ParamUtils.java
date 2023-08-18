@@ -1,7 +1,10 @@
 package ext.library.util;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.DecimalNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import ext.library.convert.Convert;
 import ext.library.exception.ParamException;
 import ext.library.exception.ParamVoidException;
@@ -24,11 +27,17 @@ public class ParamUtils {
 
     // Validate
 
-    /** 必传参数 */
+    /**
+     * 必传参数
+     */
     static final String PARAM_PREFIX_MUST = "【必传参数】：";
-    /** 可选参数 */
+    /**
+     * 可选参数
+     */
     static final String PARAM_PREFIX_CAN = "【可选参数】：";
-    /** 收到传参 */
+    /**
+     * 收到传参
+     */
     static final String PARAM_PREFIX_RECEIVED = "【收到传参】：";
 
     // RequestParam
@@ -39,9 +48,9 @@ public class ParamUtils {
      * <p>Query Body 1 + 1，参数整合接收，从根源去除 SpringMVC 固定方式传参取参带来的烦恼
      * <p>此方法逻辑具体由当前 {@link WebEnv} 环境实现
      *
-     * @return JSON 对象
+     * @return Dict 对象
      */
-    public static JSONObject getParam() {
+    public static Dict getParam() {
         WebEnv webEnv = SpringUtils.getBean(WebEnv.class);
         return webEnv.getParam();
     }
@@ -69,9 +78,9 @@ public class ParamUtils {
      * @param paramJson 需要向强类型转换的参数
      * @param keys      可多个 boolean 值的 key
      */
-    public static void paramFormatBoolean(JSONObject paramJson, String... keys) {
+    public static void paramFormatBoolean(ObjectNode paramJson, String... keys) {
         for (String key : keys) {
-            paramJson.replace(key, paramJson.getBoolean(key));
+            paramJson.replace(key, BooleanNode.valueOf(paramJson.path(key).booleanValue()));
         }
     }
 
@@ -81,21 +90,21 @@ public class ParamUtils {
      * @param paramJson 需要向强类型转换的参数
      * @param keys      可多个 BigDecimal 值的 key
      */
-    public static void paramFormatBigDecimal(JSONObject paramJson, String... keys) {
+    public static void paramFormatBigDecimal(ObjectNode paramJson, String... keys) {
         for (String key : keys) {
-            paramJson.replace(key, paramJson.getBigDecimal(key));
+            paramJson.replace(key, DecimalNode.valueOf(paramJson.path(key).decimalValue()));
         }
     }
 
     /**
-     * 参数美化-JSONObject 强类型转换
+     * 参数美化-ObjectNode 强类型转换
      *
      * @param paramJson 需要向强类型转换的参数
      * @param keys      可多个 JSONObject 值的 key
      */
-    public static void paramFormatJsonObject(JSONObject paramJson, String... keys) {
+    public static void paramFormatJsonObject(ObjectNode paramJson, String... keys) {
         for (String key : keys) {
-            paramJson.replace(key, paramJson.getJSONObject(key));
+            paramJson.replace(key, paramJson.get(key));
         }
     }
 
@@ -105,9 +114,9 @@ public class ParamUtils {
      * @param paramJson 需要向强类型转换的参数
      * @param keys      可多个 JSONArray 值的 key
      */
-    public static void paramFormatJsonArray(JSONObject paramJson, String... keys) {
+    public static void paramFormatJsonArray(ObjectNode paramJson, String... keys) {
         for (String key : keys) {
-            paramJson.replace(key, paramJson.getJSONArray(key));
+            paramJson.replace(key, paramJson.get(key));
         }
     }
 
@@ -117,11 +126,11 @@ public class ParamUtils {
      * @param paramJson       需要向强类型转换的参数
      * @param paramFormatList 多个参数美化 IPO
      */
-    public static void paramFormatObject(JSONObject paramJson, List<ParamFormatIPO> paramFormatList) {
+    public static void paramFormatObject(Dict paramJson, List<ParamFormatIPO> paramFormatList) {
         for (ParamFormatIPO paramFormat : paramFormatList) {
             String key = paramFormat.getKey();
             Class<?> clazz = paramFormat.getClazz();
-            paramJson.replace(key, paramJson.getObject(key, clazz));
+            paramJson.replace(key, Convert.toObject(paramJson.get(key), clazz));
         }
     }
 
@@ -134,7 +143,7 @@ public class ParamUtils {
      * @param jsonObjectKeys 多个 JSONObject 值的 key（可以为 null）
      * @param jsonArrayKeys  多个 JSONArray 值的 key（可以为 null）
      */
-    public static void paramFormat(JSONObject paramJson, String[] booleanKeys, String[] decimalKeys, String[] jsonObjectKeys, String[] jsonArrayKeys) {
+    public static void paramFormat(ObjectNode paramJson, String[] booleanKeys, String[] decimalKeys, String[] jsonObjectKeys, String[] jsonArrayKeys) {
         if (!StringUtils.isEmptys(booleanKeys)) {
             paramFormatBoolean(paramJson, booleanKeys);
         }
@@ -178,7 +187,7 @@ public class ParamUtils {
      * @param canContainKeys  可包含的 key（非必传）
      * @throws ParamException 不满足条件抛出此异常及其提示信息
      */
-    public static void paramValidate(JSONObject paramJson, String[] mustContainKeys, String... canContainKeys) {
+    public static void paramValidate(Dict paramJson, String[] mustContainKeys, String... canContainKeys) {
         // 1. 判断 Map 数据结构 key 的一致性
         boolean isHint = false;
         String hintMsg = "";
@@ -216,12 +225,12 @@ public class ParamUtils {
      * @throws ParamVoidException 参数是否为空抛出此异常
      * @throws ParamException     不满足条件抛出此异常及其提示信息
      */
-    public static void paramValidate(List<JSONObject> paramList, String[] mustContainKeys, String... canContainKeys) {
+    public static void paramValidate(List<Dict> paramList, String[] mustContainKeys, String... canContainKeys) {
         // 1. 校验参数是否为空
         Assert.notEmpty(paramList, ParamVoidException::new);
 
         // 2. 确认参数 key
-        for (JSONObject paramJson : paramList) {
+        for (Dict paramJson : paramList) {
             paramValidate(paramJson, mustContainKeys, canContainKeys);
         }
     }

@@ -5,8 +5,6 @@ package ext.library.exception;
  */
 public class ParamException extends RuntimeException {
 
-    static final long serialVersionUID = -7818277682527873103L;
-
     public ParamException(String msg) {
         super(msg);
     }

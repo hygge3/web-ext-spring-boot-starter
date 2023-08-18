@@ -1,6 +1,8 @@
 package ext.library.util;
 
 import cn.hutool.core.net.NetUtil;
+import ext.library.constant.HttpAttribute;
+import ext.library.constant.Url;
 
 /**
  * 网络相关工具
@@ -24,6 +26,15 @@ public class NetUtils extends NetUtil {
             return true;
         }
         return isInnerIP(ip);
+    }
+
+    public static String currentIp() {
+        String ip = ThreadLocalUtils.getStr(HttpAttribute.IP);
+        if (isInnerIP(ip)) {
+            return HttpUtils.get(Url.IP);
+        } else {
+            return ip;
+        }
     }
 
 }

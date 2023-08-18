@@ -1,10 +1,8 @@
 package ext.library.util;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.PropertyNamingStrategy;
 import ext.library.convert.Convert;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +28,10 @@ import java.util.Map.Entry;
 @Slf4j
 public class MapUtils extends MapUtil {
 
-    /** 不可变的空 Json 常量 */
-    final static JSONObject FINAL_EMPTY_JSON = new JSONObject();
+    /**
+     * 不可变的空 Json 常量
+     */
+    final static Dict FINAL_EMPTY_JSON = Dict.create();
 
     /**
      * 判断 Map 数据结构 key 的一致性
@@ -237,19 +237,19 @@ public class MapUtils extends MapUtil {
     }
 
     /**
-     * 以安全的方式从 Map 中获取一组数据，组合成一个新的 JSONObject
+     * 以安全的方式从 Map 中获取一组数据，组合成一个新的 Dict
      *
      * @param paramMap 需要从中获取数据的 map
      * @param keys     获取的 keys
      * @return 结果
      */
-    public static JSONObject getJSONObject(Map<String, Object> paramMap, String... keys) {
-        JSONObject paramJson = new JSONObject(paramMap);
+    public static Dict getDict(Map<String, Object> paramMap, String... keys) {
+        Dict paramJson = new Dict(paramMap);
         if (!isContainsOneOfKey(paramJson, keys)) {
             return null;
         }
 
-        JSONObject resultJson = new JSONObject();
+        Dict resultJson = new Dict();
         for (String key : keys) {
             Object value = paramJson.get(key);
             if (value != null) {
@@ -419,76 +419,27 @@ public class MapUtils extends MapUtil {
     }
 
     /**
-     * 以安全的方式从 Map 中获取 JSONObject
+     * 以安全的方式从 Map 中获取 Dict
      *
      * @param paramMap 参数 map
      * @param key      key
      * @return 结果
      */
-    public static JSONObject getJSONObject(final Map<?, ?> paramMap, String key) {
+    public static Dict getDict(final Map<?, ?> paramMap, String key) {
         Object value = paramMap.get(key);
-        return Convert.toJSONObject(value);
+        return Convert.toDict(value);
     }
 
     /**
-     * 以安全的方式从 Map 中获取 JSONArray
+     * 以安全的方式从 Map 中获取 List
      *
      * @param paramMap 参数 map
      * @param key      key
      * @return 结果
      */
-    public static JSONArray getJSONArray(final Map<?, ?> paramMap, String key) {
+    public static List<Dict> getDictList(final Map<?, ?> paramMap, String key) {
         Object value = paramMap.get(key);
-        return Convert.toJSONArray(value);
-    }
-
-    /**
-     * 属性命名策略转换 - 驼峰命名法
-     *
-     * @param param Json 参数 或 POJO 对象
-     * @return 经过属性命名策略转换后的 JSONObject
-     */
-    public static JSONObject toCamelCase(Object param) {
-        return toPropertyNamingStrategy(param, PropertyNamingStrategy.CamelCase);
-    }
-
-    /**
-     * 属性命名策略转换 - 下划线命名法
-     *
-     * @param param Json 参数 或 POJO 对象
-     * @return 经过属性命名策略转换后的 JSONObject
-     */
-    public static JSONObject toUnderlineCase(Object param) {
-        return toPropertyNamingStrategy(param, PropertyNamingStrategy.SnakeCase);
-    }
-
-    /**
-     * 属性命名策略转换 - 下划线命名法
-     *
-     * @param param Json 参数 或 POJO 对象
-     * @return 经过属性命名策略转换后的 JSONObject
-     */
-    public static JSONObject toSnakeCase(Object param) {
-        return toPropertyNamingStrategy(param, PropertyNamingStrategy.SnakeCase);
-    }
-
-    /**
-     * 属性命名策略转换
-     *
-     * @param param                  Json 参数 或 POJO 对象
-     * @param propertyNamingStrategy 属性命名策略
-     * @return 经过属性命名策略转换后的 JSONObject
-     */
-    public static JSONObject toPropertyNamingStrategy(Object param, PropertyNamingStrategy propertyNamingStrategy) {
-        JSONObject jsonObject = Convert.toJSONObject(param);
-        if (MapUtils.isEmpty(jsonObject)) {
-            return jsonObject;
-        }
-
-        JSONObject paramJson = new JSONObject();
-        jsonObject.forEach((key, value) -> paramJson.put(propertyNamingStrategy.fieldName(key), value));
-
-        return paramJson;
+        return Convert.toDictList(value);
     }
 
     /**
@@ -596,8 +547,8 @@ public class MapUtils extends MapUtil {
      */
     private static Object getValue(Object obj, String name) {
         // 判断是否键值对
-        if (obj instanceof JSONObject jsonObject) {
-            return jsonObject.get(name);
+        if (obj instanceof Dict dict) {
+            return dict.get(name);
         } else if (obj instanceof Map map) {
             return map.get(name);
         }
@@ -614,7 +565,7 @@ public class MapUtils extends MapUtil {
             // 获取 get 方法
             Method readMethod = descriptor.getReadMethod();
             // 判断是否是需要的属性的 get 方法
-            if (!name.equals(descriptor.getName())) {
+            if (!StringUtils.equals(name, descriptor.getName())) {
                 continue;
             }
             try {

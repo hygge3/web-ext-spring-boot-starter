@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ForbiddenException extends RuntimeException {
 
-    static final long serialVersionUID = -477721736529522496L;
-
     public ForbiddenException(String message) {
         super(message);
     }

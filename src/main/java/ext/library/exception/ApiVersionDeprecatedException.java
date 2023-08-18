@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApiVersionDeprecatedException extends RuntimeException {
 
-    static final long serialVersionUID = -8929648099790728526L;
-
     public ApiVersionDeprecatedException(String message) {
         super(message);
     }

@@ -24,7 +24,7 @@ public class MybatisAutoConfig implements MyBatisFlexCustomizer {
     @Override
     public void customize(FlexGlobalConfig globalConfig) {
         //我们可以在这里进行一些列的初始化配置
-        if (mybatisProperties.isLog()) {
+        if (mybatisProperties.isSqlLog()) {
             // 开启审计功能
             AuditManager.setAuditEnable(true);
             // 设置 SQL 审计收集器

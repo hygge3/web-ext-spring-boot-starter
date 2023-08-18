@@ -1,22 +1,23 @@
 package ext.library.validation;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONWriter;
 import ext.library.util.Assert;
 import ext.library.util.I18nUtils;
+import ext.library.util.JsonUtils;
 import ext.library.util.SpringUtils;
 import ext.library.util.StringUtils;
+import jakarta.validation.ConstraintViolation;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.validation.ConstraintViolation;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -375,25 +376,24 @@ public class Validator {
      * @return Validator
      */
     public Validator valid(Object param, Class<?>... groups) {
-        Set<ConstraintViolation<Object>> violations = SpringUtils.getBean(jakarta.validation.Validator.class)
-                .validate(param, groups);
-        if (violations.size() > 0) {
+        Set<ConstraintViolation<Object>> violations = SpringUtils.getBean(jakarta.validation.Validator.class).validate(param, groups);
+        if (CollUtil.isNotEmpty(violations)) {
             log.warn("{} violations.", violations.size());
             Console.log("校验对象：{}", param);
-            JSONArray errorHints = new JSONArray();
+            List<Dict> errorHints = CollUtil.newArrayList();
             violations.forEach(violation -> {
                 String errorKey = violation.getPropertyPath().toString();
                 Object errorValue = violation.getInvalidValue();
                 String errorHintMsg = I18nUtils.getExt(violation.getMessage());
-                JSONObject errorHint = new JSONObject();
+                Dict errorHint = new Dict();
                 errorHint.put("errorKey", errorKey);
                 errorHint.put("errorValue", errorValue);
                 errorHint.put("errorHintMsg", errorHintMsg);
                 errorHints.add(errorHint);
-                System.out.println(errorHint.toString(JSONWriter.Feature.WriteMapNullValue));
+                System.out.println(JsonUtils.toStringPretty(errorHint));
             });
 
-            throw new ValidateException(errorHints.toString(JSONWriter.Feature.WriteMapNullValue));
+            throw new ValidateException(JsonUtils.toStringPretty(errorHints));
         }
 
         return this;

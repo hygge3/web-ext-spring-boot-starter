@@ -7,16 +7,22 @@ import lombok.NoArgsConstructor;
 
 /**
  * 分页上下条数据 VO
+ * <p>
+ * T - 主键类型
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageBeforeAndAfterVO {
+public class PageBeforeAndAfterVO<T> {
 
-    /** 上一条数据 ID */
-    Long beforeId;
-    /** 下一条数据 ID */
-    Long afterId;
+    /**
+     * 上一条数据 ID
+     */
+    T beforeId;
+    /**
+     * 下一条数据 ID
+     */
+    T afterId;
 
 }

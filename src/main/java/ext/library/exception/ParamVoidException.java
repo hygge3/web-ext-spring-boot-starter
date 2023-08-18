@@ -8,6 +8,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParamVoidException extends RuntimeException {
 
-    static final long serialVersionUID = -8552913006333383718L;
-
 }

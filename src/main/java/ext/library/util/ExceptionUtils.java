@@ -1,6 +1,6 @@
 package ext.library.util;
 
-import com.alibaba.fastjson2.JSONObject;
+import cn.hutool.core.lang.Dict;
 import org.springframework.lang.Nullable;
 
 /**
@@ -12,12 +12,12 @@ public class ExceptionUtils {
     private synchronized static <T> T getPrintException(Throwable e, @Nullable Integer line, ExceptionConvertEnum exceptionConvertEnum) {
         T msg = null;
         if (exceptionConvertEnum == ExceptionConvertEnum.JSONObject) {
-            msg = (T) new JSONObject();
+            msg = (T) Dict.create();
             if (e == null) {
-                ((JSONObject) msg).put("0", "The stack trace is null");
+                ((Dict) msg).put("0", "The stack trace is null");
                 return msg;
             } else {
-                ((JSONObject) msg).put("0", e.toString());
+                ((Dict) msg).put("0", e.toString());
             }
         } else if (exceptionConvertEnum == ExceptionConvertEnum.StringBuffer) {
             msg = (T) new StringBuffer();
@@ -45,12 +45,11 @@ public class ExceptionUtils {
             int lineNumber = stackTraceElement.getLineNumber();
 
             if (exceptionConvertEnum == ExceptionConvertEnum.JSONObject) {
-                ((JSONObject) msg).put(String.valueOf(i + 1), "  at " + className + "." + methodName + "(" + fileName + ":" + lineNumber + ")");
+                ((Dict) msg).put(String.valueOf(i + 1), "  at " + className + "." + methodName + "(" + fileName + ":" + lineNumber + ")");
             }
 
             if (exceptionConvertEnum == ExceptionConvertEnum.StringBuffer) {
-                ((StringBuffer) msg).append("\tat ").append(className).append(".").append(methodName).append("(")
-                        .append(fileName).append(":").append(lineNumber).append(")\n");
+                ((StringBuffer) msg).append("\tat ").append(className).append(".").append(methodName).append("(").append(fileName).append(":").append(lineNumber).append(")\n");
             }
         }
 
@@ -87,7 +86,7 @@ public class ExceptionUtils {
      * @param e 异常
      * @return 异常内容
      */
-    public synchronized static JSONObject getPrintExceptionToJson(Throwable e) {
+    public synchronized static Dict getPrintExceptionToJson(Throwable e) {
         return getPrintExceptionToJson(e, 4);
     }
 
@@ -98,7 +97,7 @@ public class ExceptionUtils {
      * @param line 打印行数
      * @return 异常内容
      */
-    public synchronized static JSONObject getPrintExceptionToJson(Throwable e, @Nullable Integer line) {
+    public synchronized static Dict getPrintExceptionToJson(Throwable e, @Nullable Integer line) {
         return getPrintException(e, line, ExceptionConvertEnum.JSONObject);
     }
 

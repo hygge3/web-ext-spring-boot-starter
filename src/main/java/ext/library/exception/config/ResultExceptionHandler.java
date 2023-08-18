@@ -6,10 +6,19 @@ import cn.dev33.satoken.exception.NotRoleException;
 import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
-import ext.library.exception.*;
+import ext.library.exception.AlertException;
+import ext.library.exception.ApiVersionDeprecatedException;
+import ext.library.exception.AttackException;
+import ext.library.exception.ClientFallbackException;
+import ext.library.exception.ForbiddenException;
+import ext.library.exception.LoginException;
+import ext.library.exception.ParamDecryptException;
+import ext.library.exception.ParamException;
+import ext.library.exception.ParamVoidException;
+import ext.library.exception.ResultException;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.ServletUtils;
 import ext.library.web.view.R;
@@ -232,7 +241,7 @@ public class ResultExceptionHandler {
         String uri = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
         Console.error("uri={}", uri);
         List<ObjectError> errors = e.getAllErrors();
-        JSONObject paramHint = new JSONObject();
+        Dict paramHint = Dict.create();
         errors.forEach(error -> {
             String str = StrUtil.subAfter(Objects.requireNonNull(error.getArguments())[0].toString(), "[", true);
             String key = str.substring(0, str.length() - 1);
@@ -255,7 +264,7 @@ public class ResultExceptionHandler {
         String uri = Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI();
         Console.error("uri={}", uri);
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
-        JSONObject paramHint = new JSONObject();
+        Dict paramHint = Dict.create();
         for (ConstraintViolation<?> constraintViolation : constraintViolations) {
             String key = constraintViolation.getPropertyPath().toString();
             String msg = constraintViolation.getMessage();
@@ -276,7 +285,7 @@ public class ResultExceptionHandler {
     public Result<?> validateExceptionHandler(ValidateException e) {
         ExceptionUtils.printException(e);
         try {
-            return R.paramCheckNotPass(Convert.toJSONArray(e.getMessage()));
+            return R.paramCheckNotPass(Convert.toDictList(e.getMessage()));
         } catch (Exception exception) {
             return R.paramCheckNotPass(e.getMessage());
         }

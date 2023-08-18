@@ -13,12 +13,10 @@ import java.io.Serializable;
  */
 public class BaseEntity implements Serializable {
 
-    static final long serialVersionUID = 2241197545628586478L;
-
     /**
-     * 转换
+     * 转换为目标类型
      *
-     * @param clazz clazz
+     * @param clazz 目标类型
      * @return {@link T}
      */
     public <T> T convert(Class<T> clazz) {

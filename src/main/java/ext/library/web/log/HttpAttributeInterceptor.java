@@ -1,12 +1,13 @@
 package ext.library.web.log;
 
-import com.alibaba.fastjson2.JSONWriter;
 import ext.library.constant.HttpAttribute;
 import ext.library.convert.Convert;
 import ext.library.util.IdUtils;
+import ext.library.util.JsonUtils;
 import ext.library.util.ServletUtils;
 import ext.library.util.SpringUtils;
 import ext.library.util.StringUtils;
+import ext.library.util.ThreadLocalUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.StringJoiner;
 
 /**
- * 日志拦截器
+ * HTTP 属性拦截器
  */
 @Slf4j
-public class LogInterceptor implements HandlerInterceptor {
+public class HttpAttributeInterceptor implements HandlerInterceptor {
 
     /**
      * 在控制器（controller 方法）执行之前
@@ -31,6 +32,9 @@ public class LogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         LogProperties logProperties = SpringUtils.getBean(LogProperties.class);
+        // 请求 ip
+        String ip = ServletUtils.getClientIP(request);
+        ThreadLocalUtils.setIp(ip);
         // 请求时间
         long requestTime = System.currentTimeMillis();
         request.setAttribute(HttpAttribute.REQUEST_TIME, requestTime);
@@ -53,8 +57,9 @@ public class LogInterceptor implements HandlerInterceptor {
         log.info(sj + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : ""));
         if (ServletUtils.hasBodyMethod(request)) {
             try {
-                System.out.println(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
-            }catch (Exception ignored){}
+                System.out.println(JsonUtils.toStringPretty(ServletUtils.getParamToJson()));
+            } catch (Exception ignored) {
+            }
         }
         // MDC 清空
         MDC.clear();

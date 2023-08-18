@@ -1,13 +1,13 @@
 package ext.library.web.webenv;
 
-import com.alibaba.fastjson2.JSONObject;
+import cn.hutool.core.lang.Dict;
 import ext.library.convert.Convert;
 import ext.library.util.ParamUtils;
 import ext.library.util.ServletUtils;
 import ext.library.web.view.Result;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Objects;
@@ -46,7 +46,7 @@ public class WebEnv {
      *
      * @return JSON 对象
      */
-    public JSONObject getParam() {
+    public Dict getParam() {
         return ServletUtils.getParamToJson();
 
     }

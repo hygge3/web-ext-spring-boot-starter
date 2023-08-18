@@ -11,7 +11,7 @@ import ext.library.idempotent.IdempotentInterceptorRegistry;
 import ext.library.util.ClassUtils;
 import ext.library.util.ListUtils;
 import ext.library.util.StringUtils;
-import ext.library.web.log.LogInterceptorRegistry;
+import ext.library.web.log.HttpAttributeInterceptor;
 import ext.library.web.properties.JacksonHttpMessageConverterProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +36,10 @@ import java.util.Objects;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import({IdempotentInterceptorRegistry.class, LogInterceptorRegistry.class})
+@Import({IdempotentInterceptorRegistry.class})
 public class WebMvcAutoConfig implements WebMvcConfigurer {
     final JacksonHttpMessageConverterProperties jacksonProperties;
     final IdempotentInterceptorRegistry idempotentInterceptorRegistry;
-    final LogInterceptorRegistry logInterceptorRegistry;
 
     /**
      * 扩展 HTTP 消息转换器做 Json 解析处理
@@ -127,10 +126,8 @@ public class WebMvcAutoConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
-        // 添加日志拦截器
-        if (Objects.nonNull(logInterceptorRegistry)) {
-            logInterceptorRegistry.registry(registry);
-        }
+        // 添加请求属性拦截器
+        registry.addInterceptor(new HttpAttributeInterceptor()).order(0);
         // 添加幂等性拦截器
         if (Objects.nonNull(idempotentInterceptorRegistry)) {
             idempotentInterceptorRegistry.registry(registry);

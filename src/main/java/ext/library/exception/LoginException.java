@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginException extends RuntimeException {
 
-    static final long serialVersionUID = -4747910085674257587L;
-
     public LoginException(String message) {
         super(message);
     }

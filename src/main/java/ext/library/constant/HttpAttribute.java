@@ -12,15 +12,24 @@ public interface HttpAttribute {
      * 链路 ID
      */
     String TRACE_ID = Constant.PREFIX + "Trace-Id";
-    /** 请求时间 */
+    /**
+     * 请求时间
+     */
     String REQUEST_TIME = Constant.PREFIX + "Request-Time";
-
-    /** 时区 */
+    /**
+     * 时区
+     */
     String TIME_ZONE = Constant.PREFIX + "Time-Zone";
+    /**
+     * ip
+     */
+    String IP = Constant.PREFIX + "Ip";
 
     // 请求属性
 
-    /** 幂等性版本号请求 key */
+    /**
+     * 幂等性版本号请求 key
+     */
     String API_IDEMPOTENT_VERSION = Constant.PREFIX + "Api-Idempotent-Version";
 
     /**

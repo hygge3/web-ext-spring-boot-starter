@@ -1,8 +1,8 @@
 package ext.library.web.config;
 
-import com.alibaba.fastjson2.JSON;
 import ext.library.constant.HttpAttribute;
 import ext.library.util.I18nUtils;
+import ext.library.util.JsonUtils;
 import ext.library.web.view.R;
 import ext.library.web.view.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
             result = R.success(body);
             result.setMsg(I18nUtils.getExt(result.getMsg()));
             result.setTraceId(MDC.get(HttpAttribute.TRACE_ID));
-            return JSON.toJSONString(result);
+            return JsonUtils.toString(result);
         } else {
             result = R.success(body);
         }

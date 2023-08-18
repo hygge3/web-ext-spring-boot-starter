@@ -13,10 +13,10 @@ public class MybatisProperties {
     static final String PREFIX = Constant.CONFIG_PREFIX + ".mybatis";
 
     /**
-     * 是否启用执行日志
+     * 是否打开 SQL 执行日志
      * <p>
-     * 默认：true
+     * 默认：false
      */
-    boolean log = false;
+    boolean sqlLog = false;
 
 }

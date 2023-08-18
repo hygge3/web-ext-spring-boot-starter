@@ -1,9 +1,10 @@
 package ext.library.util;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
+
+import java.util.List;
 
 /**
  * 对象工具类，包括对象比较与转换等问题
@@ -37,25 +38,25 @@ public class ObjectUtils extends ObjectUtil {
     }
 
     /**
-     * 转换为 {@linkplain JSONObject}
+     * 转换为 {@linkplain Dict}
      *
      * @param value 被转换的值
-     * @return JSON
-     * @see Convert#toJSONObject(Object)
+     * @return Dict
+     * @see Convert#toDict(Object)
      */
-    public static JSONObject toJSONObject(Object value) {
-        return Convert.toJSONObject(value);
+    public static Dict toDict(Object value) {
+        return Convert.toDict(value);
     }
 
     /**
-     * 转换为 {@linkplain JSONArray}
+     * 转换为 {@linkplain List<Dict>}
      *
      * @param value 被转换的值
-     * @return JSON 数组
-     * @see Convert#toJSONArray(Object)
+     * @return Dict 数组
+     * @see Convert#toDictList(Object)
      */
-    public static JSONArray toJSONArray(Object value) {
-        return Convert.toJSONArray(value);
+    public static List<Dict> toDictList(Object value) {
+        return Convert.toDictList(value);
     }
 
 }

@@ -1,8 +1,7 @@
 package ext.library.web.view;
 
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.annotation.JSONField;
+import cn.hutool.core.lang.Dict;
+import com.mybatisflex.core.util.ConvertUtil;
 import ext.library.convert.Convert;
 import ext.library.exception.ResultException;
 import ext.library.util.I18nUtils;
@@ -21,14 +20,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-
-import static com.alibaba.fastjson2.util.TypeUtils.toBigDecimal;
-import static com.alibaba.fastjson2.util.TypeUtils.toBigInteger;
-import static com.alibaba.fastjson2.util.TypeUtils.toBoolean;
-import static com.alibaba.fastjson2.util.TypeUtils.toDate;
-import static com.alibaba.fastjson2.util.TypeUtils.toDouble;
-import static com.alibaba.fastjson2.util.TypeUtils.toInteger;
-import static com.alibaba.fastjson2.util.TypeUtils.toLong;
+import java.util.Map;
 
 /**
  * HTTP 请求最外层响应对象，更适应 RESTful 风格 API
@@ -42,20 +34,25 @@ public class Result<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = -3830508963654505583L;
 
-    /** 响应状态码 */
-    @JSONField(ordinal = 1)
+    /**
+     * 响应状态码
+     */
     private Integer code;
-    /** 响应提示 */
-    @JSONField(ordinal = 2)
+    /**
+     * 响应提示
+     */
     private String msg;
-    /** 响应状态 */
-    @JSONField(ordinal = 3)
+    /**
+     * 响应状态
+     */
     private boolean flag;
-    /** 链路追踪码 */
-    @JSONField(ordinal = 4)
+    /**
+     * 链路追踪码
+     */
     private String traceId;
-    /** 业务数据 */
-    @JSONField(ordinal = 5)
+    /**
+     * 业务数据
+     */
     private T data;
 
     /**
@@ -84,12 +81,12 @@ public class Result<T> implements Serializable {
         return Convert.toJavaBean(data, clazz);
     }
 
-    public JSONObject dataToJSONObject() {
-        return Convert.toJSONObject(data);
+    public Dict dataToDict() {
+        return Convert.toDict(data);
     }
 
-    public JSONArray dataToJSONArray() {
-        return Convert.toJSONArray(data);
+    public List<Dict> dataToDictList() {
+        return Convert.toDictList(data);
     }
 
     public <D> List<D> dataToList(Class<D> clazz) {
@@ -97,43 +94,43 @@ public class Result<T> implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public List<JSONObject> dataToJsonList() {
+    public List<Dict> dataToJsonList() {
         if (data instanceof List<?> dataTemp) {
             if (ListUtils.isNotEmpty(dataTemp)) {
-                if (dataTemp.get(0) instanceof JSONObject) {
-                    return (List<JSONObject>) data;
+                if (dataTemp.get(0) instanceof Dict) {
+                    return (List<Dict>) data;
                 }
             }
         }
 
-        return ListUtils.toJsonList(dataToJSONArray());
+        return dataToDictList();
     }
 
     public Boolean dataToBoolean() {
         if (data == null) {
             return null;
         }
-        return toBoolean(data);
+        return ConvertUtil.toBoolean(data);
     }
 
     public Integer dataToInteger() {
-        return toInteger(data);
+        return ConvertUtil.toInt(data);
     }
 
     public Long dataToLong() {
-        return toLong(data);
+        return ConvertUtil.toLong(data);
     }
 
     public Double dataToDouble() {
-        return toDouble(data);
+        return ConvertUtil.toDouble(data);
     }
 
     public BigDecimal dataToBigDecimal() {
-        return toBigDecimal(data);
+        return ConvertUtil.toBigDecimal(data);
     }
 
     public BigInteger dataToBigInteger() {
-        return toBigInteger(data);
+        return ConvertUtil.toBigInteger(data);
     }
 
     public String dataToString() {
@@ -156,7 +153,7 @@ public class Result<T> implements Serializable {
 
     public Date dataToDate() {
 
-        return toDate(data);
+        return ConvertUtil.toDate(data);
     }
 
     // -------- result convert --------
@@ -170,9 +167,14 @@ public class Result<T> implements Serializable {
         return Convert.toJSONString(this);
     }
 
-    public JSONObject castToJSONObject() {
+    public Dict castToDict() {
         this.setMsg(I18nUtils.getExt(this.getMsg()));
-        return Convert.toJSONObject(this);
+        return Convert.toDict(this);
+    }
+
+    public Map<String, Object> castToMap() {
+        this.setMsg(I18nUtils.getExt(this.getMsg()));
+        return Convert.toMap(String.class, Object.class, this);
     }
 
     /**

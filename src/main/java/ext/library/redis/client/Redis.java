@@ -68,8 +68,7 @@ public class Redis {
         lockInfo.setLockKey(redisLockKey);
         lockInfo.setLockTimeoutMs(lockTimeoutMs);
         lockInfo.setLockTimeoutStamp(lockTimeoutStamp);
-        if (Objects.equals(Boolean.TRUE, stringRedisTemplate.opsForValue()
-                .setIfAbsent(redisLockKey, lockTimeoutStamp, lockTimeoutMs, TimeUnit.MILLISECONDS))) {
+        if (Objects.equals(Boolean.TRUE, stringRedisTemplate.opsForValue().setIfAbsent(redisLockKey, lockTimeoutStamp, lockTimeoutMs, TimeUnit.MILLISECONDS))) {
             lockInfo.setLock(true);
             return lockInfo;
         }

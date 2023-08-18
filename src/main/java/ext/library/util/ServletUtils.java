@@ -10,13 +10,18 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.CaseInsensitiveMap;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.net.multipart.MultipartFormData;
 import cn.hutool.core.net.multipart.UploadSetting;
-import cn.hutool.core.util.*;
-import com.alibaba.fastjson2.JSONObject;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import ext.library.convert.Convert;
 import ext.library.web.properties.CookieProperties;
 import jakarta.servlet.ServletOutputStream;
@@ -30,10 +35,21 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Servlet 相关工具类封装<br>
@@ -121,7 +137,7 @@ public class ServletUtils {
      *
      * @return 解析的 Json
      */
-    public static JSONObject getParamToJson() {
+    public static Dict getParamToJson() {
         return getParamToJson(getRequest());
     }
 
@@ -131,18 +147,17 @@ public class ServletUtils {
      * @param request 请求对象{@link ServletRequest}
      * @return 解析的 Json
      */
-    public static JSONObject getParamToJson(HttpServletRequest request) {
+    public static Dict getParamToJson(HttpServletRequest request) {
         // 获得所有请求参数
         Map<String, String> paramMap = ServletUtils.getParamMap(request);
-        JSONObject paramJson = new JSONObject();
-        paramJson.putAll(paramMap);
+        Dict paramJson = Dict.parse(paramMap);
 
         // 获取请求体：遵守一种行业默认的行为规范，对 GET 请求默认不处理 body，避免一些难以解释的复杂问题
         boolean getMethod = ServletUtils.isGetMethod(request);
         if (!getMethod) {
             String body = ServletUtils.getBody(request);
             if (StrUtil.isNotEmpty(body)) {
-                JSONObject jsonBody = Convert.toJSONObject(body);
+                Dict jsonBody = Convert.toDict(body);
                 paramJson.putAll(jsonBody);
             }
         }
@@ -215,7 +230,7 @@ public class ServletUtils {
         Console.log();
         Console.log("打印请求参数：");
         Console.log("QueryString:{}", request.getQueryString());
-        Console.log("ParameterMap:{}", JSONObject.toJSONString(request.getParameterMap()));
+        Console.log("ParameterMap:{}", JsonUtils.toString(request.getParameterMap()));
 
         // 4. 打印请求头
         Console.log();

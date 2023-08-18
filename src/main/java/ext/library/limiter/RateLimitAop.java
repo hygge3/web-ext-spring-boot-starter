@@ -24,12 +24,12 @@ import java.util.List;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class RedisLimitAop {
+public class RateLimitAop {
 
     private final StringRedisTemplate stringRedisTemplate;
 
 
-    @Pointcut("@annotation(ext.library.limiter.RedisLimit)")
+    @Pointcut("@annotation(ext.library.limiter.RateLimit)")
     private void check() {
 
     }
@@ -39,25 +39,25 @@ public class RedisLimitAop {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
-        //拿到 RedisLimit 注解，如果存在则说明需要限流
-        RedisLimit redisLimit = method.getAnnotation(RedisLimit.class);
+        //拿到 RateLimit 注解，如果存在则说明需要限流
+        RateLimit rateLimit = method.getAnnotation(RateLimit.class);
 
-        if (redisLimit != null) {
+        if (rateLimit != null) {
             //获取 redis 的 key
-            String key = redisLimit.key();
+            String key = rateLimit.key();
             String className = method.getDeclaringClass().getName();
-
-            String limitKey = key + className + method.getName();
+            String limitKey;
+            limitKey = key + className + method.getName();
 
             log.info(limitKey);
 
             if (StrUtil.isEmpty(key)) {
-                throw new RedisLimitException("key cannot be null");
+                throw new RateLimitException("key cannot be null");
             }
 
-            long limit = redisLimit.permitsPerSecond();
+            long limit = rateLimit.permitsPerSecond();
 
-            long expire = redisLimit.expire();
+            long expire = rateLimit.expire();
 
             List<String> keys = new ArrayList<>();
             keys.add(key);
@@ -69,8 +69,8 @@ public class RedisLimitAop {
             log.info("Access try count is {} for key={}", count, key);
 
             if (count != null && count == 0) {
-                log.debug("令牌桶={}，获取令牌失败", key);
-                throw new RedisLimitException(redisLimit.msg());
+                log.warn("令牌桶：{}，获取令牌失败", key);
+                throw new RateLimitException(rateLimit.msg());
             }
         }
 
