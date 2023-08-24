@@ -1,6 +1,7 @@
 package ext.library.web.config;
 
 import com.alibaba.fastjson2.JSON;
+import ext.library.annotation.UnWrapper;
 import ext.library.constant.HttpAttribute;
 import ext.library.util.I18nUtils;
 import ext.library.web.view.R;
@@ -29,6 +30,12 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
+        // 不需要包装
+        if (returnType.hasMethodAnnotation(UnWrapper.class) ||
+                returnType.getContainingClass().isAnnotationPresent(UnWrapper.class)) {
+            log.debug("UnWrapper");
+            return false;
+        }
         return Objects.nonNull(returnType.getMethod());
     }
 
