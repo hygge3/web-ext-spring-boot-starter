@@ -20,7 +20,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
@@ -59,8 +58,7 @@ public class ResultExceptionHandler {
     @ExceptionHandler(ResultException.class)
     public synchronized Result<?> resultExceptionHandler(ResultException e) {
         var result = e.getResult();
-        log.error(result.toString());
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, 1);
         return result;
     }
 
@@ -73,7 +71,7 @@ public class ResultExceptionHandler {
     @ExceptionHandler(AlertException.class)
     public synchronized Result<?> alertExceptionHandler(AlertException e) {
         var result = e.getResult();
-        log.warn(result.toString());
+        ExceptionUtils.printException(e, 1);
         return result;
     }
 
@@ -85,7 +83,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(LoginException.class)
     public Result<?> loginExceptionHandler(LoginException e) {
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, 1);
         return R.unauthorized();
     }
 
@@ -97,7 +95,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NotLoginException.class)
     public Result<?> saTokenExceptionHandler(NotLoginException e) {
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, 1);
         return R.unauthorized();
     }
 
@@ -134,7 +132,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NotPermissionException.class)
     public Result<?> notPermissionExceptionHandler(NotPermissionException e) {
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, 1);
         return R.forbidden();
     }
 
@@ -146,7 +144,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NotRoleException.class)
     public Result<?> notRoleExceptionHandler(NotRoleException e) {
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, 1);
         return R.forbidden();
     }
 
@@ -281,7 +279,6 @@ public class ResultExceptionHandler {
         return R.paramCheckNotPass();
 
     }
-
 
     /**
      * 验证异常统一处理 -433
