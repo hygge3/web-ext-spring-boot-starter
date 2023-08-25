@@ -57,9 +57,8 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(ResultException.class)
     public synchronized Result<?> resultExceptionHandler(ResultException e) {
-        var result = e.getResult();
-        ExceptionUtils.printException(e, 1);
-        return result;
+        log.error(e.getMessage());
+        return e.getResult();
     }
 
     /**
@@ -70,9 +69,8 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(AlertException.class)
     public synchronized Result<?> alertExceptionHandler(AlertException e) {
-        var result = e.getResult();
-        ExceptionUtils.printException(e, 1);
-        return result;
+        log.error(e.getMessage());
+        return e.getResult();
     }
 
     /**
@@ -83,7 +81,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(LoginException.class)
     public Result<?> loginExceptionHandler(LoginException e) {
-        ExceptionUtils.printException(e, 1);
+        log.error(e.getMessage());
         return R.unauthorized();
     }
 
@@ -95,7 +93,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NotLoginException.class)
     public Result<?> saTokenExceptionHandler(NotLoginException e) {
-        ExceptionUtils.printException(e, 1);
+        log.error(e.getMessage());
         return R.unauthorized();
     }
 
@@ -120,7 +118,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(ForbiddenException.class)
     public Result<?> forbiddenExceptionHandler(ForbiddenException e) {
-        ExceptionUtils.printException(e);
+        log.error(e.getMessage());
         return R.forbidden();
     }
 
@@ -132,7 +130,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NotPermissionException.class)
     public Result<?> notPermissionExceptionHandler(NotPermissionException e) {
-        ExceptionUtils.printException(e, 1);
+        log.error(e.getMessage());
         return R.forbidden();
     }
 
@@ -144,7 +142,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NotRoleException.class)
     public Result<?> notRoleExceptionHandler(NotRoleException e) {
-        ExceptionUtils.printException(e, 1);
+        log.error(e.getMessage());
         return R.forbidden();
     }
 
@@ -306,7 +304,6 @@ public class ResultExceptionHandler {
     @ExceptionHandler(ParamDecryptException.class)
     public Result<?> paramDecryptExceptionHandler(ParamDecryptException e) {
         log.error("【解密错误】错误信息如下：{}", e.getMessage());
-        ExceptionUtils.printException(e);
         return R.paramDecryptError();
     }
 
@@ -319,7 +316,6 @@ public class ResultExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<?> illegalArgumentExceptionHandler(IllegalArgumentException e) {
         log.error("【参数错误】：{}", e.getMessage());
-        ExceptionUtils.printException(e);
         return R.errorPrompt(e.getMessage());
     }
 
