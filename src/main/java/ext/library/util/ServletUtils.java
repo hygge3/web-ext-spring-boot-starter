@@ -25,6 +25,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -39,6 +40,7 @@ import java.util.*;
  * Servlet 相关工具类封装<br>
  * 源自 hutool-extra 增强
  */
+@Slf4j
 public class ServletUtils {
 
     static final String METHOD_DELETE = "DELETE";
@@ -294,8 +296,9 @@ public class ServletUtils {
         try {
             return IoUtil.readBytes(request.getInputStream());
         } catch (IOException e) {
-            throw new IORuntimeException(e);
+            log.error(e.getMessage());
         }
+        return new byte[0];
     }
     // --------------------------------------------------------- getParam end
 
