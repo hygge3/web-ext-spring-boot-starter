@@ -88,7 +88,7 @@ public class ExceptionUtils {
      * @return 异常内容
      */
     public synchronized static JSONObject getPrintExceptionToJson(Throwable e) {
-        return getPrintExceptionToJson(e, 4);
+        return getPrintExceptionToJson(e, null);
     }
 
     /**
@@ -109,7 +109,7 @@ public class ExceptionUtils {
      * @param e 异常
      */
     public synchronized static void printException(Throwable e) {
-        printException(e, 4);
+        printException(e, null);
     }
 
     /**

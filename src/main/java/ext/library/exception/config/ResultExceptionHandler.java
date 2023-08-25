@@ -20,6 +20,8 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -266,6 +268,21 @@ public class ResultExceptionHandler {
         return R.paramCheckNotPass(paramHint);
     }
 
+
+    /**
+     * Http 请求消息序列化异常
+     *
+     * @param e e
+     * @return {@link Result}<{@link ?}>
+     */
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public Result<?> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
+        ExceptionUtils.printException(e);
+        return R.paramCheckNotPass();
+
+    }
+
+
     /**
      * 验证异常统一处理 -433
      *
@@ -281,6 +298,7 @@ public class ResultExceptionHandler {
             return R.paramCheckNotPass(e.getMessage());
         }
     }
+
 
     /**
      * 解密异常统一处理 -435
@@ -303,7 +321,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<?> illegalArgumentExceptionHandler(IllegalArgumentException e) {
-        log.error("【执行存在不合理】错误信息如下：{}", e.getMessage());
+        log.error("【参数错误】：{}", e.getMessage());
         ExceptionUtils.printException(e);
         return R.errorPrompt(e.getMessage());
     }
