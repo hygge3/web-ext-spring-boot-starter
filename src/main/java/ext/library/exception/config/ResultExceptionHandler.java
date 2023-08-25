@@ -19,6 +19,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -27,6 +29,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
@@ -276,6 +279,27 @@ public class ResultExceptionHandler {
         ExceptionUtils.printException(e);
         return R.paramCheckNotPass();
 
+    }
+
+    /**
+     * 文件超出最大限制
+     *
+     * @param e e
+     * @return {@link Result}<{@link ?}>
+     */
+    @ExceptionHandler({MaxUploadSizeExceededException.class})
+    public Result<?> maxUploadSizeExceededExceptionHandler(MaxUploadSizeExceededException e) {
+        ExceptionUtils.printException(e);
+        String msg;
+        Throwable cause = e.getCause().getCause();
+        if (cause instanceof FileSizeLimitExceededException) {
+            msg = "上传文件过大，单文件大小不得超过 {}";
+        } else if (cause instanceof SizeLimitExceededException) {
+            msg = "上传文件过大，总上传文件大小不得超过 {}";
+        } else {
+            msg = "上传文件失败";
+        }
+        return R.errorPromptFormat(msg, e.getMaxUploadSize());
     }
 
     /**

@@ -80,22 +80,11 @@ spring:
   main:
     allow-bean-definition-overriding: true
     banner-mode: console
-  servlet:
-    multipart:
-      # 文件最大限制为 10mb，默认为 1mb
-      max-file-size: 10MB
 server:
   compression:
     # 开启响应内容压缩
     enabled: true
 mybatis-flex:
-  global-config:
-    # 逻辑删除数据存在标记值
-    deleted-value-of-logic-delete: NOW()
-    # 逻辑删除数据删除标记值
-    normal-value-of-logic-delete: null
-    # 默认的分页查询时的每页数据量
-    default-page-size: 10
   # 指定 MyBatis 的执行器
   executor-type: reuse
   configuration:

@@ -292,13 +292,16 @@ public class ServletUtils {
      * @return 获得请求体 byte[]
      * @since 4.0.2
      */
-    public static byte[] getBodyBytes(ServletRequest request) {
+    public static byte[] getBodyBytes(HttpServletRequest request) {
         try {
+            if (isMultipart(request)) {
+                return null;
+            }
             return IoUtil.readBytes(request.getInputStream());
         } catch (IOException e) {
             log.error(e.getMessage());
         }
-        return new byte[0];
+        return null;
     }
     // --------------------------------------------------------- getParam end
 
