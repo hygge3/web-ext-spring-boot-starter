@@ -141,7 +141,7 @@ public class ServletUtils {
 
         // 获取请求体：遵守一种行业默认的行为规范，对 GET 请求默认不处理 body，避免一些难以解释的复杂问题
         boolean getMethod = ServletUtils.isGetMethod(request);
-        if (!getMethod) {
+        if (!getMethod || !isMultipart(request)) {
             String body = ServletUtils.getBody(request);
             if (StrUtil.isNotEmpty(body)) {
                 JSONObject jsonBody = Convert.toJSONObject(body);
