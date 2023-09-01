@@ -120,6 +120,14 @@ public class R {
     public static Result<?> unauthorized() {
         return error(ResultEnum.UNAUTHORIZED.getCode(), ResultEnum.UNAUTHORIZED.getMsg());
     }
+    /**
+     * 未登录或登录已失效 -401
+     *
+     * @return HTTP 请求，最外层响应对象
+     */
+    public static Result<?> unauthorized(String msg) {
+        return error(ResultEnum.UNAUTHORIZED.getCode(), msg);
+    }
 
     /**
      * 非法访问 -402
