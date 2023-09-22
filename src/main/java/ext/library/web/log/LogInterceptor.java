@@ -1,6 +1,5 @@
 package ext.library.web.log;
 
-import com.alibaba.fastjson2.JSONWriter;
 import ext.library.constant.HttpAttribute;
 import ext.library.convert.Convert;
 import ext.library.util.IdUtils;
@@ -53,8 +52,9 @@ public class LogInterceptor implements HandlerInterceptor {
         log.info(sj + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : ""));
         if (ServletUtils.hasBodyMethod(request)) {
             try {
-                System.out.println(ServletUtils.getParamToJson().toString(JSONWriter.Feature.PrettyFormat));
-            }catch (Exception ignored){}
+                log.info(ServletUtils.getParamToJson().toString());
+            } catch (Exception ignored) {
+            }
         }
         // MDC 清空
         MDC.clear();
