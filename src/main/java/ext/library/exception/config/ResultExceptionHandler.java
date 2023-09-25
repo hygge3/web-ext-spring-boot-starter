@@ -9,7 +9,17 @@ import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
 import ext.library.convert.Convert;
-import ext.library.exception.*;
+import ext.library.exception.AlertException;
+import ext.library.exception.ApiVersionDeprecatedException;
+import ext.library.exception.AttackException;
+import ext.library.exception.ClientFallbackException;
+import ext.library.exception.ForbiddenException;
+import ext.library.exception.LoginException;
+import ext.library.exception.NotFoundException;
+import ext.library.exception.ParamDecryptException;
+import ext.library.exception.ParamException;
+import ext.library.exception.ParamVoidException;
+import ext.library.exception.ResultException;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.ServletUtils;
 import ext.library.web.view.R;
@@ -155,6 +165,18 @@ public class ResultExceptionHandler {
     }
 
     /**
+     * 资源未找到（Not Found） -404
+     *
+     * @param e 接口未找到异常
+     * @return 结果
+     */
+    @ExceptionHandler(NotFoundException.class)
+    public Result<?> notFoundExceptionHandler(NotFoundException e) {
+        log.error(e.getMessage());
+        return R.notFound();
+    }
+
+    /**
      * 接口未找到（Not Found） -404
      *
      * @param e 接口未找到异常
@@ -162,7 +184,7 @@ public class ResultExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public Result<?> noHandlerFoundExceptionHandler(NoHandlerFoundException e) {
-        ExceptionUtils.printException(e);
+        log.error(e.getMessage());
         return R.notFound();
     }
 

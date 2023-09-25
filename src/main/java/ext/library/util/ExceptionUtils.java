@@ -109,7 +109,7 @@ public class ExceptionUtils {
      * @param e 异常
      */
     public synchronized static void printException(Throwable e) {
-        printException(e, null);
+        printException(e, 4);
     }
 
     /**
