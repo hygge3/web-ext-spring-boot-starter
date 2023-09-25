@@ -3,14 +3,6 @@ spring:
     activate:
       # 当前配置名称
       on-profile: web-ext
-  data:
-    redis:
-      lettuce:
-        pool:
-          # 开启 redis lettuce 连接池
-          enabled: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     # 404 抛异常
     throw-exception-if-no-handler-found: true
