@@ -2,6 +2,7 @@ package ext.library.web.log;
 
 import ext.library.constant.HttpAttribute;
 import ext.library.convert.Convert;
+import ext.library.util.DateUtils;
 import ext.library.util.IdUtils;
 import ext.library.util.ServletUtils;
 import ext.library.util.SpringUtils;
@@ -48,9 +49,10 @@ public class LogInterceptor implements HandlerInterceptor {
         // 打印请求日志
         long interval = System.currentTimeMillis() - Convert.toLong(request.getAttribute(HttpAttribute.REQUEST_TIME));
         StringJoiner sj = new StringJoiner(" ");
-        sj.add(ServletUtils.getClientIP(request)).add(interval + "ms").add(request.getMethod()).add(request.getRequestURI());
+        sj.add(ServletUtils.getClientIP(request)).add(DateUtils.formatBetween(interval)).add(request.getMethod()).add(request.getRequestURI());
         log.info(sj + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : ""));
-        if (ServletUtils.hasBodyMethod(request)) {
+        LogProperties logProperties = SpringUtils.getBean(LogProperties.class);
+        if (ServletUtils.hasBodyMethod(request) && logProperties.isBody()) {
             try {
                 log.info(ServletUtils.getParamToJson().toString());
             } catch (Exception ignored) {

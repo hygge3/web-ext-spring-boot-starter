@@ -24,15 +24,22 @@ public class LogProperties {
     /**
      * 是否启用请求日志
      * <p>
-     * 默认：true
+     * 默认：false
      */
     boolean request = false;
+
+    /**
+     * 是否启用请求 body 日志
+     * <p>
+     * 默认：false
+     */
+    boolean body = false;
 
     /**
      * 是否启用链路追踪
      * <p>
      * 默认：true
      */
-    boolean trace = false;
+    boolean trace = true;
 
 }
