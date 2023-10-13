@@ -10,7 +10,7 @@
     </parent>
     <groupId>ext.library</groupId>
     <artifactId>web-ext-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <name>web-ext-spring-boot-starter</name>
     <description>Project extended for Spring Boot Web</description>
     <properties>
@@ -20,9 +20,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
-        <hutool.version>5.8.21</hutool.version>
-        <fastjson2.version>2.0.40</fastjson2.version>
-        <mybatis-flex.version>1.6.7</mybatis-flex.version>
+        <hutool.version>5.8.22</hutool.version>
+        <fastjson2.version>2.0.41</fastjson2.version>
+        <mybatis-flex.version>1.7.0</mybatis-flex.version>
         <mybatis-spring.version>3.0.2</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
         <pagehelper.version>5.3.3</pagehelper.version>
@@ -98,12 +98,6 @@
             <artifactId>pagehelper</artifactId>
             <version>${pagehelper.version}</version>
         </dependency>
-        <!-- 代码生成器 -->
-        <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-codegen</artifactId>
-            <version>${mybatis-flex.version}</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/cn.dev33/sa-token-core -->
         <dependency>
             <groupId>cn.dev33</groupId>
@@ -178,4 +172,13 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+    <!-- omitted xml -->
+    <distributionManagement>
+        <repository>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>yuanhengkeji-zhongjintong-public</id>
+            <name>public</name>
+            <url>https://yuanhengkeji-maven.pkg.coding.net/repository/zhongjintong/public/</url>
+        </repository>
+    </distributionManagement>
 </project>

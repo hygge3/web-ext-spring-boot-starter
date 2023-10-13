@@ -20,6 +20,7 @@ import ext.library.exception.ParamDecryptException;
 import ext.library.exception.ParamException;
 import ext.library.exception.ParamVoidException;
 import ext.library.exception.ResultException;
+import ext.library.limiter.RedisLimitException;
 import ext.library.util.ExceptionUtils;
 import ext.library.util.ServletUtils;
 import ext.library.web.view.R;
@@ -213,6 +214,18 @@ public class ResultExceptionHandler {
     public Result<?> apiVersionDeprecatedExceptionHandler(ApiVersionDeprecatedException e) {
         ExceptionUtils.printException(e);
         return R.gone();
+    }
+
+    /**
+     * 拦截 API 接口版本弃用异常 -410
+     *
+     * @param e API 接口版本弃用异常
+     * @return 结果
+     */
+    @ExceptionHandler(RedisLimitException.class)
+    public Result<?> redisLimitExceptionHandler(RedisLimitException e) {
+        ExceptionUtils.printException(e);
+        return R.tooManyRequests();
     }
 
     /**
