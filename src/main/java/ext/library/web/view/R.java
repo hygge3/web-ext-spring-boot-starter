@@ -120,6 +120,7 @@ public class R {
     public static Result<?> unauthorized() {
         return error(ResultEnum.UNAUTHORIZED.getCode(), ResultEnum.UNAUTHORIZED.getMsg());
     }
+
     /**
      * 未登录或登录已失效 -401
      *
@@ -483,6 +484,7 @@ public class R {
     }
 
     // 700 - 自定义弹窗错误提示
+
     /**
      * <b>错误弹窗提示 -700</b>
      * <p>适用于弹窗告知用户操作提示、业务消息提示、友好的错误提示等场景。
@@ -523,7 +525,7 @@ public class R {
                 return error(resultEnum.getCode(), resultEnum.getMsg(), e.toString());
             }
         }
-        ExceptionUtils.printException(e);
+        ExceptionUtils.printException(e, null);
         // 处理所有未处理异常 -500
         return internalServerError(ExceptionUtils.getPrintExceptionToJson(e));
     }
