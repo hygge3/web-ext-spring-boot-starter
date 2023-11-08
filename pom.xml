@@ -129,6 +129,11 @@
             <version>3.0.2</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.github.usefulness</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.5.1</version>
+        </dependency>
     </dependencies>
 
     <build>
