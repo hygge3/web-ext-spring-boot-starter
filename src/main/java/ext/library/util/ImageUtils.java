@@ -27,7 +27,7 @@ public class ImageUtils {
     /**
      * 转 webp 有损
      */
-    private static byte[] toWebpLossy(byte[] imageBytes) {
+    public static byte[] toWebpLossy(byte[] imageBytes) {
         try {
             // 原图片
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
@@ -56,7 +56,7 @@ public class ImageUtils {
      * 转 webp 无损
      * 无损压缩
      */
-    private static byte[] toWebpLossless(byte[] imageBytes) {
+    public static byte[] toWebpLossless(byte[] imageBytes) {
         try {
             // 原图片
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
