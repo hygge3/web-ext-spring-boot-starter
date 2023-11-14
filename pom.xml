@@ -10,7 +10,7 @@
     </parent>
     <groupId>ext.library</groupId>
     <artifactId>web-ext-spring-boot-starter</artifactId>
-    <version>1.0.3.1</version>
+    <version>1.0.3.2</version>
     <name>web-ext-spring-boot-starter</name>
     <description>Project extended for Spring Boot Web</description>
     <properties>
@@ -20,9 +20,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
-        <hutool.version>5.8.22</hutool.version>
+        <hutool.version>5.8.23</hutool.version>
         <fastjson2.version>2.0.42</fastjson2.version>
-        <mybatis-flex.version>1.7.2</mybatis-flex.version>
+        <mybatis-flex.version>1.7.3</mybatis-flex.version>
         <mybatis-spring.version>3.0.2</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
         <pagehelper.version>6.0.0</pagehelper.version>
