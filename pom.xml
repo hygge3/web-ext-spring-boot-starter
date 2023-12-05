@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ext.library</groupId>
     <artifactId>web-ext-spring-boot-starter</artifactId>
-    <version>1.0.3.2</version>
+    <version>1.0.4</version>
     <name>web-ext-spring-boot-starter</name>
     <description>Project extended for Spring Boot Web</description>
     <properties>
@@ -21,9 +21,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
         <hutool.version>5.8.23</hutool.version>
-        <fastjson2.version>2.0.42</fastjson2.version>
-        <mybatis-flex.version>1.7.3</mybatis-flex.version>
-        <mybatis-spring.version>3.0.2</mybatis-spring.version>
+        <fastjson2.version>2.0.43</fastjson2.version>
+        <mybatis-flex.version>1.7.5</mybatis-flex.version>
+        <mybatis-spring.version>3.0.3</mybatis-spring.version>
         <jsr305.version>3.0.2</jsr305.version>
         <pagehelper.version>6.0.0</pagehelper.version>
         <mapstruct-plus.version>1.3.5</mapstruct-plus.version>
