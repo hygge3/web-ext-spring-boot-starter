@@ -10,13 +10,13 @@
     </parent>
     <groupId>ext.library</groupId>
     <artifactId>web-ext-spring-boot-starter</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <name>web-ext-spring-boot-starter</name>
     <description>Project extended for Spring Boot Web</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
