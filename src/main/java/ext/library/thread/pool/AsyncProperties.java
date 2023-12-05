@@ -27,7 +27,7 @@ public class AsyncProperties {
      * <p>
      * <b style="color:red">注意，@Async 异步执行方法，不要和同步调用方法写在同一个类中，否则异步执行将失效。</b>
      */
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     /**
      * 线程池名的前缀
