@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * <b>异步线程池</b>
@@ -59,6 +61,7 @@ public class AsyncAutoConfig implements AsyncConfigurer {
      */
     @Override
     public Executor getAsyncExecutor() {
+        ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 线程池名的前缀
         executor.setThreadNamePrefix(asyncProperties.getThreadNamePrefix());
@@ -81,8 +84,6 @@ public class AsyncAutoConfig implements AsyncConfigurer {
                 .getRejectedExecutionHandler());
         // 异步线程上下文装饰器
         executor.setTaskDecorator(taskDecorator);
-        // 使用虚拟线程
-//        executor.setThreadFactory(Thread.ofVirtual().factory());
         executor.initialize();
         log.info("【异步线程池】共用父线程上下文环境，异步执行任务时不丢失 token, 初始化完毕。");
         return executor;

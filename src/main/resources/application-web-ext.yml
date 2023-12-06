@@ -71,6 +71,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
     banner-mode: console
+  threads:
+    virtual:
+      enabled: true
 server:
   compression:
     # 开启响应内容压缩
