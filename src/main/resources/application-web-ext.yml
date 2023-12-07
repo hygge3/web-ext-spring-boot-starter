@@ -82,9 +82,5 @@ mybatis-flex:
   # 指定 MyBatis 的执行器
   executor-type: reuse
   configuration:
-    # 指定发现自动映射目标未知列（或未知属性类型）的行为
-    auto-mapping-unknown-column-behavior: warning
-    # 是否开启驼峰命名自动映射
-    map-underscore-to-camel-case: true
     # 从 SQL 中删除多余的空格字符
     shrink-whitespaces-in-sql: true

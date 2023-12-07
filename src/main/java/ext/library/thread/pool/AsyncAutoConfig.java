@@ -13,8 +13,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * <b>异步线程池</b>
@@ -24,7 +22,7 @@ import java.util.concurrent.Executors;
  * <b style="color:red">注意，@Async 异步执行方法，不要和同步调用方法，写在同一个类中，否则异步执行将失效。</b>
  */
 @Slf4j
-@EnableAsync(proxyTargetClass=true)
+@EnableAsync(proxyTargetClass = true)
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(AsyncProperties.class)
@@ -61,8 +59,8 @@ public class AsyncAutoConfig implements AsyncConfigurer {
      */
     @Override
     public Executor getAsyncExecutor() {
-        ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadFactory(Thread.ofVirtual().factory());
         // 线程池名的前缀
         executor.setThreadNamePrefix(asyncProperties.getThreadNamePrefix());
         // 核心线程数

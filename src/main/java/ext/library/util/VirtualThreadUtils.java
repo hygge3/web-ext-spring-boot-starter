@@ -1,4 +1,4 @@
-package ext.library.thread;
+package ext.library.util;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,12 +11,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 构造一个固定线程数目（CPU 核心数）的线程池
- * 创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。
+ * 虚拟线程实用程序
  */
-public class FixedThreadUtils {
-    private final static ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
+public class VirtualThreadUtils {
+    private final static ExecutorService exec = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("virtual-exec-",1).factory());
 
     /**
      * 在未来某个时间执行给定的命令
@@ -198,4 +196,5 @@ public class FixedThreadUtils {
             InterruptedException, ExecutionException, TimeoutException {
         return exec.invokeAny(tasks, timeout, unit);
     }
+
 }

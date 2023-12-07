@@ -26,6 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -42,6 +43,12 @@ public class WebAutoConfig {
 
     // CorsConfig-跨域
 
+    /**
+     * 配置跨域访问的过滤器
+     *
+     * @param corsProperties 跨域配置项
+     * @return 跨域过滤器
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = CorsProperties.PREFIX, name = "allow", havingValue = "true", matchIfMissing = true)
@@ -53,7 +60,7 @@ public class WebAutoConfig {
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("*"));
         config.setAllowedOriginPatterns(List.of("*"));
-        config.setMaxAge(3600L);
+        config.setMaxAge(Duration.ofHours(1));
 
         // 设置 response 允许暴露的 Headers
         List<String> exposedHeaders = corsProperties.getExposedHeaders();
@@ -68,6 +75,7 @@ public class WebAutoConfig {
         log.info("【跨域】配置项：{}，任何情况下都允许跨域访问，执行初始化 ...", CorsProperties.PREFIX);
         return new CorsFilter(source);
     }
+
 
     // 注册 Filter 并配置执行顺序
 
