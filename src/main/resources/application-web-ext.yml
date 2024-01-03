@@ -10,6 +10,7 @@ spring:
       date: yyyy-MM-dd HH:mm:ss
     static-path-pattern: /static/**
   jackson:
+    default-property-inclusion: non_null
     # 设置 json 日期序列化输出格式相对北京时间与格林尼治时间有八个小时的时差，设置偏移量
     time-zone: GMT+8
     # 格式化 json 输出的时间问题，将格林尼治时间进行转换

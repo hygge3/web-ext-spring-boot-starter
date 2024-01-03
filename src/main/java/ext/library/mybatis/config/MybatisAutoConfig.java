@@ -7,6 +7,7 @@ import com.mybatisflex.core.audit.ConsoleMessageCollector;
 import com.mybatisflex.core.audit.MessageCollector;
 import com.mybatisflex.core.logicdelete.LogicDeleteProcessor;
 import com.mybatisflex.core.logicdelete.impl.DateTimeLogicDeleteProcessor;
+import com.mybatisflex.core.query.QueryColumnBehavior;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,10 @@ public class MybatisAutoConfig implements MyBatisFlexCustomizer {
             MessageCollector collector = new ConsoleMessageCollector();
             AuditManager.setMessageCollector(collector);
         }
+        // 使用内置规则自动忽略 null 和 空白字符串
+        QueryColumnBehavior.setIgnoreFunction(QueryColumnBehavior.IGNORE_BLANK);
+        // 如果传入的值是集合或数组，则使用 in 逻辑，否则使用 =（等于）逻辑
+        QueryColumnBehavior.setSmartConvertInToEquals(true);
         log.info("【Mybatis-Flex】配置项：{}。执行初始化 ...", MybatisProperties.PREFIX);
     }
 
