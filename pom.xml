@@ -22,8 +22,7 @@
         <!-- dependencies.version -->
         <hutool.version>5.8.24</hutool.version>
         <fastjson2.version>2.0.44</fastjson2.version>
-        <mybatis-flex.version>1.7.6</mybatis-flex.version>
-        <mybatis-spring.version>3.0.3</mybatis-spring.version>
+        <mybatis-flex.version>1.7.7</mybatis-flex.version>
         <jsr305.version>3.0.2</jsr305.version>
         <pagehelper.version>6.1.0</pagehelper.version>
         <mapstruct-plus.version>1.3.5</mapstruct-plus.version>
@@ -77,20 +76,8 @@
         <!-- ORM https://mybatis-flex.com -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
+            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
             <version>${mybatis-flex.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mybatis</groupId>
-                    <artifactId>mybatis-spring</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- 使用 springboot3 需要排除 flex 中的 mybatis-spring 的依赖，主动添加最新版本的 mybatis-spring 依赖 -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>${mybatis-spring.version}</version>
         </dependency>
         <!-- 手动分页 https://pagehelper.github.io -->
         <dependency>
