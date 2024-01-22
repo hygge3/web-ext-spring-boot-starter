@@ -3,10 +3,12 @@ package ext.library.util;
 import cn.hutool.core.date.DateUtil;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
@@ -59,7 +61,9 @@ public class DateUtils extends DateUtil {
      */
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
-    /** 年 - 月 - 日 T 时：分：秒 */
+    /**
+     * 年 - 月 - 日 T 时：分：秒
+     */
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     /**
@@ -330,6 +334,17 @@ public class DateUtils extends DateUtil {
     }
 
     /**
+     * 计算时间相差
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return 相差天数
+     */
+    public static Duration between(LocalDateTime startTime, LocalDateTime endTime) {
+        return Duration.between(startTime, endTime);
+    }
+
+    /**
      * 计算日期相差天数
      *
      * @param startDate 开始日期
@@ -338,6 +353,31 @@ public class DateUtils extends DateUtil {
      */
     public static long dateDaysDifference(LocalDate startDate, LocalDate endDate) {
         return startDate.toEpochDay() - endDate.toEpochDay();
+    }
+
+    /**
+     * 时区转换
+     *
+     * @param time    时间
+     * @param oldZone 旧区
+     * @param newZone 新区
+     * @return {@link LocalDateTime}
+     */
+    public static LocalDateTime zoneConvert(LocalDateTime time, ZoneId oldZone, ZoneId newZone) {
+        return time.atZone(oldZone).withZoneSameInstant(newZone).toLocalDateTime();
+    }
+
+    /**
+     * 转换为 java.util.Date
+     *
+     * @param localDateTime 当地日期时间
+     * @return {@link LocalDateTime}
+     */
+    public static Date toDate(LocalDateTime localDateTime) {
+        // 获得 Instant
+        Instant instant = Instant.ofEpochSecond(localDateTime.toEpochSecond(ZoneOffset.ofHours(8)));
+        // 获得 Date
+        return Date.from(instant);
     }
 
 }

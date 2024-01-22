@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
  * 虚拟线程实用程序
  */
 public class VirtualThreadUtils {
-    private final static ExecutorService exec = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("virtual-exec-",1).factory());
+    public final static ExecutorService EXEC = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("virtual-exec-",1).factory());
 
     /**
      * 在未来某个时间执行给定的命令
@@ -23,7 +23,7 @@ public class VirtualThreadUtils {
      * @param command 命令
      */
     public static void execute(final Runnable command) {
-        exec.execute(command);
+        EXEC.execute(command);
     }
 
     /**
@@ -34,7 +34,7 @@ public class VirtualThreadUtils {
      */
     public static void execute(final List<Runnable> commands) {
         for (Runnable command : commands) {
-            exec.execute(command);
+            EXEC.execute(command);
         }
     }
 
@@ -44,7 +44,7 @@ public class VirtualThreadUtils {
      * 如果已经关闭，则调用没有作用。</p>
      */
     public static void shutDown() {
-        exec.shutdown();
+        EXEC.shutdown();
     }
 
     /**
@@ -55,7 +55,7 @@ public class VirtualThreadUtils {
      * @return 等待执行的任务的列表
      */
     public static List<Runnable> shutDownNow() {
-        return exec.shutdownNow();
+        return EXEC.shutdownNow();
     }
 
     /**
@@ -64,7 +64,7 @@ public class VirtualThreadUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isShutDown() {
-        return exec.isShutdown();
+        return EXEC.isShutdown();
     }
 
     /**
@@ -74,7 +74,7 @@ public class VirtualThreadUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isTerminated() {
-        return exec.isTerminated();
+        return EXEC.isTerminated();
     }
 
 
@@ -88,7 +88,7 @@ public class VirtualThreadUtils {
      * @throws InterruptedException 终端异常
      */
     public static boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
-        return exec.awaitTermination(timeout, unit);
+        return EXEC.awaitTermination(timeout, unit);
     }
 
     /**
@@ -100,7 +100,7 @@ public class VirtualThreadUtils {
      * @return 表示任务等待完成的 Future, 该 Future 的{@code get}方法在成功完成时将会返回该任务的结果。
      */
     public static <T> Future<T> submit(final Callable<T> task) {
-        return exec.submit(task);
+        return EXEC.submit(task);
     }
 
     /**
@@ -112,7 +112,7 @@ public class VirtualThreadUtils {
      * @return 表示任务等待完成的 Future, 该 Future 的{@code get}方法在成功完成时将会返回该任务的结果。
      */
     public static <T> Future<T> submit(final Runnable task, final T result) {
-        return exec.submit(task, result);
+        return EXEC.submit(task, result);
     }
 
     /**
@@ -122,7 +122,7 @@ public class VirtualThreadUtils {
      * @return 表示任务等待完成的 Future, 该 Future 的{@code get}方法在成功完成时将会返回 null 结果。
      */
     public static Future<?> submit(final Runnable task) {
-        return exec.submit(task);
+        return EXEC.submit(task);
     }
 
     /**
@@ -138,7 +138,7 @@ public class VirtualThreadUtils {
      * @throws InterruptedException 如果等待时发生中断，在这种情况下取消尚未完成的任务。
      */
     public static <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks) throws InterruptedException {
-        return exec.invokeAll(tasks);
+        return EXEC.invokeAll(tasks);
     }
 
     /**
@@ -158,7 +158,7 @@ public class VirtualThreadUtils {
      */
     public static <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws
             InterruptedException {
-        return exec.invokeAll(tasks, timeout, unit);
+        return EXEC.invokeAll(tasks, timeout, unit);
     }
 
     /**
@@ -174,7 +174,7 @@ public class VirtualThreadUtils {
      * @throws ExecutionException   如果没有任务成功完成
      */
     public static <T> T invokeAny(final Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-        return exec.invokeAny(tasks);
+        return EXEC.invokeAny(tasks);
     }
 
     /**
@@ -194,7 +194,7 @@ public class VirtualThreadUtils {
      */
     public static <T> T invokeAny(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws
             InterruptedException, ExecutionException, TimeoutException {
-        return exec.invokeAny(tasks, timeout, unit);
+        return EXEC.invokeAny(tasks, timeout, unit);
     }
 
 }

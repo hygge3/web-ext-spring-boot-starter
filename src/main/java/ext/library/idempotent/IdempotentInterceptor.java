@@ -4,12 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import ext.library.constant.HttpAttribute;
 import ext.library.exception.ParamException;
 import ext.library.exception.ResultException;
-import ext.library.redis.client.Redis;
 import ext.library.redis.constant.RedisConstant;
+import ext.library.redis.utils.RedisUtils;
 import ext.library.util.Assert;
 import ext.library.util.SpringUtils;
 import ext.library.web.view.R;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
@@ -25,7 +26,7 @@ import java.util.Objects;
  * <p>{@code @ConditionalOnBean(Redis.class)}代码为象征意义上的必须依赖 Redis Bean（因为在这里此注解并不会生效，需在 WebMvcConfigurer 实现类中控制）</p>
  */
 @Slf4j
-@ConditionalOnBean(Redis.class)
+@ConditionalOnBean(RedissonClient.class)
 public class IdempotentInterceptor implements HandlerInterceptor {
 
     /**
@@ -59,16 +60,15 @@ public class IdempotentInterceptor implements HandlerInterceptor {
             Assert.notBlank(version, () -> new ParamException(StrUtil.format("【幂等性】幂等校验失败，请求中未包含 {} 参数", HttpAttribute.API_IDEMPOTENT_VERSION)));
         }
 
-        Redis redis = SpringUtils.getBean(Redis.class);
         String redisKey = RedisConstant.API_IDEMPOTENT_KEY_PREFIX + version;
 
-        if (Objects.equals(Boolean.FALSE, redis.getRedisTemplate().hasKey(redisKey))) {
+        if (Objects.equals(Boolean.FALSE, RedisUtils.hasKey(redisKey))) {
             String msgPrompt = "请勿重复操作";
             String dataPrompt = StrUtil.format("【幂等性】幂等校验失败，{} 参数已失效，当前 value: {}", HttpAttribute.API_IDEMPOTENT_VERSION, version);
             throw new ResultException(R.errorPrompt(msgPrompt, dataPrompt));
         }
 
-        if (!redis.del(redisKey)) {
+        if (!RedisUtils.delete(redisKey)) {
             log.warn("【幂等性】幂等校验失败，{} 参数未能正确的解锁", redisKey);
         }
     }
