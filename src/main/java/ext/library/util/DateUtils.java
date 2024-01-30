@@ -341,7 +341,7 @@ public class DateUtils extends DateUtil {
      * @return 相差天数
      */
     public static Duration between(LocalDateTime startTime, LocalDateTime endTime) {
-        return Duration.between(startTime, endTime);
+        return Duration.between(startTime, endTime).abs();
     }
 
     /**

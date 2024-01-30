@@ -1,4 +1,4 @@
 /**
- * redis 自动配置及属性
+ * redis 自动配置
  */
 package ext.library.redis.config;

@@ -32,7 +32,7 @@ public class ResultResponseBodyHandler implements ResponseBodyAdvice<Object> {
     public boolean supports(MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         // 不需要包装
         if (returnType.hasMethodAnnotation(UnWrapper.class) ||
-                returnType.getContainingClass().isAnnotationPresent(UnWrapper.class)) {
+            returnType.getContainingClass().isAnnotationPresent(UnWrapper.class)) {
             log.debug("UnWrapper");
             return false;
         }
