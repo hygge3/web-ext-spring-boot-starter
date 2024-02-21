@@ -109,11 +109,10 @@ public class ResultExceptionHandler {
     public Result<?> saTokenExceptionHandler(NotLoginException e) {
         log.error(e.getMessage());
         String type = e.getType();
-        return switch (type) {
-            case NotLoginException.BE_REPLACED -> R.unauthorized("已被顶下线");
-            case NotLoginException.KICK_OUT -> R.unauthorized("已被踢下线");
-            default -> R.unauthorized();
-        };
+        if (type.equals(NotLoginException.NOT_TOKEN)) {
+            return R.unauthorized(NotLoginException.NOT_TOKEN_MESSAGE);
+        }
+        return R.unauthorized(NotLoginException.INVALID_TOKEN_MESSAGE);
     }
 
     /**

@@ -142,6 +142,15 @@ public class R {
     /**
      * 非法访问 -402
      *
+     * @return HTTP 请求，最外层响应对象
+     */
+    public static Result<?> attack(String msg) {
+        return error(ResultEnum.ATTACK.getCode(), msg);
+    }
+
+    /**
+     * 非法访问 -402
+     *
      * @param <T>  泛型
      * @param data 异常数据
      * @return HTTP 请求，最外层响应对象

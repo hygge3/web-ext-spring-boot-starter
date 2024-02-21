@@ -20,9 +20,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
-        <hutool.version>5.8.25</hutool.version>
+        <hutool.version>5.8.26</hutool.version>
         <fastjson2.version>2.0.46</fastjson2.version>
-        <mybatis-flex.version>1.7.7</mybatis-flex.version>
+        <mybatis-flex.version>1.7.9</mybatis-flex.version>
         <hikari.version>5.1.0</hikari.version>
         <mysql.version>8.3.0</mysql.version>
         <jsr305.version>3.0.2</jsr305.version>
@@ -144,6 +144,7 @@
             <groupId>com.github.usefulness</groupId>
             <artifactId>webp-imageio</artifactId>
             <version>0.7.0</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -182,7 +183,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
     <licenses>
         <license>
