@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ext.library</groupId>
@@ -21,8 +21,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- dependencies.version -->
         <hutool.version>5.8.26</hutool.version>
-        <fastjson2.version>2.0.46</fastjson2.version>
-        <mybatis-flex.version>1.7.9</mybatis-flex.version>
+        <fastjson2.version>2.0.47</fastjson2.version>
+        <mybatis-flex.version>1.8.2</mybatis-flex.version>
         <hikari.version>5.1.0</hikari.version>
         <mysql.version>8.3.0</mysql.version>
         <jsr305.version>3.0.2</jsr305.version>
@@ -153,7 +153,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -164,7 +163,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -177,7 +175,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.2.2</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
