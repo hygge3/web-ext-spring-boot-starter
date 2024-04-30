@@ -534,7 +534,7 @@ public class R {
                 return error(resultEnum.getCode(), resultEnum.getMsg(), e.toString());
             }
         }
-        ExceptionUtils.printException(e, null);
+        ExceptionUtils.printStackTrace(e);
         // 处理所有未处理异常 -500
         return internalServerError(ExceptionUtils.getPrintExceptionToJson(e));
     }

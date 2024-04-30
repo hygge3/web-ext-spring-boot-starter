@@ -122,6 +122,10 @@ public class ExceptionUtils {
         System.err.print(getPrintExceptionToStr(e, line));
     }
 
+    public synchronized static void printStackTrace(Throwable e) {
+        e.printStackTrace();
+    }
+
     private enum ExceptionConvertEnum {
         JSONObject, StringBuffer
     }
