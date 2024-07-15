@@ -1,7 +1,6 @@
 package ext.library.web.config;
 
 import ext.library.exception.config.ExceptionHandlerProperties;
-import ext.library.idempotent.ApiIdempotentProperties;
 import ext.library.thread.pool.AsyncProperties;
 import ext.library.thread.pool.ContextDecorator;
 import ext.library.web.log.LogProperties;
@@ -36,7 +35,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @Import({DateTimeFormatAutoConfig.class, WebMvcAutoConfig.class, WebMvcRegistrationsAutoConfig.class, WebEnv.class})
-@EnableConfigurationProperties({ExceptionHandlerProperties.class, ApiIdempotentProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class})
+@EnableConfigurationProperties({ExceptionHandlerProperties.class, CorsProperties.class, CookieProperties.class, LogProperties.class, WebProperties.class, JacksonHttpMessageConverterProperties.class})
 public class WebAutoConfig {
 
     final WebProperties webProperties;

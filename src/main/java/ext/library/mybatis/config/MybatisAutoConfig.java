@@ -3,8 +3,6 @@ package ext.library.mybatis.config;
 import com.github.pagehelper.PageInterceptor;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
-import com.mybatisflex.core.audit.ConsoleMessageCollector;
-import com.mybatisflex.core.audit.MessageCollector;
 import com.mybatisflex.core.logicdelete.LogicDeleteProcessor;
 import com.mybatisflex.core.logicdelete.impl.DateTimeLogicDeleteProcessor;
 import com.mybatisflex.core.query.QueryColumnBehavior;
@@ -31,14 +29,21 @@ public class MybatisAutoConfig implements MyBatisFlexCustomizer {
             // 开启审计功能
             AuditManager.setAuditEnable(true);
             // 设置 SQL 审计收集器
-            MessageCollector collector = new ConsoleMessageCollector();
-            AuditManager.setMessageCollector(collector);
+            AuditManager.setMessageCollector(auditMessage ->
+                    log.info("{} ---- {}ms, row:{}",
+                            formatSQL(auditMessage.getFullSql()),
+                            auditMessage.getElapsedTime(),
+                            auditMessage.getQueryCount()));
         }
         // 使用内置规则自动忽略 null 和 空白字符串
         QueryColumnBehavior.setIgnoreFunction(QueryColumnBehavior.IGNORE_BLANK);
         // 如果传入的值是集合或数组，则使用 in 逻辑，否则使用 =（等于）逻辑
         QueryColumnBehavior.setSmartConvertInToEquals(true);
         log.info("【Mybatis-Flex】配置项：{}。执行初始化 ...", MybatisProperties.PREFIX);
+    }
+
+    private static String formatSQL(String sql) {
+        return sql.replaceAll("\\s+", " ").replace("\\r", " ").replace("\\n", " ");
     }
 
     @Bean

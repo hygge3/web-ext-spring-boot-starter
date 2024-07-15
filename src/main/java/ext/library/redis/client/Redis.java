@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -205,6 +206,16 @@ public class Redis {
      */
     public void set(String key, String value, long timeout) {
         stringRedisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+    }
+    /**
+     * 如果不存在则设置 并返回 true 如果存在则返回 false
+     *
+     * @param key   缓存的键值
+     * @param value 缓存的值
+     * @return set 成功或失败
+     */
+    public <T> boolean setIfAbsent(final String key, final T value, final Duration duration) {
+        return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, value, duration));
     }
 
     /**

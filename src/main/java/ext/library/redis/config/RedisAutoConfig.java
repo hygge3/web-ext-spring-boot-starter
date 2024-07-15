@@ -1,7 +1,7 @@
 package ext.library.redis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ext.library.idempotent.ApiIdempotentController;
+import ext.library.idempotent.RepeatSubmitAspect;
 import ext.library.redis.client.Redis;
 import ext.library.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import(ApiIdempotentController.class)
+@Import(RepeatSubmitAspect.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisAutoConfig {
 

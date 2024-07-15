@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonStreamContext;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import ext.library.idempotent.IdempotentInterceptorRegistry;
 import ext.library.util.ClassUtils;
 import ext.library.util.ListUtils;
 import ext.library.util.StringUtils;
@@ -36,10 +35,9 @@ import java.util.Objects;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Import({IdempotentInterceptorRegistry.class, LogInterceptorRegistry.class})
+@Import(LogInterceptorRegistry.class)
 public class WebMvcAutoConfig implements WebMvcConfigurer {
     final JacksonHttpMessageConverterProperties jacksonProperties;
-    final IdempotentInterceptorRegistry idempotentInterceptorRegistry;
     final LogInterceptorRegistry logInterceptorRegistry;
 
     /**
@@ -130,10 +128,6 @@ public class WebMvcAutoConfig implements WebMvcConfigurer {
         // 添加日志拦截器
         if (Objects.nonNull(logInterceptorRegistry)) {
             logInterceptorRegistry.registry(registry);
-        }
-        // 添加幂等性拦截器
-        if (Objects.nonNull(idempotentInterceptorRegistry)) {
-            idempotentInterceptorRegistry.registry(registry);
         }
     }
 
